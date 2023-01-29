@@ -30,8 +30,12 @@ app.get('/api', (req, res) => {
     res.send('Hello World!')
 })
 
-const port = 3001
+const port = process.env.PORT
 
-app.listen(port, function () {
+if (!port) {
+    throw new Error('Port is not set')
+}
+
+app.listen(port, () => {
     console.log(`⚡ Backend API server is listening on http://localhost:${port}/api`)
 })
