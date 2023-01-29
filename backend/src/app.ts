@@ -1,13 +1,37 @@
-import express, { Application, Request, Response } from 'express'
+import * as dotenv from 'dotenv'
+import express, { Application } from 'express'
+import bodyParser from 'body-parser'
+import cookies from 'cookie-parser'
+import loginRouter from './routes/login'
+import authentication from './middlewares/authentication'
+import { User } from '@prisma/client'
+
+declare global {
+    namespace Express {
+        export interface Request {
+            user?: User
+        }
+    }
+}
+
+dotenv.config()
 
 const app: Application = express()
 
-const port: number = 3001
+app.use(bodyParser.json())
+app.use(cookies())
 
-app.get('/toto', (req: Request, res: Response) => {
-    res.send('Hello toto')
+app.use('/api/login', loginRouter)
+
+app.use(authentication)
+
+app.get('/api', (req, res) => {
+    console.log(req.user)
+    res.send('Hello World!')
 })
 
+const port = 3001
+
 app.listen(port, function () {
-    console.log(`App is listening on port ${port} !`)
+    console.log(`⚡ Backend API server is listening on http://localhost:${port}/api`)
 })
