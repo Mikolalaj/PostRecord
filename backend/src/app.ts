@@ -6,6 +6,7 @@ import authRouter from './routes/authentication'
 import usersRouter from './routes/users'
 import authentication from './middlewares/authentication'
 import { User, PrismaClient } from '@prisma/client'
+import morgan from 'morgan'
 
 declare global {
     namespace Express {
@@ -19,7 +20,10 @@ export const prisma = new PrismaClient()
 
 dotenv.config()
 
+
 const app: Application = express()
+
+app.use(morgan('dev'))
 
 app.use(bodyParser.json())
 app.use(cookies())
