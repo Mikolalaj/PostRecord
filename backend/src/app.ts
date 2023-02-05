@@ -2,17 +2,20 @@ import * as dotenv from 'dotenv'
 import express, { Application } from 'express'
 import bodyParser from 'body-parser'
 import cookies from 'cookie-parser'
-import loginRouter from './routes/login'
+import authRouter from './routes/authentication'
+import usersRouter from './routes/users'
 import authentication from './middlewares/authentication'
-import { User } from '@prisma/client'
+import { User, PrismaClient } from '@prisma/client'
 
 declare global {
     namespace Express {
         export interface Request {
-            user?: User
+            user: User
         }
     }
 }
+
+export const prisma = new PrismaClient()
 
 dotenv.config()
 
@@ -21,13 +24,14 @@ const app: Application = express()
 app.use(bodyParser.json())
 app.use(cookies())
 
-app.use('/api/login', loginRouter)
+app.use('/api/auth', authRouter)
 
 app.use(authentication)
 
-app.get('/api', (req, res) => {
-    console.log(req.user)
-    res.send('Hello World!')
+app.use('/api/users', usersRouter)
+
+app.get('/api', (_, res) => {
+    res.send('Hello from the PostRecord API!')
 })
 
 const port = process.env.PORT

@@ -1,8 +1,7 @@
-import { PrismaClient, User } from '@prisma/client'
+import { User } from '@prisma/client'
+import { prisma } from '../app'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-
-const prisma = new PrismaClient()
 
 export type jwtPayload = {
     id: string
@@ -37,6 +36,12 @@ async function singUp(email: string, password: string, firstName: string, lastNa
     })
 }
 
+function signOut(): boolean {
+    // TODO: Delete user session
+
+    return true
+}
+
 function createJWT(user: User): string {
     const jtwSecret = process.env.JWT_SECRET
     if (!jtwSecret) {
@@ -44,9 +49,6 @@ function createJWT(user: User): string {
     }
     const payload = {
         id: user.id,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
         isAdmin: user.isAdmin,
     }
     const token = jwt.sign(payload, jtwSecret, {
@@ -65,4 +67,4 @@ async function isEmailAvailable(email: string): Promise<boolean> {
         .then(count => count === 0)
 }
 
-export { signIn, singUp, createJWT, isEmailAvailable }
+export { signIn, singUp, signOut, createJWT, isEmailAvailable }
