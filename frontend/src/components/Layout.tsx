@@ -3,7 +3,7 @@ import { createStyles, Header, Container, Group, Burger, AppShell, Button, Space
 import { useDisclosure } from '@mantine/hooks'
 import { useRecoilValue } from 'recoil'
 import { userState } from '../atoms'
-import useAuth from '../utils/useAuth'
+import useAuth from '../hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
 
 const useStyles = createStyles(theme => ({
