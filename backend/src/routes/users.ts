@@ -3,7 +3,7 @@ import { Request, Response, Router } from 'express'
 const router = Router()
 
 router.get('/', async (req: Request, res: Response) => {
-    const { id } = req.user
+    const { id } = req.session.user!
 
     const user = await prisma.user.findUnique({
         where: {

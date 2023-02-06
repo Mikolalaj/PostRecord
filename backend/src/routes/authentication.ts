@@ -16,8 +16,9 @@ router.post('/signIn', async (req: SignInRequest, res: Response) => {
         return res.status(401).send({ message: 'Invalid email or password' })
     }
 
-    const token = createJWT(user)
-    res.cookie('token', token, { httpOnly: true })
+    req.session.user = user
+    // const token = createJWT(user)
+    // res.cookie('token', token, { httpOnly: true })
 
     return res.json({
         user: {
@@ -46,8 +47,9 @@ router.post('/signUp', async (req: SignUpRequest, res: Response) => {
     }
     const user = await singUp(email, password, firstName, lastName)
 
-    const token = createJWT(user)
-    res.cookie('token', token, { httpOnly: true })
+    req.session.user = user
+    // const token = createJWT(user)
+    // res.cookie('token', token, { httpOnly: true })
 
     return res.json({
         user: {
