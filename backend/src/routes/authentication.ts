@@ -16,6 +16,10 @@ router.post('/signIn', async (req: SignInRequest, res: Response) => {
         return res.status(401).send({ message: 'Invalid email or password' })
     }
 
+    if (user.emailConfirmed === false) {
+        return res.status(401).send({ message: 'Email is not confirmed. Check you inbox and try again.' })
+    }
+
     req.session.user = user
 
     return res.json({
@@ -45,9 +49,7 @@ router.post('/signUp', async (req: SignUpRequest, res: Response) => {
     }
     const user = await singUp(email, password, firstName, lastName)
 
-    req.session.user = user
-
-    return res.json({
+    return res.status(201).json({
         user: {
             id: user.id,
             email: user.email,

@@ -22,15 +22,18 @@ function LogInForm({ toggleForm }: FormProps) {
             email: '',
             password: '',
         },
+        validate: {
+            email: val => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
+        },
     })
 
     const [errorMessage, setErrorMessage] = useState<string>('')
     const { loginUser } = useAuth()
 
     const onLogin = async (values: LogInFormValues) => {
-        const isSuccess = await loginUser(values.email, values.password)
-        if (!isSuccess) {
-            setErrorMessage('Invalid username or password. Please try again.')
+        const errorMessage = await loginUser(values.email, values.password)
+        if (errorMessage) {
+            setErrorMessage(errorMessage)
         }
     }
 
@@ -42,22 +45,8 @@ function LogInForm({ toggleForm }: FormProps) {
                         {errorMessage}
                     </Alert>
                 )}
-                <TextInput
-                    required
-                    label='Email'
-                    placeholder='Your email'
-                    value={logInForm.values.email}
-                    onChange={event => logInForm.setFieldValue('email', event.currentTarget.value)}
-                    error={logInForm.errors.email && 'Invalid email'}
-                />
-                <PasswordInput
-                    required
-                    label='Password'
-                    placeholder='Your password'
-                    value={logInForm.values.password}
-                    onChange={event => logInForm.setFieldValue('password', event.currentTarget.value)}
-                    error={logInForm.errors.password && 'Password should include at least 6 characters'}
-                />
+                <TextInput required label='Email' placeholder='Your email' {...logInForm.getInputProps('email')} />
+                <PasswordInput required label='Password' placeholder='Your password' {...logInForm.getInputProps('password')} />
             </Stack>
             <Group position='apart' mt='xl'>
                 <Anchor component='button' type='button' color='dimmed' onClick={toggleForm} size='xs'>
@@ -91,8 +80,10 @@ function SignUpForm({ toggleForm, onSignUpSuccess }: SignUpFormProps) {
             terms: false,
         },
         validate: {
+            firstName: value => (value.length < 2 ? 'Name must have at least 2 letters' : null),
             email: val => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
             password: val => (val.length < 6 ? 'Password should include at least 6 characters' : null),
+            terms: val => (val ? null : 'You must agree to sell your soul to us!!! 😈'),
         },
     })
 
@@ -100,11 +91,11 @@ function SignUpForm({ toggleForm, onSignUpSuccess }: SignUpFormProps) {
     const { registerUser } = useAuth()
 
     const onSignUp = async (values: SignUpFormValues) => {
-        const response = await registerUser(values.email, values.firstName, values.lastName, values.password)
-        if (response === true) {
+        const errorMessage = await registerUser(values.email, values.firstName, values.lastName, values.password)
+        if (!errorMessage) {
             onSignUpSuccess()
         } else {
-            setErrorMessage(response)
+            setErrorMessage(errorMessage)
         }
     }
 
@@ -116,43 +107,11 @@ function SignUpForm({ toggleForm, onSignUpSuccess }: SignUpFormProps) {
                         {errorMessage}
                     </Alert>
                 )}
-                <TextInput
-                    required
-                    label='Name'
-                    placeholder='Your first name'
-                    value={form.values.firstName}
-                    onChange={event => form.setFieldValue('firstName', event.currentTarget.value)}
-                />
-                <TextInput
-                    required
-                    label='Name'
-                    placeholder='Your last name'
-                    value={form.values.lastName}
-                    onChange={event => form.setFieldValue('lastName', event.currentTarget.value)}
-                />
-                <TextInput
-                    required
-                    label='Email'
-                    placeholder='hello@mail.com'
-                    value={form.values.email}
-                    onChange={event => form.setFieldValue('email', event.currentTarget.value)}
-                    error={form.errors.email && 'Invalid email'}
-                />
-                <PasswordInput
-                    required
-                    label='Password'
-                    placeholder='Your password'
-                    value={form.values.password}
-                    onChange={event => form.setFieldValue('password', event.currentTarget.value)}
-                    error={form.errors.password && 'Password should include at least 6 characters'}
-                />
-                <Checkbox
-                    required
-                    label='I agree to sell my soul and privacy to this corporation'
-                    checked={form.values.terms}
-                    onChange={event => form.setFieldValue('terms', event.currentTarget.checked)}
-                    error={form.errors.password && 'You must agree to sell your soul to us!!!'}
-                />
+                <TextInput required label='Name' placeholder='Your first name' {...form.getInputProps('firstName')} />
+                <TextInput required label='Name' placeholder='Your last name' {...form.getInputProps('lastName')} />
+                <TextInput required label='Email' placeholder='hello@mail.com' {...form.getInputProps('email')} />
+                <PasswordInput required label='Password' placeholder='Your password' {...form.getInputProps('password')} />
+                <Checkbox required label='I agree to sell my soul and privacy to this corporation' {...form.getInputProps('terms')} />
             </Stack>
             <Group position='apart' mt='xl'>
                 <Anchor component='button' type='button' color='dimmed' onClick={toggleForm} size='xs'>
@@ -198,7 +157,7 @@ export default function LoginPage() {
                     </Text>
                     {isSignUpSuccess && (
                         <Alert icon={<IconAlertCircle size={16} />} title='Welcome to Foodie!' color='green' radius='md'>
-                            You succesfully signed up! Now you can log in.
+                            You succesfully signed up! Now check your email to verify your account.
                         </Alert>
                     )}
                     {isSignUp ? (
