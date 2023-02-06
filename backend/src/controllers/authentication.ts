@@ -35,12 +35,6 @@ async function singUp(email: string, password: string, firstName: string, lastNa
     })
 }
 
-function signOut(): boolean {
-    // TODO: Delete user session
-
-    return true
-}
-
 async function isEmailAvailable(email: string): Promise<boolean> {
     return prisma.user
         .count({
@@ -51,4 +45,4 @@ async function isEmailAvailable(email: string): Promise<boolean> {
         .then(count => count === 0)
 }
 
-export { signIn, singUp, signOut, isEmailAvailable }
+export { signIn, singUp, isEmailAvailable }

@@ -64,7 +64,6 @@ const useAuth = () => {
             if (response.status === 204) {
                 setUser(null)
                 navigate('/login')
-                return navigate('/login')
             }
             else {
                 // TODO: get error message from the request

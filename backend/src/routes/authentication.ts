@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express'
-import { signIn, singUp, signOut, isEmailAvailable } from '../controllers/authentication'
+import { signIn, singUp, isEmailAvailable } from '../controllers/authentication'
 const router = Router()
 
 type SignInRequest = Request & {
@@ -59,9 +59,9 @@ router.post('/signUp', async (req: SignUpRequest, res: Response) => {
 })
 
 router.post('/signOut', async (req: Request, res: Response) => {
-    signOut()
-    res.clearCookie('token', { httpOnly: true })
-    return res.status(204).end()
+    req.session.destroy(() => {
+        return res.status(204).end()
+    })
 })
 
 export default router
