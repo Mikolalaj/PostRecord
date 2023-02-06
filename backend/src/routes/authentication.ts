@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express'
-import { signIn, singUp, signOut, createJWT, isEmailAvailable } from '../controllers/authentication'
+import { signIn, singUp, signOut, isEmailAvailable } from '../controllers/authentication'
 const router = Router()
 
 type SignInRequest = Request & {
@@ -17,8 +17,6 @@ router.post('/signIn', async (req: SignInRequest, res: Response) => {
     }
 
     req.session.user = user
-    // const token = createJWT(user)
-    // res.cookie('token', token, { httpOnly: true })
 
     return res.json({
         user: {
@@ -48,8 +46,6 @@ router.post('/signUp', async (req: SignUpRequest, res: Response) => {
     const user = await singUp(email, password, firstName, lastName)
 
     req.session.user = user
-    // const token = createJWT(user)
-    // res.cookie('token', token, { httpOnly: true })
 
     return res.json({
         user: {
