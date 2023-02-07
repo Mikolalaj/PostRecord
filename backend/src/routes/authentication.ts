@@ -1,5 +1,6 @@
 import { Request, Response, Router } from 'express'
 import { signIn, singUp, isEmailAvailable } from '../controllers/authentication'
+import { sendRegistrationEmail } from '../emails'
 const router = Router()
 
 type SignInRequest = Request & {
@@ -16,7 +17,7 @@ router.post('/signIn', async (req: SignInRequest, res: Response) => {
         return res.status(401).send({ message: 'Invalid email or password' })
     }
 
-    if (user.emailConfirmed === false) {
+    if (user.registrationToken) {
         return res.status(401).send({ message: 'Email is not confirmed. Check you inbox and try again.' })
     }
 
@@ -49,15 +50,12 @@ router.post('/signUp', async (req: SignUpRequest, res: Response) => {
     }
     const user = await singUp(email, password, firstName, lastName)
 
-    return res.status(201).json({
-        user: {
-            id: user.id,
-            email: user.email,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            isAdmin: user.isAdmin,
-        },
-    })
+    if (user.registrationToken) {
+        sendRegistrationEmail(user.firstName, user.registrationToken, user.email)
+    } else {
+        return res.status(500).send({ message: 'Failed to create a registration token. Please try again later.' })
+    }
+    return res.status(201).json({ message: 'Check your inbox to confirm your account 😁' })
 })
 
 router.post('/signOut', async (req: Request, res: Response) => {

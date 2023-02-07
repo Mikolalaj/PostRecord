@@ -2,13 +2,14 @@ import { useForm } from '@mantine/form'
 import { TextInput, PasswordInput, Text, Paper, Group, Button, Checkbox, Anchor, Stack, Center, Alert } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
 import { useState } from 'react'
-import useAuth from '../hooks/useAuth'
+import useAuth, { Response } from '../hooks/useAuth'
 import { useRecoilValue } from 'recoil'
 import { userState } from '../atoms'
 import { Navigate } from 'react-router-dom'
 
 interface FormProps {
     toggleForm: () => void
+    onFormResult: (response: Response, isToggle: boolean) => void
 }
 
 type LogInFormValues = {
@@ -16,7 +17,7 @@ type LogInFormValues = {
     password: string
 }
 
-function LogInForm({ toggleForm }: FormProps) {
+function LogInForm({ onFormResult, toggleForm }: FormProps) {
     const logInForm = useForm({
         initialValues: {
             email: '',
@@ -27,24 +28,16 @@ function LogInForm({ toggleForm }: FormProps) {
         },
     })
 
-    const [errorMessage, setErrorMessage] = useState<string>('')
     const { loginUser } = useAuth()
 
     const onLogin = async (values: LogInFormValues) => {
-        const errorMessage = await loginUser(values.email, values.password)
-        if (errorMessage) {
-            setErrorMessage(errorMessage)
-        }
+        const response = await loginUser(values.email, values.password)
+        onFormResult(response, false)
     }
 
     return (
         <form onSubmit={logInForm.onSubmit(values => onLogin(values))}>
             <Stack>
-                {errorMessage && (
-                    <Alert icon={<IconAlertCircle size={16} />} title='Bummer!' color='red' radius='md'>
-                        {errorMessage}
-                    </Alert>
-                )}
                 <TextInput required label='Email' placeholder='Your email' {...logInForm.getInputProps('email')} />
                 <PasswordInput required label='Password' placeholder='Your password' {...logInForm.getInputProps('password')} />
             </Stack>
@@ -58,9 +51,7 @@ function LogInForm({ toggleForm }: FormProps) {
     )
 }
 
-interface SignUpFormProps extends FormProps {
-    onSignUpSuccess: () => void
-}
+
 
 type SignUpFormValues = {
     firstName: string
@@ -70,7 +61,7 @@ type SignUpFormValues = {
     terms: boolean
 }
 
-function SignUpForm({ toggleForm, onSignUpSuccess }: SignUpFormProps) {
+function SignUpForm({ onFormResult, toggleForm }: FormProps) {
     const form = useForm({
         initialValues: {
             firstName: '',
@@ -87,26 +78,16 @@ function SignUpForm({ toggleForm, onSignUpSuccess }: SignUpFormProps) {
         },
     })
 
-    const [errorMessage, setErrorMessage] = useState<string>('')
     const { registerUser } = useAuth()
 
     const onSignUp = async (values: SignUpFormValues) => {
-        const errorMessage = await registerUser(values.email, values.firstName, values.lastName, values.password)
-        if (!errorMessage) {
-            onSignUpSuccess()
-        } else {
-            setErrorMessage(errorMessage)
-        }
+        const response = await registerUser(values.email, values.firstName, values.lastName, values.password)
+        onFormResult(response, response.isSuccess)
     }
 
     return (
         <form noValidate onSubmit={form.onSubmit(values => onSignUp(values))}>
             <Stack>
-                {errorMessage && (
-                    <Alert icon={<IconAlertCircle size={16} />} title='Bummer!' color='red' radius='md'>
-                        {errorMessage}
-                    </Alert>
-                )}
                 <TextInput required label='Name' placeholder='Your first name' {...form.getInputProps('firstName')} />
                 <TextInput required label='Name' placeholder='Your last name' {...form.getInputProps('lastName')} />
                 <TextInput required label='Email' placeholder='hello@mail.com' {...form.getInputProps('email')} />
@@ -123,23 +104,38 @@ function SignUpForm({ toggleForm, onSignUpSuccess }: SignUpFormProps) {
     )
 }
 
+function ResultAlert({ response }: { response: Response }) {
+    return (
+        <Alert
+            icon={<IconAlertCircle size={16} />}
+            title={response.isSuccess ? 'Success!' : 'Bummer!'}
+            color={response.isSuccess ? 'green' : 'red'}
+            radius='md'
+        >
+            {response.message}
+        </Alert>
+    )
+}
+
 export default function LoginPage() {
     const [isSignUp, setIsSignUp] = useState(false)
-    const [isSignUpSuccess, setIsSignUpSuccess] = useState(false)
+    const [response, setResponse] = useState<Response | null>(null)
 
     const user = useRecoilValue(userState)
     if (user) {
         return <Navigate to='/' />
     }
 
-    const onSignUpSuccess = () => {
-        setIsSignUp(false)
-        setIsSignUpSuccess(true)
+    const onFormResult = (response: Response, isToggle: boolean) => {
+        setResponse(response)
+        if (isToggle) {
+            setIsSignUp(value => !value)
+        }
     }
 
     const toggleForm = () => {
+        setResponse(null)
         setIsSignUp(v => !v)
-        setIsSignUpSuccess(false)
     }
 
     return (
@@ -155,15 +151,11 @@ export default function LoginPage() {
                         style={{ marginBottom: 20 }}>
                         {isSignUp ? 'Create a new account!' : 'Log in to your account'}
                     </Text>
-                    {isSignUpSuccess && (
-                        <Alert icon={<IconAlertCircle size={16} />} title='Welcome to Foodie!' color='green' radius='md'>
-                            You succesfully signed up! Now check your email to verify your account.
-                        </Alert>
-                    )}
+                    {response && <ResultAlert response={response} />}
                     {isSignUp ? (
-                        <SignUpForm onSignUpSuccess={onSignUpSuccess} toggleForm={toggleForm} />
+                        <SignUpForm onFormResult={onFormResult} toggleForm={toggleForm} />
                     ) : (
-                        <LogInForm toggleForm={toggleForm} />
+                        <LogInForm onFormResult={onFormResult} toggleForm={toggleForm} />
                     )}
                 </Paper>
             </Center>

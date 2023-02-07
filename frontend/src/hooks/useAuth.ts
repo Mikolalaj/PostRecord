@@ -5,12 +5,17 @@ import { userState } from '../atoms'
 
 const baseURL = '/api'
 
+export interface Response {
+    isSuccess: boolean
+    message: string
+}
+
 const useAuth = () => {
     const setUser = useSetRecoilState(userState)
     const navigate = useNavigate()
 
     return {
-        loginUser: async (email: string, password: string): Promise<string> => {
+        loginUser: async (email: string, password: string): Promise<Response> => {
             try {
                 const { data, status } = await axios.post(`${baseURL}/auth/signIn`, {
                     email,
@@ -19,39 +24,56 @@ const useAuth = () => {
                 if (status === 200) {
                     setUser(data.user)
                     navigate('/')
-                    return ''
+                    return {
+                        isSuccess: true,
+                        message: ''
+                    }
                 } else {
-                    return data.message
+                    return {
+                        isSuccess: false,
+                        message: data.message
+                    }
                 }
             } catch (error) {
                 if (isAxiosError(error)) {
                     if (error.response) {
-                        return error.response.data.message
+                        return {
+                            isSuccess: false,
+                            message: error.response.data.message
+                        }
                     }
                 }
-                return `Something went wrong... ${error}`
+                return {
+                    isSuccess: false,
+                    message: `Something went wrong... ${error}`
+                }
             }
         },
-        registerUser: async (email: string, firstName: string, lastName: string, password: string): Promise<string> => {
+        registerUser: async (email: string, firstName: string, lastName: string, password: string): Promise<Response> => {
             try {
-                const { data, status } = await axios.post(`${baseURL}/auth/signUp`, {
+                const { data } = await axios.post(`${baseURL}/auth/signUp`, {
                     email,
                     firstName,
                     lastName,
                     password,
                 })
-                if (status === 201) {
-                    return ''
-                } else {
-                    return data.message
+                return {
+                    isSuccess: true,
+                    message: data.message
                 }
             } catch (error) {
                 if (isAxiosError(error)) {
                     if (error.response) {
-                        return error.response.data.message
+                        return {
+                            isSuccess: false,
+                            message: error.response.data.message
+                        }
                     }
                 }
-                return `Something went wrong... ${error}`
+                return {
+                    isSuccess: false,
+                    message: `Something went wrong... ${error}`
+                }
             }
         },
         logoutUser: async () => {

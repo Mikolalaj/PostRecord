@@ -1,5 +1,5 @@
 import { atom } from 'recoil'
-import axios from 'axios'
+import axios, { isAxiosError } from 'axios'
 
 export interface User {
     id: string
@@ -10,11 +10,19 @@ export interface User {
 }
 
 async function getUser() {
-    const { data, status } = await axios.get('/api/users')
-    if (status !== 200) {
-        return null
+    try {
+        const { data, status } = await axios.get('/api/users')
+        if (status !== 200) {
+            return null
+        }
+        return data.user
+    } catch (error) {
+        if (isAxiosError(error)) {
+            if (error.response?.status === 401) {
+                return null
+            }
+        }
     }
-    return data.user
 }
 
 const userState = atom<User | null>({

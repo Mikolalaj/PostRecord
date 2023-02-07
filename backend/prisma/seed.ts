@@ -10,7 +10,7 @@ async function main() {
             lastName: 'Olejnik',
             password: '$2b$10$YmVwbaZhyTVzIS3n3Mi4Ce83zog9KamTImN0qsrTWUs0GOud8Jyem',
             isAdmin: true,
-            emailConfirmed: true,
+            registrationToken: null,
         },
     })
     console.log({ admin })

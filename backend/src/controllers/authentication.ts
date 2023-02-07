@@ -25,12 +25,14 @@ async function signIn(email: string, password: string): Promise<User | null> {
 
 async function singUp(email: string, password: string, firstName: string, lastName: string): Promise<User> {
     const hashedPassword = await bcrypt.hash(password, 10)
+    const registrationToken = await bcrypt.hash(email, 10)
     return prisma.user.create({
         data: {
-            email: email,
+            email,
             password: hashedPassword,
-            firstName: firstName,
-            lastName: lastName,
+            firstName,
+            lastName,
+            registrationToken,
         },
     })
 }
