@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { createStyles, Header, Container, Group, Burger, AppShell, Button, Space, Title } from '@mantine/core'
+import { createStyles, Header, Container, Group, Burger, AppShell, Button, Space, Title, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { useRecoilValue } from 'recoil'
 import { userState } from '../atoms'
@@ -55,7 +55,9 @@ type Props = {
 
 const MenuLinks = [
     { label: 'Home', link: '/' },
-    { label: 'Recipes', link: '/recipes' }
+    { label: 'Find music', link: '/music' },
+    { label: 'Explore', link: '/explore' },
+    { label: 'Marketplace', link: '/marketplace' }
 ]
 
 export default function Layout({ children }: Props) {
@@ -98,15 +100,15 @@ export default function Layout({ children }: Props) {
                                 order={1}
                                 ta='center'
                                 variant='gradient'
-                                gradient={{ from: 'pink', to: 'grape', deg: 45 }}
+                                gradient={{ from: 'red.7', to: 'violet.6', deg: 120 }}
                             >
-                                Foodie
+                                PostRecord
                             </Title>
                             <Space w='xl' />
                             {items}
                         </Group>
                         <Group spacing={35}>
-                            {user && <p>{user.firstName}</p>}
+                            {user && <Text fw={500}>Hello {user.firstName}!</Text>}
                             <Button onClick={logoutUser}>Log out</Button>
                         </Group>
                         <Burger opened={opened} onClick={toggle} className={classes.burger} size='sm' />

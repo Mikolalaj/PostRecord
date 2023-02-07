@@ -21,7 +21,7 @@ export default function Home({}: Props) {
 
     return (
         <>
-            <h3>JWT authenticated API fetch:</h3>
+            <h3>Authenticated API fetch:</h3>
             {<p>{message}</p>}
         </>
     )

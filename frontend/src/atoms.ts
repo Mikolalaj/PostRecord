@@ -1,4 +1,5 @@
 import { atom } from 'recoil'
+import axios from 'axios'
 
 export interface User {
     id: string
@@ -9,17 +10,11 @@ export interface User {
 }
 
 async function getUser() {
-    const response = await fetch('/api/users', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    })
-    if (response.status !== 200) {
+    const { data, status } = await axios.get('/api/users')
+    if (status !== 200) {
         return null
     }
-    const { user } = await response.json()
-    return user
+    return data.user
 }
 
 const userState = atom<User | null>({

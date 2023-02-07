@@ -33,7 +33,7 @@ function App() {
             withGlobalStyles
             withNormalizeCSS
             theme={{
-                primaryColor: 'pink',
+                primaryColor: 'violet',
             }}
         >
             <RouterProvider router={router} />
