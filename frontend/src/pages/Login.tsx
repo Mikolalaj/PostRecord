@@ -12,7 +12,7 @@ interface FormProps {
     onFormResult: (response: Response, isToggle: boolean) => void
 }
 
-type LogInFormValues = {
+interface LogInFormValues {
     email: string
     password: string
 }
@@ -51,11 +51,9 @@ function LogInForm({ onFormResult, toggleForm }: FormProps) {
     )
 }
 
-type SignUpFormValues = {
+interface SignUpFormValues extends LogInFormValues {
     firstName: string
     lastName: string
-    email: string
-    password: string
     terms: boolean
 }
 

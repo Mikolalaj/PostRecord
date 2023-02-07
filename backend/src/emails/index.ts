@@ -8,8 +8,8 @@ const transporter = nodemailer.createTransport({
     port: 465,
     secure: true,
     auth: {
-        user: 'hey@mikolalaj.dev',
-        pass: '8pJK97sYz5JgI9QmkN*^F9*oWovN7A2a',
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD,
     },
 })
 
@@ -21,7 +21,7 @@ export function sendRegistrationEmail(firstName: string, registrationToken: stri
         })
     )
     transporter.sendMail({
-        from: 'hey@mikolalaj.dev',
+        from: process.env.EMAIL_USER,
         to: recipentEmail,
         subject: 'Welcome to PostRecord',
         html: emailHtml,
