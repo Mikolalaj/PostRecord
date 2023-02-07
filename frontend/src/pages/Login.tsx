@@ -147,7 +147,7 @@ export default function LoginPage() {
                         size='xl'
                         ta='center'
                         variant='gradient'
-                        gradient={{ from: 'pink', to: 'grape', deg: 45 }}
+                        gradient={{ from: 'red.7', to: 'violet.6', deg: 120 }}
                         style={{ marginBottom: 20 }}>
                         {isSignUp ? 'Create a new account!' : 'Log in to your account'}
                     </Text>
