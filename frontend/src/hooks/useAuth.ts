@@ -26,12 +26,12 @@ const useAuth = () => {
                     navigate('/')
                     return {
                         isSuccess: true,
-                        message: ''
+                        message: '',
                     }
                 } else {
                     return {
                         isSuccess: false,
-                        message: data.message
+                        message: data.message,
                     }
                 }
             } catch (error) {
@@ -39,13 +39,13 @@ const useAuth = () => {
                     if (error.response) {
                         return {
                             isSuccess: false,
-                            message: error.response.data.message
+                            message: error.response.data.message,
                         }
                     }
                 }
                 return {
                     isSuccess: false,
-                    message: `Something went wrong... ${error}`
+                    message: `Something went wrong... ${error}`,
                 }
             }
         },
@@ -59,20 +59,20 @@ const useAuth = () => {
                 })
                 return {
                     isSuccess: true,
-                    message: data.message
+                    message: data.message,
                 }
             } catch (error) {
                 if (isAxiosError(error)) {
                     if (error.response) {
                         return {
                             isSuccess: false,
-                            message: error.response.data.message
+                            message: error.response.data.message,
                         }
                     }
                 }
                 return {
                     isSuccess: false,
-                    message: `Something went wrong... ${error}`
+                    message: `Something went wrong... ${error}`,
                 }
             }
         },

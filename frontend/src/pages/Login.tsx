@@ -51,8 +51,6 @@ function LogInForm({ onFormResult, toggleForm }: FormProps) {
     )
 }
 
-
-
 type SignUpFormValues = {
     firstName: string
     lastName: string
@@ -110,8 +108,7 @@ function ResultAlert({ response }: { response: Response }) {
             icon={<IconAlertCircle size={16} />}
             title={response.isSuccess ? 'Success!' : 'Bummer!'}
             color={response.isSuccess ? 'green' : 'red'}
-            radius='md'
-        >
+            radius='md'>
             {response.message}
         </Alert>
     )
