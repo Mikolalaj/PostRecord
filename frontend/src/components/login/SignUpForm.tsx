@@ -1,5 +1,6 @@
 import { Anchor, Button, Checkbox, Group, PasswordInput, Stack, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
+import { IconLock, IconAt } from '@tabler/icons-react'
 import useAuth, { Response } from '../../hooks/useAuth'
 import { LogInFormValues } from './LogInForm'
 
@@ -53,9 +54,16 @@ export default function SignUpForm({ onFormResult, toggleForm }: FormProps) {
             <Stack>
                 <TextInput required label='Name' placeholder='Your first name' {...form.getInputProps('firstName')} />
                 <TextInput required label='Name' placeholder='Your last name' {...form.getInputProps('lastName')} />
-                <TextInput required label='Email' placeholder='hello@mail.com' {...form.getInputProps('email')} />
+                <TextInput
+                    required
+                    icon={<IconAt size={17} />}
+                    label='Email'
+                    placeholder='hello@mail.com'
+                    {...form.getInputProps('email')}
+                />
                 <PasswordInput
                     required
+                    icon={<IconLock size={17} />}
                     label='Password'
                     description='Password must include at least one letter, number and special character'
                     placeholder='Your password'
@@ -63,6 +71,7 @@ export default function SignUpForm({ onFormResult, toggleForm }: FormProps) {
                 />
                 <PasswordInput
                     required
+                    icon={<IconLock size={17} />}
                     label='Confirm password'
                     placeholder='Confirm password'
                     {...form.getInputProps('confirmPassword')}

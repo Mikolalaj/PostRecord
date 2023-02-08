@@ -1,5 +1,6 @@
 import { Anchor, Button, Group, PasswordInput, Stack, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
+import { IconAt, IconLock } from '@tabler/icons-react'
 import useAuth, { Response } from '../../hooks/useAuth'
 
 interface FormProps {
@@ -33,8 +34,20 @@ export default function LogInForm({ onFormResult, toggleForm }: FormProps) {
     return (
         <form onSubmit={logInForm.onSubmit(values => onLogin(values))}>
             <Stack>
-                <TextInput required label='Email' placeholder='Your email' {...logInForm.getInputProps('email')} />
-                <PasswordInput required label='Password' placeholder='Your password' {...logInForm.getInputProps('password')} />
+                <TextInput
+                    required
+                    icon={<IconAt size={17} />}
+                    label='Email'
+                    placeholder='Your email'
+                    {...logInForm.getInputProps('email')}
+                />
+                <PasswordInput
+                    required
+                    icon={<IconLock size={17} />}
+                    label='Password'
+                    placeholder='Your password'
+                    {...logInForm.getInputProps('password')}
+                />
             </Stack>
             <Group position='apart' mt='xl'>
                 <Anchor component='button' type='button' color='dimmed' onClick={toggleForm} size='xs'>
