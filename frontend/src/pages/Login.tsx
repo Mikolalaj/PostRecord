@@ -1,24 +1,12 @@
-import { Alert, Center, Paper, Text } from '@mantine/core'
-import { IconAlertCircle } from '@tabler/icons-react'
+import { Center, Paper, Text } from '@mantine/core'
 import { useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { userState } from '../atoms'
 import LogInForm from '../components/login/LogInForm'
+import ResultAlert from '../components/login/ResultAlert'
 import SignUpForm from '../components/login/SignUpForm'
 import { Response } from '../hooks/useAuth'
-
-function ResultAlert({ response }: { response: Response }) {
-    return (
-        <Alert
-            icon={<IconAlertCircle size={16} />}
-            title={response.isSuccess ? 'Success!' : 'Bummer!'}
-            color={response.isSuccess ? 'green' : 'red'}
-            radius='md'>
-            {response.message}
-        </Alert>
-    )
-}
 
 export default function LoginPage() {
     const [isSignUp, setIsSignUp] = useState(false)
