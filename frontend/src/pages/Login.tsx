@@ -1,5 +1,5 @@
 import { Center, Paper, Text } from '@mantine/core'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { userState } from '../atoms'
@@ -7,15 +7,37 @@ import LogInForm from '../components/login/LogInForm'
 import ResultAlert from '../components/login/ResultAlert'
 import SignUpForm from '../components/login/SignUpForm'
 import { Response } from '../hooks/useAuth'
+import { useSearchParams, useNavigate } from "react-router-dom";
+import useAuth from '../hooks/useAuth'
 
 export default function LoginPage() {
-    const [isSignUp, setIsSignUp] = useState(false)
-    const [response, setResponse] = useState<Response | null>(null)
-
     const user = useRecoilValue(userState)
     if (user) {
         return <Navigate to='/' />
     }
+
+    const navigate = useNavigate()
+
+    const [isSignUp, setIsSignUp] = useState(false)
+    const [response, setResponse] = useState<Response | null>(null)
+
+    const { confirmEmail } = useAuth()
+
+    const [searchParams] = useSearchParams();
+    
+    useEffect(() => {
+        async function checkToken() {
+            const token = searchParams.get('token')
+            if (token) {
+                const response = await confirmEmail(token)
+                if (response.isSuccess) {
+                    navigate('/login')
+                }
+                setResponse(response)
+            }
+        }
+        checkToken()
+    }, [])
 
     const onFormResult = (response: Response, isToggle: boolean) => {
         setResponse(response)
