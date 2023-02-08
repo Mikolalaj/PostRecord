@@ -1,14 +1,7 @@
+import { Request, Response } from 'express'
 import { User } from '@prisma/client'
 import { prisma } from '../app'
 import bcrypt from 'bcrypt'
-
-export type jwtPayload = {
-    id: string
-    email: string
-    firstName: string
-    lastName: string
-    isAdmin: boolean
-}
 
 // Check if the user exists and if the password is correct. If so, return the user data.
 async function signIn(email: string, password: string): Promise<User | null> {
@@ -35,6 +28,32 @@ async function singUp(email: string, password: string, firstName: string, lastNa
             registrationToken,
         },
     })
+}
+
+export async function confirmEmail(req: Request, res: Response): Promise<Response> {
+    const { token } = req.body
+
+    if (!token) {
+        return res.status(400).send({ message: 'Token is required' })
+    }
+
+    const user = await prisma.user.findUnique({
+        where: {
+            registrationToken: token,
+        },
+    })
+    if (!user) {
+        return res.status(400).send({ message: 'Invalid token' })
+    }
+    await prisma.user.update({
+        where: {
+            id: user.id,
+        },
+        data: {
+            registrationToken: null,
+        },
+    })
+    return res.status(200).send({ message: 'Email confirmed. You can now sign in.' })
 }
 
 async function isEmailAvailable(email: string): Promise<boolean> {

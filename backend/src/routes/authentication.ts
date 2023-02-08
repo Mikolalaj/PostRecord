@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express'
-import { signIn, singUp, isEmailAvailable } from '../controllers/authentication'
+import { signIn, singUp, isEmailAvailable, confirmEmail } from '../controllers/authentication'
 import { sendRegistrationEmail } from '../emails'
 const router = Router()
 
@@ -63,5 +63,10 @@ router.post('/signOut', async (req: Request, res: Response) => {
         return res.status(204).end()
     })
 })
+
+router.post('/confirmEmail', async (req: Request, res: Response) => {
+    return confirmEmail(req, res)
+})
+
 
 export default router
