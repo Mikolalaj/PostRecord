@@ -52,8 +52,8 @@ export default function SignUpForm({ onFormResult, toggleForm }: FormProps) {
     return (
         <form noValidate onSubmit={form.onSubmit(values => onSignUp(values))}>
             <Stack>
-                <TextInput required label='Name' placeholder='Your first name' {...form.getInputProps('firstName')} />
-                <TextInput required label='Name' placeholder='Your last name' {...form.getInputProps('lastName')} />
+                <TextInput required label='First Name' placeholder='Your first name' {...form.getInputProps('firstName')} />
+                <TextInput required label='Last Name' placeholder='Your last name' {...form.getInputProps('lastName')} />
                 <TextInput
                     required
                     icon={<IconAt size={17} />}
