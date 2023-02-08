@@ -29,7 +29,7 @@ export function Registration({ firstName, registrationToken }: RegistrationProps
                     </Text>
                     <Section style={btnContainer}>
                         <Button pX={12} pY={12} style={button} href={`${process.env.APP_URL}/login?token=${registrationToken}`}>
-                            Get started
+                            Complete registration
                         </Button>
                     </Section>
                     <Text style={paragraph}>
