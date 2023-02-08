@@ -5,6 +5,7 @@ import { useRecoilValue } from 'recoil'
 import { userState } from '../atoms'
 import useAuth from '../hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
+import ThemePicker from './ThemePicker'
 
 const useStyles = createStyles(theme => ({
     header: {
@@ -13,19 +14,16 @@ const useStyles = createStyles(theme => ({
         alignItems: 'center',
         height: '100%',
     },
-
     links: {
         [theme.fn.smallerThan('xs')]: {
             display: 'none',
         },
     },
-
     burger: {
         [theme.fn.largerThan('xs')]: {
             display: 'none',
         },
     },
-
     link: {
         display: 'block',
         lineHeight: 1,
@@ -40,7 +38,6 @@ const useStyles = createStyles(theme => ({
             backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
         },
     },
-
     linkActive: {
         '&, &:hover': {
             backgroundColor: theme.fn.variant({ variant: 'light', color: theme.primaryColor }).background,
@@ -57,7 +54,7 @@ const MenuLinks = [
     { label: 'Home', link: '/' },
     { label: 'Find music', link: '/music' },
     { label: 'Explore', link: '/explore' },
-    { label: 'Marketplace', link: '/marketplace' }
+    { label: 'Marketplace', link: '/marketplace' },
 ]
 
 export default function Layout({ children }: Props) {
@@ -82,8 +79,7 @@ export default function Layout({ children }: Props) {
                 event.preventDefault()
                 setActive(link.link)
                 navigate(link.link)
-            }}
-        >
+            }}>
             {link.label}
         </a>
     ))
@@ -93,22 +89,22 @@ export default function Layout({ children }: Props) {
             padding='md'
             header={
                 <Header height={60} mb={120}>
-                    <Container className={classes.header}>
+                    <Container size={'lg'} className={classes.header}>
                         <Group spacing={5} className={classes.links}>
                             <Title
                                 fw={700}
                                 order={1}
                                 ta='center'
                                 variant='gradient'
-                                gradient={{ from: 'red.7', to: 'violet.6', deg: 120 }}
-                            >
+                                gradient={{ from: 'red.7', to: 'violet.6', deg: 120 }}>
                                 PostRecord
                             </Title>
                             <Space w='xl' />
                             {items}
                         </Group>
-                        <Group spacing={35}>
+                        <Group spacing={30}>
                             {user && <Text fw={500}>Hello {user.firstName}!</Text>}
+                            <ThemePicker />
                             <Button onClick={logoutUser}>Log out</Button>
                         </Group>
                         <Burger opened={opened} onClick={toggle} className={classes.burger} size='sm' />
@@ -117,8 +113,7 @@ export default function Layout({ children }: Props) {
             }
             styles={theme => ({
                 main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
-            })}
-        >
+            })}>
             <Container size='lg' px='xs' mb='xl'>
                 {children}
             </Container>

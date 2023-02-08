@@ -1,9 +1,10 @@
-import { MantineProvider } from '@mantine/core'
+import { MantineProvider, ColorSchemeProvider, ColorScheme } from '@mantine/core'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route, Outlet } from 'react-router-dom'
 import PrivateRoute from './utils/PrivateRoute'
 import { RecoilRoot } from 'recoil'
+import { useState } from 'react'
 
 const AuthProviderOutlet = () => (
     <RecoilRoot>
@@ -28,16 +29,15 @@ const router = createBrowserRouter(
 )
 
 function App() {
+    const [colorScheme, setColorScheme] = useState<ColorScheme>('light')
+    const toggleColorScheme = (value?: ColorScheme) => setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'))
+
     return (
-        <MantineProvider
-            withGlobalStyles
-            withNormalizeCSS
-            theme={{
-                primaryColor: 'violet',
-            }}
-        >
-            <RouterProvider router={router} />
-        </MantineProvider>
+        <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
+            <MantineProvider withGlobalStyles withNormalizeCSS theme={{ colorScheme, primaryColor: 'violet' }}>
+                <RouterProvider router={router} />
+            </MantineProvider>
+        </ColorSchemeProvider>
     )
 }
 
