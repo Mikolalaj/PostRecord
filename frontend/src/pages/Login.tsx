@@ -1,104 +1,12 @@
-import { useForm } from '@mantine/form'
-import { TextInput, PasswordInput, Text, Paper, Group, Button, Checkbox, Anchor, Stack, Center, Alert } from '@mantine/core'
+import { Alert, Center, Paper, Text } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
 import { useState } from 'react'
-import useAuth, { Response } from '../hooks/useAuth'
+import { Navigate } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { userState } from '../atoms'
-import { Navigate } from 'react-router-dom'
-
-interface FormProps {
-    toggleForm: () => void
-    onFormResult: (response: Response, isToggle: boolean) => void
-}
-
-interface LogInFormValues {
-    email: string
-    password: string
-}
-
-function LogInForm({ onFormResult, toggleForm }: FormProps) {
-    const logInForm = useForm({
-        initialValues: {
-            email: '',
-            password: '',
-        },
-        validate: {
-            email: val => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
-        },
-    })
-
-    const { loginUser } = useAuth()
-
-    const onLogin = async (values: LogInFormValues) => {
-        const response = await loginUser(values.email, values.password)
-        onFormResult(response, false)
-    }
-
-    return (
-        <form onSubmit={logInForm.onSubmit(values => onLogin(values))}>
-            <Stack>
-                <TextInput required label='Email' placeholder='Your email' {...logInForm.getInputProps('email')} />
-                <PasswordInput required label='Password' placeholder='Your password' {...logInForm.getInputProps('password')} />
-            </Stack>
-            <Group position='apart' mt='xl'>
-                <Anchor component='button' type='button' color='dimmed' onClick={toggleForm} size='xs'>
-                    Don't have an account? Sign Up
-                </Anchor>
-                <Button type='submit'>Log In</Button>
-            </Group>
-        </form>
-    )
-}
-
-interface SignUpFormValues extends LogInFormValues {
-    firstName: string
-    lastName: string
-    terms: boolean
-}
-
-function SignUpForm({ onFormResult, toggleForm }: FormProps) {
-    const form = useForm({
-        initialValues: {
-            firstName: '',
-            lastName: '',
-            email: '',
-            password: '',
-            terms: false,
-        },
-        validate: {
-            firstName: value => (value.length < 2 ? 'Name must have at least 2 letters' : null),
-            email: val => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
-            password: val => (val.length < 6 ? 'Password should include at least 6 characters' : null),
-            terms: val => (val ? null : 'You must agree to sell your soul to us!!! 😈'),
-        },
-    })
-
-    const { registerUser } = useAuth()
-
-    const onSignUp = async (values: SignUpFormValues) => {
-        const response = await registerUser(values.email, values.firstName, values.lastName, values.password)
-        onFormResult(response, response.isSuccess)
-    }
-
-    return (
-        <form noValidate onSubmit={form.onSubmit(values => onSignUp(values))}>
-            <Stack>
-                <TextInput required label='Name' placeholder='Your first name' {...form.getInputProps('firstName')} />
-                <TextInput required label='Name' placeholder='Your last name' {...form.getInputProps('lastName')} />
-                <TextInput required label='Email' placeholder='hello@mail.com' {...form.getInputProps('email')} />
-                <PasswordInput required label='Password' placeholder='Your password' {...form.getInputProps('password')} />
-                <Checkbox required label='I agree to sell my soul and privacy to this corporation' {...form.getInputProps('terms')} />
-            </Stack>
-            <Group position='apart' mt='xl'>
-                <Anchor component='button' type='button' color='dimmed' onClick={toggleForm} size='xs'>
-                    Already have an account? Log in
-                </Anchor>
-                <Button type='submit'>Sign Up</Button>
-            </Group>
-        </form>
-    )
-}
+import LogInForm from '../components/login/LogInForm'
+import SignUpForm from '../components/login/SignUpForm'
+import { Response } from '../hooks/useAuth'
 
 function ResultAlert({ response }: { response: Response }) {
     return (
