@@ -14,6 +14,13 @@ interface FormProps {
     onFormResult: (response: Response, isToggle: boolean) => void
 }
 
+function passwordValidation(value: string) {
+    const hasLetter = /[a-zA-Z]/.test(value)
+    const hasNumber = /[0-9]/.test(value)
+    const hasSpecial = /[^a-zA-Z0-9]/.test(value)
+    return hasLetter && hasNumber && hasSpecial ? null : 'Password must include at least one letter, number and special character'
+}
+
 export default function SignUpForm({ onFormResult, toggleForm }: FormProps) {
     const form = useForm({
         initialValues: {
@@ -21,12 +28,15 @@ export default function SignUpForm({ onFormResult, toggleForm }: FormProps) {
             lastName: '',
             email: '',
             password: '',
+            confirmPassword: '',
             terms: false,
         },
         validate: {
             firstName: value => (value.length < 2 ? 'Name must have at least 2 letters' : null),
+            lastName: value => (value.length < 2 ? 'Last must have at least 2 letters' : null),
             email: val => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
-            password: val => (val.length < 6 ? 'Password should include at least 6 characters' : null),
+            password: val => passwordValidation(val),
+            confirmPassword: (val, values) => (val !== values.password ? 'Passwords do not match' : null),
             terms: val => (val ? null : 'You must agree to sell your soul to us!!! 😈'),
         },
     })
@@ -44,7 +54,19 @@ export default function SignUpForm({ onFormResult, toggleForm }: FormProps) {
                 <TextInput required label='Name' placeholder='Your first name' {...form.getInputProps('firstName')} />
                 <TextInput required label='Name' placeholder='Your last name' {...form.getInputProps('lastName')} />
                 <TextInput required label='Email' placeholder='hello@mail.com' {...form.getInputProps('email')} />
-                <PasswordInput required label='Password' placeholder='Your password' {...form.getInputProps('password')} />
+                <PasswordInput
+                    required
+                    label='Password'
+                    description='Password must include at least one letter, number and special character'
+                    placeholder='Your password'
+                    {...form.getInputProps('password')}
+                />
+                <PasswordInput
+                    required
+                    label='Confirm password'
+                    placeholder='Confirm password'
+                    {...form.getInputProps('confirmPassword')}
+                />
                 <Checkbox required label='I agree to sell my soul and privacy to this corporation' {...form.getInputProps('terms')} />
             </Stack>
             <Group position='apart' mt='xl'>
