@@ -21,7 +21,7 @@ export function Registration({ firstName, registrationToken }: RegistrationProps
             <Preview>Confirm your email address at PostRecord 😊</Preview>
             <Section style={main}>
                 <Container style={container}>
-                    <Img src={`${process.env.APP_URL}/src/assets/postrecord-logo.png`} height='50' alt='PostRecord' style={logo} />
+                    <Img src={`${process.env.APP_URL}/src/assets/logo-filled.png`} height='50' alt='PostRecord' style={logo} />
                     <Text style={paragraph}>Hi {firstName},</Text>
                     <Text style={paragraph}>
                         Welcome to PostRecord! We're excited to have you on board. Click the button below to confirm your email

@@ -6,7 +6,7 @@ import { userState } from '../atoms'
 import useAuth from '../hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
 import ThemePicker from './ThemePicker'
-import Logo from '../assets/postrecord-logo.png'
+import Logo from '../assets/logo-filled.svg'
 
 const useStyles = createStyles(theme => ({
     header: {
