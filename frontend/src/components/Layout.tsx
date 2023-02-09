@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
-import { createStyles, Header, Container, Group, Burger, AppShell, Button, Space, Title, Text } from '@mantine/core'
+import { createStyles, Header, Container, Group, Burger, AppShell, Button, Space, Title, Text, Image } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { useRecoilValue } from 'recoil'
 import { userState } from '../atoms'
 import useAuth from '../hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
 import ThemePicker from './ThemePicker'
+import Logo from '../assets/postrecord-logo.png'
 
 const useStyles = createStyles(theme => ({
     header: {
@@ -91,6 +92,7 @@ export default function Layout({ children }: Props) {
                 <Header height={60} mb={120}>
                     <Container size={'lg'} className={classes.header}>
                         <Group spacing={5} className={classes.links}>
+                            <Image src={Logo} alt='PostRecord' width={45} />
                             <Title
                                 fw={700}
                                 order={1}

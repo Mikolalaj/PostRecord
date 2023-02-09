@@ -18,10 +18,10 @@ export function Registration({ firstName, registrationToken }: RegistrationProps
     return (
         <Html>
             <Head />
-            <Preview>The sales intelligence platform that helps you uncover qualified leads.</Preview>
+            <Preview>Confirm your email address at PostRecord 😊</Preview>
             <Section style={main}>
                 <Container style={container}>
-                    {/* <Img src={`${process.env.APP_URL}/static/koala-logo.png`} width='170' height='50' alt='Koala' style={logo} /> */}
+                    <Img src={`${process.env.APP_URL}/src/assets/postrecord-logo.png`} height='50' alt='PostRecord' style={logo} />
                     <Text style={paragraph}>Hi {firstName},</Text>
                     <Text style={paragraph}>
                         Welcome to PostRecord! We're excited to have you on board. Click the button below to confirm your email
