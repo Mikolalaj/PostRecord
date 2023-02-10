@@ -79,10 +79,7 @@ export default function SignUpForm({ onFormResult, toggleForm }: FormProps) {
                 <Checkbox required label='I agree to sell my soul and privacy to this corporation' {...form.getInputProps('terms')} />
             </Stack>
             <Group position='apart' mt='xl'>
-                <Anchor component='button' type='button' color='dimmed' onClick={toggleForm} size='xs'>
-                    Already have an account? Log in
-                </Anchor>
-                <Button type='submit'>Sign Up</Button>
+                <Button fullWidth type='submit'>Sign Up</Button>
             </Group>
         </form>
     )

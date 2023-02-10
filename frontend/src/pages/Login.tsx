@@ -1,4 +1,4 @@
-import { Center, Paper, Title } from '@mantine/core'
+import { Center, Container, Paper, Title, Text, Anchor } from '@mantine/core'
 import { useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
@@ -54,22 +54,31 @@ export default function LoginPage() {
     return (
         <Center style={{ width: '100%', height: '100%' }}>
             <Center style={{ width: 500, height: '100%' }}>
-                <Paper radius='md' p='xl' withBorder style={{ width: '100%' }}>
-                    <Title
-                        order={2}
-                        ta='center'
-                        variant='gradient'
-                        gradient={{ from: 'red.7', to: 'violet.6', deg: 120 }}
-                        style={{ marginBottom: 20 }}>
-                        {isSignUp ? 'Create a new account!' : 'Log in to PostRecord'}
+                <Container>
+                    <Title order={2} ta='center' style={{ marginBottom: 20 }}>
+                        {isSignUp ? 'Create a new account!' : 'Welcome back! Log in to'}
+                        {!isSignUp && (
+                            <Text component='span' inherit variant='gradient' gradient={{ from: 'red.7', to: 'violet.6', deg: 120 }}>
+                                {' '}
+                                PostRecord
+                            </Text>
+                        )}
                     </Title>
-                    {response && <ResultAlert response={response} />}
-                    {isSignUp ? (
-                        <SignUpForm onFormResult={onFormResult} toggleForm={toggleForm} />
-                    ) : (
-                        <LogInForm onFormResult={onFormResult} toggleForm={toggleForm} />
-                    )}
-                </Paper>
+                    <Text color='dimmed' size='sm' align='center' mt={5} mb={20}>
+                        Do not have an account yet?{' '}
+                        <Anchor<'a'> href='#' size='sm' color='pink.6' onClick={toggleForm}>
+                            Create account
+                        </Anchor>
+                    </Text>
+                    <Paper radius='md' p='xl' withBorder style={{ width: '100%' }}>
+                        {response && <ResultAlert response={response} />}
+                        {isSignUp ? (
+                            <SignUpForm onFormResult={onFormResult} toggleForm={toggleForm} />
+                        ) : (
+                            <LogInForm onFormResult={onFormResult} toggleForm={toggleForm} />
+                        )}
+                    </Paper>
+                </Container>
             </Center>
         </Center>
     )

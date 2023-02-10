@@ -1,4 +1,4 @@
-import { Anchor, Button, Group, PasswordInput, Stack, TextInput } from '@mantine/core'
+import { Anchor, Button, Checkbox, Group, PasswordInput, Stack, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { IconAt, IconLock } from '@tabler/icons-react'
 import useAuth, { Response } from '../../hooks/useAuth'
@@ -21,6 +21,7 @@ export default function LogInForm({ onFormResult, toggleForm }: FormProps) {
         },
         validate: {
             email: val => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
+            password: val => (val.length < 1 ? 'Password is required' : null),
         },
     })
 
@@ -32,7 +33,7 @@ export default function LogInForm({ onFormResult, toggleForm }: FormProps) {
     }
 
     return (
-        <form onSubmit={logInForm.onSubmit(values => onLogin(values))}>
+        <form noValidate onSubmit={logInForm.onSubmit(values => onLogin(values))}>
             <Stack>
                 <TextInput
                     required
@@ -49,12 +50,15 @@ export default function LogInForm({ onFormResult, toggleForm }: FormProps) {
                     {...logInForm.getInputProps('password')}
                 />
             </Stack>
-            <Group position='apart' mt='xl'>
-                <Anchor component='button' type='button' color='dimmed' onClick={toggleForm} size='xs'>
-                    Don't have an account? Sign Up
+            <Group position='apart' mt='xl' mb={25}>
+                <Checkbox label='Remember me'/>
+                <Anchor component='button' type='button' color='violet.5' onClick={toggleForm} size='xs'>
+                    Forgot password?
                 </Anchor>
-                <Button type='submit'>Log In</Button>
             </Group>
+            <Button fullWidth type='submit'>
+                Log In
+            </Button>
         </form>
     )
 }
