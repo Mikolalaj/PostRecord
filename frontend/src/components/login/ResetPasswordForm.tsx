@@ -1,18 +1,26 @@
-import { Anchor, Box, Button, Center, Checkbox, Group, PasswordInput, Stack, TextInput, Text } from '@mantine/core'
+import { Anchor, Button, Center, Group, Stack, Text, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
-import { IconArrowLeft, IconAt, IconLock } from '@tabler/icons-react'
-import useAuth, { Response } from '../../hooks/useAuth'
+import { IconArrowLeft, IconAt } from '@tabler/icons-react'
+import axios, { AxiosError } from 'axios'
+import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 
 interface Props {
-    onFormResult: (response: Response, isToggle: boolean) => void
+    onSuccess: ({ data }: ResetPasswordResponse) => void
+    onError: (error: AxiosError) => void
 }
 
 export interface ResetPasswordFormValues {
     email: string
 }
 
-export default function ResetPasswordForm({ onFormResult }: Props) {
+export interface ResetPasswordResponse {
+    data: {
+        message: string
+    }
+}
+
+export default function ResetPasswordForm({ onSuccess, onError }: Props) {
     const navigate = useNavigate()
     const form = useForm({
         initialValues: {
@@ -23,15 +31,18 @@ export default function ResetPasswordForm({ onFormResult }: Props) {
         },
     })
 
-    // const { resetPassword } = useAuth()
-
-    const onLogin = async (values: ResetPasswordFormValues) => {
-        // const response = await resetPassword(values.email)
-        // onFormResult(response, false)
-    }
+    const mutation = useMutation(
+        (data: ResetPasswordFormValues) => {
+            return axios.post('/api/auth/resetPassword', data)
+        },
+        {
+            onError,
+            onSuccess,
+        }
+    )
 
     return (
-        <form noValidate onSubmit={form.onSubmit(values => onLogin(values))}>
+        <form noValidate onSubmit={form.onSubmit(values => mutation.mutate(values))}>
             <Stack>
                 <TextInput
                     required
@@ -50,7 +61,9 @@ export default function ResetPasswordForm({ onFormResult }: Props) {
                     }}>
                     <Center inline>
                         <IconArrowLeft size={12} stroke={1.5} />
-                        <Text ml={5} size={12}>Back to login page</Text>
+                        <Text ml={5} size={12}>
+                            Back to login page
+                        </Text>
                     </Center>
                 </Anchor>
                 <Button fullWidth type='submit'>

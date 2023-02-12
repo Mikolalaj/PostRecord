@@ -1,13 +1,14 @@
-import { Center, Container, Paper, Title, Text } from '@mantine/core'
+import { Center, Container, Paper, Text, Title } from '@mantine/core'
+import axios, { AxiosError } from 'axios'
 import { useEffect, useState } from 'react'
-import { Navigate } from 'react-router-dom'
+import { useMutation } from 'react-query'
+import { Navigate, useNavigate, useSearchParams } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { userState } from '../atoms'
-import ResetPasswordForm from '../components/login/ResetPasswordForm'
+import ResetPasswordForm, { ResetPasswordResponse } from '../components/login/ResetPasswordForm'
 import ResultAlert from '../components/login/ResultAlert'
-import { Response } from '../hooks/useAuth'
-import { useSearchParams, useNavigate } from 'react-router-dom'
-import useAuth from '../hooks/useAuth'
+import useAuth, { Response } from '../hooks/useAuth'
+import { parseErrorMessage } from '../utils/error'
 
 export default function ResetPasswordPage() {
     const user = useRecoilValue(userState)
@@ -15,30 +16,33 @@ export default function ResetPasswordPage() {
         return <Navigate to='/' />
     }
 
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
 
     const [response, setResponse] = useState<Response | null>(null)
 
-    const { confirmEmail } = useAuth()
+    // const { resetPassword } = useAuth()
 
-    const [searchParams] = useSearchParams()
+    // const [searchParams] = useSearchParams()
 
-    useEffect(() => {
-        async function checkToken() {
-            const token = searchParams.get('token')
-            if (token) {
-                const response = await confirmEmail(token)
-                if (response.isSuccess) {
-                    navigate('/login')
-                }
-                setResponse(response)
-            }
-        }
-        checkToken()
-    }, [])
+    // useEffect(() => {
+    //     async function checkToken() {
+    //         const token = searchParams.get('token')
+    //         if (token) {
+    //             const response = await resetPassword(token)
+    //             if (response.isSuccess) {
+    //                 navigate('/login')
+    //             }
+    //             setResponse(response)
+    //         }
+    //     }
+    //     checkToken()
+    // }, [])
 
-    const onFormResult = (response: Response) => {
-        setResponse(response)
+    const onError = (error: AxiosError) => {
+        setResponse({ isSuccess: false, message: parseErrorMessage(error) })
+    }
+    const onSuccess = ({ data }: ResetPasswordResponse) => {
+        setResponse({ isSuccess: true, message: data.message })
     }
 
     return (
@@ -53,7 +57,7 @@ export default function ResetPasswordPage() {
                     </Text>
                     <Paper radius='md' p='xl' withBorder style={{ width: '100%' }}>
                         {response && <ResultAlert response={response} />}
-                        <ResetPasswordForm onFormResult={onFormResult} />
+                        <ResetPasswordForm onError={onError} onSuccess={onSuccess} />
                     </Paper>
                 </Container>
             </Center>

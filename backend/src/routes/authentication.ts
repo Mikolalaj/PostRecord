@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express'
-import { signIn, singUp, isEmailAvailable, confirmEmail } from '../controllers/authentication'
+import { confirmEmail, isEmailAvailable, signIn, singUp } from '../controllers/authentication'
 import { sendRegistrationEmail } from '../emails'
 const router = Router()
 
@@ -68,5 +68,10 @@ router.post('/confirmEmail', async (req: Request, res: Response) => {
     return confirmEmail(req, res)
 })
 
+router.post('/resetPassword', async (req: Request, res: Response) => {
+    console.log('Reset password', req.body)
+    return res.json({ message: 'It worked!', data: req.body })
+    return res.status(404).json({ message: 'There was some problem' })
+})
 
 export default router

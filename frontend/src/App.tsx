@@ -6,6 +6,9 @@ import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route, O
 import PrivateRoute from './utils/PrivateRoute'
 import { RecoilRoot } from 'recoil'
 import { useState } from 'react'
+import { QueryClient, QueryClientProvider } from 'react-query'
+
+const queryClient = new QueryClient()
 
 const AuthProviderOutlet = () => (
     <RecoilRoot>
@@ -35,11 +38,13 @@ function App() {
     const toggleColorScheme = (value?: ColorScheme) => setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'))
 
     return (
-        <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-            <MantineProvider withGlobalStyles withNormalizeCSS theme={{ colorScheme, primaryColor: 'violet' }}>
-                <RouterProvider router={router} />
-            </MantineProvider>
-        </ColorSchemeProvider>
+        <QueryClientProvider client={queryClient}>
+            <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
+                <MantineProvider withGlobalStyles withNormalizeCSS theme={{ colorScheme, primaryColor: 'violet' }}>
+                    <RouterProvider router={router} />
+                </MantineProvider>
+            </ColorSchemeProvider>
+        </QueryClientProvider>
     )
 }
 
