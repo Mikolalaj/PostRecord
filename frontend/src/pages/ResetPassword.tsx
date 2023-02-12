@@ -1,16 +1,15 @@
-import { Center, Container, Paper, Title, Text, Anchor } from '@mantine/core'
+import { Center, Container, Paper, Title, Text } from '@mantine/core'
 import { useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { userState } from '../atoms'
-import LogInForm from '../components/login/LogInForm'
+import ResetPasswordForm from '../components/login/ResetPasswordForm'
 import ResultAlert from '../components/login/ResultAlert'
-import SignUpForm from '../components/login/SignUpForm'
 import { Response } from '../hooks/useAuth'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
 
-export default function LoginPage() {
+export default function ResetPasswordPage() {
     const user = useRecoilValue(userState)
     if (user) {
         return <Navigate to='/' />
@@ -18,7 +17,6 @@ export default function LoginPage() {
 
     const navigate = useNavigate()
 
-    const [isSignUp, setIsSignUp] = useState(false)
     const [response, setResponse] = useState<Response | null>(null)
 
     const { confirmEmail } = useAuth()
@@ -39,16 +37,8 @@ export default function LoginPage() {
         checkToken()
     }, [])
 
-    const onFormResult = (response: Response, isToggle: boolean) => {
+    const onFormResult = (response: Response) => {
         setResponse(response)
-        if (isToggle) {
-            setIsSignUp(value => !value)
-        }
-    }
-
-    const toggleForm = () => {
-        setResponse(null)
-        setIsSignUp(v => !v)
     }
 
     return (
@@ -56,23 +46,14 @@ export default function LoginPage() {
             <Center>
                 <Container style={{ width: 550 }}>
                     <Title order={2} ta='center' mb={15}>
-                        {isSignUp ? 'Create a new account!' : 'Welcome back! Log in to'}
-                        {!isSignUp && (
-                            <Text component='span' inherit variant='gradient' gradient={{ from: 'red.7', to: 'violet.6', deg: 120 }}>
-                                {' '}
-                                PostRecord
-                            </Text>
-                        )}
+                        Forgot your password?
                     </Title>
                     <Text color='dimmed' size='sm' align='center' mb={20}>
-                        Do not have an account yet?{' '}
-                        <Anchor size='sm' color='pink.6' onClick={toggleForm}>
-                            Create account
-                        </Anchor>
+                        Enter your email to get a reset link
                     </Text>
                     <Paper radius='md' p='xl' withBorder style={{ width: '100%' }}>
                         {response && <ResultAlert response={response} />}
-                        {isSignUp ? <SignUpForm onFormResult={onFormResult} /> : <LogInForm onFormResult={onFormResult} />}
+                        <ResetPasswordForm onFormResult={onFormResult} />
                     </Paper>
                 </Container>
             </Center>

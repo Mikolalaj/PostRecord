@@ -1,6 +1,7 @@
 import { MantineProvider, ColorSchemeProvider, ColorScheme } from '@mantine/core'
 import Home from './pages/Home'
 import Login from './pages/Login'
+import ResetPassword from './pages/ResetPassword'
 import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route, Outlet } from 'react-router-dom'
 import PrivateRoute from './utils/PrivateRoute'
 import { RecoilRoot } from 'recoil'
@@ -16,6 +17,7 @@ const router = createBrowserRouter(
     createRoutesFromElements(
         <Route element={<AuthProviderOutlet />}>
             <Route path='/login' element={<Login />} />
+            <Route path='/resetPassword' element={<ResetPassword />} />
             <Route
                 path='/'
                 element={

@@ -11,7 +11,6 @@ interface SignUpFormValues extends LogInFormValues {
 }
 
 interface FormProps {
-    toggleForm: () => void
     onFormResult: (response: Response, isToggle: boolean) => void
 }
 
@@ -22,7 +21,7 @@ function passwordValidation(value: string) {
     return hasLetter && hasNumber && hasSpecial ? null : 'Password must include at least one letter, number and special character'
 }
 
-export default function SignUpForm({ onFormResult, toggleForm }: FormProps) {
+export default function SignUpForm({ onFormResult }: FormProps) {
     const form = useForm({
         initialValues: {
             firstName: '',

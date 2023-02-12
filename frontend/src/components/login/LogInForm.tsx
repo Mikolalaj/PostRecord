@@ -2,9 +2,9 @@ import { Anchor, Button, Checkbox, Group, PasswordInput, Stack, TextInput } from
 import { useForm } from '@mantine/form'
 import { IconAt, IconLock } from '@tabler/icons-react'
 import useAuth, { Response } from '../../hooks/useAuth'
+import { useNavigate } from 'react-router-dom'
 
 interface FormProps {
-    toggleForm: () => void
     onFormResult: (response: Response, isToggle: boolean) => void
 }
 
@@ -13,7 +13,8 @@ export interface LogInFormValues {
     password: string
 }
 
-export default function LogInForm({ onFormResult, toggleForm }: FormProps) {
+export default function LogInForm({ onFormResult }: FormProps) {
+    const navigate = useNavigate()
     const logInForm = useForm({
         initialValues: {
             email: '',
@@ -51,8 +52,15 @@ export default function LogInForm({ onFormResult, toggleForm }: FormProps) {
                 />
             </Stack>
             <Group position='apart' mt='xl' mb={25}>
-                <Checkbox label='Remember me'/>
-                <Anchor component='button' type='button' color='violet.5' onClick={toggleForm} size='xs'>
+                <Checkbox label='Remember me' />
+                <Anchor
+                    component='button'
+                    type='button'
+                    color='violet.5'
+                    onClick={() => {
+                        navigate('/resetPassword')
+                    }}
+                    size='xs'>
                     Forgot password?
                 </Anchor>
             </Group>
