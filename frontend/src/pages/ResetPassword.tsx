@@ -1,13 +1,13 @@
 import { Center, Container, Paper, Text, Title } from '@mantine/core'
-import axios, { AxiosError } from 'axios'
-import { useEffect, useState } from 'react'
-import { useMutation } from 'react-query'
+import { AxiosError } from 'axios'
+import { useState } from 'react'
 import { Navigate, useNavigate, useSearchParams } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { userState } from '../atoms'
-import ResetPasswordForm, { ResetPasswordResponse } from '../components/login/ResetPasswordForm'
+import ForgotPasswordForm, { ResetPasswordResponse } from '../components/login/ForgotPasswordForm'
+import ResetPasswordForm from '../components/login/ResetPasswordForm'
 import ResultAlert from '../components/login/ResultAlert'
-import useAuth, { Response } from '../hooks/useAuth'
+import { Response } from '../hooks/useAuth'
 import { parseErrorMessage } from '../utils/error'
 
 export default function ResetPasswordPage() {
@@ -16,27 +16,11 @@ export default function ResetPasswordPage() {
         return <Navigate to='/' />
     }
 
-    // const navigate = useNavigate()
+    const navigate = useNavigate()
 
     const [response, setResponse] = useState<Response | null>(null)
 
-    // const { resetPassword } = useAuth()
-
-    // const [searchParams] = useSearchParams()
-
-    // useEffect(() => {
-    //     async function checkToken() {
-    //         const token = searchParams.get('token')
-    //         if (token) {
-    //             const response = await resetPassword(token)
-    //             if (response.isSuccess) {
-    //                 navigate('/login')
-    //             }
-    //             setResponse(response)
-    //         }
-    //     }
-    //     checkToken()
-    // }, [])
+    const [searchParams] = useSearchParams()
 
     const onError = (error: AxiosError) => {
         setResponse({ isSuccess: false, message: parseErrorMessage(error) })
@@ -50,14 +34,20 @@ export default function ResetPasswordPage() {
             <Center>
                 <Container style={{ width: 550 }}>
                     <Title order={2} ta='center' mb={15}>
-                        Forgot your password?
+                        {searchParams.get('token') ? 'Set up your newpassword' : 'Forgot your password?'}
                     </Title>
-                    <Text color='dimmed' size='sm' align='center' mb={20}>
-                        Enter your email to get a reset link
-                    </Text>
+                    {!searchParams.get('token') && (
+                        <Text color='dimmed' size='sm' align='center' mb={20}>
+                            Enter your email to get a reset link
+                        </Text>
+                    )}
                     <Paper radius='md' p='xl' withBorder style={{ width: '100%' }}>
                         {response && <ResultAlert response={response} />}
-                        <ResetPasswordForm onError={onError} onSuccess={onSuccess} />
+                        {searchParams.get('token') ? (
+                            <ResetPasswordForm onError={onError} onSuccess={onSuccess} />
+                        ) : (
+                            <ForgotPasswordForm onError={onError} onSuccess={onSuccess} />
+                        )}
                     </Paper>
                 </Container>
             </Center>

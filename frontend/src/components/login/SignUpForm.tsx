@@ -1,7 +1,8 @@
-import { Anchor, Button, Checkbox, Group, PasswordInput, Stack, TextInput } from '@mantine/core'
+import { Button, Checkbox, Group, PasswordInput, Stack, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
-import { IconLock, IconAt } from '@tabler/icons-react'
+import { IconAt, IconLock } from '@tabler/icons-react'
 import useAuth, { Response } from '../../hooks/useAuth'
+import { passwordValidation } from '../../utils/validations'
 import { LogInFormValues } from './LogInForm'
 
 interface SignUpFormValues extends LogInFormValues {
@@ -12,13 +13,6 @@ interface SignUpFormValues extends LogInFormValues {
 
 interface FormProps {
     onFormResult: (response: Response, isToggle: boolean) => void
-}
-
-function passwordValidation(value: string) {
-    const hasLetter = /[a-zA-Z]/.test(value)
-    const hasNumber = /[0-9]/.test(value)
-    const hasSpecial = /[^a-zA-Z0-9]/.test(value)
-    return hasLetter && hasNumber && hasSpecial ? null : 'Password must include at least one letter, number and special character'
 }
 
 export default function SignUpForm({ onFormResult }: FormProps) {
@@ -78,7 +72,9 @@ export default function SignUpForm({ onFormResult }: FormProps) {
                 <Checkbox required label='I agree to sell my soul and privacy to this corporation' {...form.getInputProps('terms')} />
             </Stack>
             <Group position='apart' mt='xl'>
-                <Button fullWidth type='submit'>Sign Up</Button>
+                <Button fullWidth type='submit'>
+                    Sign Up
+                </Button>
             </Group>
         </form>
     )
