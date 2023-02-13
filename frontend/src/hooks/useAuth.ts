@@ -15,7 +15,7 @@ const useAuth = () => {
     const navigate = useNavigate()
 
     return {
-        loginUser: async (email: string, password: string): Promise<Response> => {
+        loginUser: async (email: string, password: string): Promise<Response | null> => {
             try {
                 const { data, status } = await axios.post(`${baseURL}/auth/signIn`, {
                     email,
@@ -24,10 +24,7 @@ const useAuth = () => {
                 if (status === 200) {
                     setUser(data.user)
                     navigate('/')
-                    return {
-                        isSuccess: true,
-                        message: '',
-                    }
+                    return null
                 } else {
                     return {
                         isSuccess: false,
@@ -156,7 +153,7 @@ const useAuth = () => {
                     message: `Something went wrong... ${error}`,
                 }
             }
-        }
+        },
     }
 }
 

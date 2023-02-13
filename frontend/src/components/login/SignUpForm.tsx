@@ -1,7 +1,9 @@
 import { Button, Checkbox, Group, PasswordInput, Stack, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { IconAt, IconLock } from '@tabler/icons-react'
-import useAuth, { Response } from '../../hooks/useAuth'
+import { useSetRecoilState } from 'recoil'
+import { loginPageResponse } from '../../atoms'
+import useAuth from '../../hooks/useAuth'
 import { passwordValidation } from '../../utils/validations'
 import { LogInFormValues } from './LogInForm'
 
@@ -12,10 +14,10 @@ interface SignUpFormValues extends LogInFormValues {
 }
 
 interface FormProps {
-    onFormResult: (response: Response, isToggle: boolean) => void
+    changeToSignIn: () => void
 }
 
-export default function SignUpForm({ onFormResult }: FormProps) {
+export default function SignUpForm({ changeToSignIn }: FormProps) {
     const form = useForm({
         initialValues: {
             firstName: '',
@@ -35,11 +37,16 @@ export default function SignUpForm({ onFormResult }: FormProps) {
         },
     })
 
+    const setLoginResponse = useSetRecoilState(loginPageResponse)
+
     const { registerUser } = useAuth()
 
     const onSignUp = async (values: SignUpFormValues) => {
         const response = await registerUser(values.email, values.firstName, values.lastName, values.password)
-        onFormResult(response, response.isSuccess)
+        setLoginResponse(response)
+        if (response.isSuccess) {
+            changeToSignIn()
+        }
     }
 
     return (

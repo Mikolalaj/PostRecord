@@ -1,4 +1,4 @@
-import { AxiosError } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 
 interface ErrorResponse {
     message: string
@@ -13,10 +13,23 @@ export function parseError(error: AxiosError): ErrorResponse {
     }
     return {
         message: error.message,
-        data: null
+        data: null,
     }
 }
 
 export function parseErrorMessage(error: AxiosError): string {
     return parseError(error).message
+}
+
+interface ServerResponse {
+    message: string
+    data?: any
+}
+
+export function parseResponse(response: AxiosResponse<ServerResponse>): ServerResponse {
+    return response.data
+}
+
+export function parseResponseMessage(response: AxiosResponse<ServerResponse>): string {
+    return parseResponse(response).message
 }

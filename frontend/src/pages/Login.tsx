@@ -1,12 +1,12 @@
 import { Anchor, Center, Container, Paper, Text, Title } from '@mantine/core'
 import { useEffect, useState } from 'react'
 import { Navigate, useNavigate, useSearchParams } from 'react-router-dom'
-import { useRecoilValue } from 'recoil'
-import { userState } from '../atoms'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { loginPageResponse, userState } from '../atoms'
 import LogInForm from '../components/login/LogInForm'
 import ResultAlert from '../components/login/ResultAlert'
 import SignUpForm from '../components/login/SignUpForm'
-import useAuth, { Response } from '../hooks/useAuth'
+import useAuth from '../hooks/useAuth'
 
 export default function LoginPage() {
     const user = useRecoilValue(userState)
@@ -14,10 +14,11 @@ export default function LoginPage() {
         return <Navigate to='/' />
     }
 
+    const [loginResponse, setLoginResponse] = useRecoilState(loginPageResponse)
+
     const navigate = useNavigate()
 
     const [isSignUp, setIsSignUp] = useState(false)
-    const [response, setResponse] = useState<Response | undefined>(undefined)
 
     const { confirmEmail } = useAuth()
 
@@ -31,21 +32,14 @@ export default function LoginPage() {
                 if (response.isSuccess) {
                     navigate('/login')
                 }
-                setResponse(response)
+                setLoginResponse(response)
             }
         }
         checkToken()
     }, [])
 
-    const onFormResult = (response: Response, isToggle: boolean) => {
-        setResponse(response)
-        if (isToggle) {
-            setIsSignUp(value => !value)
-        }
-    }
-
     const toggleForm = () => {
-        setResponse(undefined)
+        setLoginResponse(null)
         setIsSignUp(v => !v)
     }
 
@@ -69,8 +63,8 @@ export default function LoginPage() {
                         </Anchor>
                     </Text>
                     <Paper radius='md' p='xl' withBorder style={{ width: '100%' }}>
-                        <ResultAlert response={response} />
-                        {isSignUp ? <SignUpForm onFormResult={onFormResult} /> : <LogInForm onFormResult={onFormResult} />}
+                        <ResultAlert response={loginResponse} />
+                        {isSignUp ? <SignUpForm changeToSignIn={() => setIsSignUp(true)} /> : <LogInForm />}
                     </Paper>
                 </Container>
             </Center>

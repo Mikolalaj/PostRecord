@@ -1,26 +1,18 @@
 import { Anchor, Button, Center, Stack, Text, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { IconArrowLeft, IconAt } from '@tabler/icons-react'
-import axios, { AxiosError } from 'axios'
+import axios, { AxiosError, AxiosResponse } from 'axios'
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
+import { useSetRecoilState } from 'recoil'
+import { loginPageResponse } from '../../atoms'
+import { parseErrorMessage, parseResponseMessage } from '../../utils/axios'
 
-interface Props {
-    onSuccess: ({ data }: ForgotPasswordResponse) => void
-    onError: (error: AxiosError) => void
-}
-
-export interface ForgotPasswordFormValues {
+export interface ForgotPasswordRequest {
     email: string
 }
 
-export interface ForgotPasswordResponse {
-    data: {
-        message: string
-    }
-}
-
-export default function ForgotPasswordForm({ onSuccess, onError }: Props) {
+export default function ForgotPasswordForm() {
     const navigate = useNavigate()
     const form = useForm({
         initialValues: {
@@ -31,13 +23,19 @@ export default function ForgotPasswordForm({ onSuccess, onError }: Props) {
         },
     })
 
+    const setLoginResponse = useSetRecoilState(loginPageResponse)
+
     const mutation = useMutation(
-        (data: ForgotPasswordFormValues) => {
+        (data: ForgotPasswordRequest) => {
             return axios.post('/api/auth/forgotPassword', data)
         },
         {
-            onError,
-            onSuccess,
+            onError: (error: AxiosError) => {
+                setLoginResponse({ isSuccess: false, message: parseErrorMessage(error) })
+            },
+            onSuccess: (response: AxiosResponse) => {
+                setLoginResponse({ isSuccess: true, message: parseResponseMessage(response) })
+            },
         }
     )
 
@@ -55,6 +53,7 @@ export default function ForgotPasswordForm({ onSuccess, onError }: Props) {
                     color='violet.5'
                     size='sm'
                     onClick={() => {
+                        setLoginResponse(null)
                         navigate('/login')
                     }}>
                     <Center inline>

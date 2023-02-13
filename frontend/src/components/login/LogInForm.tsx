@@ -1,19 +1,17 @@
 import { Anchor, Button, Checkbox, Group, PasswordInput, Stack, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { IconAt, IconLock } from '@tabler/icons-react'
-import useAuth, { Response } from '../../hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
-
-interface FormProps {
-    onFormResult: (response: Response, isToggle: boolean) => void
-}
+import { useSetRecoilState } from 'recoil'
+import { loginPageResponse } from '../../atoms'
+import useAuth from '../../hooks/useAuth'
 
 export interface LogInFormValues {
     email: string
     password: string
 }
 
-export default function LogInForm({ onFormResult }: FormProps) {
+export default function LogInForm() {
     const navigate = useNavigate()
     const logInForm = useForm({
         initialValues: {
@@ -26,11 +24,13 @@ export default function LogInForm({ onFormResult }: FormProps) {
         },
     })
 
+    const setLoginResponse = useSetRecoilState(loginPageResponse)
+
     const { loginUser } = useAuth()
 
     const onLogin = async (values: LogInFormValues) => {
         const response = await loginUser(values.email, values.password)
-        onFormResult(response, false)
+        setLoginResponse(response)
     }
 
     return (
@@ -58,6 +58,7 @@ export default function LogInForm({ onFormResult }: FormProps) {
                     type='button'
                     color='violet.5'
                     onClick={() => {
+                        setLoginResponse(null)
                         navigate('/resetPassword')
                     }}
                     size='xs'>

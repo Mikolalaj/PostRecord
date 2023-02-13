@@ -1,5 +1,5 @@
-import { atom } from 'recoil'
 import axios, { isAxiosError } from 'axios'
+import { atom } from 'recoil'
 
 export interface User {
     id: string
@@ -30,4 +30,14 @@ const userState = atom<User | null>({
     default: getUser(),
 })
 
-export { userState }
+export interface Response {
+    isSuccess: boolean
+    message: string
+}
+
+const loginPageResponse = atom<Response | null>({
+    key: 'loginPageResponse',
+    default: null,
+})
+
+export { userState, loginPageResponse }
