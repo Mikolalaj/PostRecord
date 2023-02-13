@@ -57,14 +57,14 @@ export default function LoginPage() {
                         )}
                     </Title>
                     <Text color='dimmed' size='sm' align='center' mb={20}>
-                        Do not have an account yet?{' '}
+                        {isSignUp ? 'Have an account already? ' : "Don't have an account yet? "}
                         <Anchor size='sm' color='pink.6' onClick={toggleForm}>
-                            Create account
+                            {isSignUp ? 'Log in here' : 'Create account'}
                         </Anchor>
                     </Text>
                     <Paper radius='md' p='xl' withBorder style={{ width: '100%' }}>
                         <ResultAlert response={loginResponse} />
-                        {isSignUp ? <SignUpForm changeToSignIn={() => setIsSignUp(true)} /> : <LogInForm />}
+                        {isSignUp ? <SignUpForm changeToSignIn={() => setIsSignUp(false)} /> : <LogInForm />}
                     </Paper>
                 </Container>
             </Center>
