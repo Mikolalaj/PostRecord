@@ -1,5 +1,5 @@
 import { Center, Container, Paper, Text, Title } from '@mantine/core'
-import { Navigate, useNavigate, useSearchParams } from 'react-router-dom'
+import { Navigate, useSearchParams } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { loginPageResponse, userState } from '../atoms'
 import ForgotPasswordForm from '../components/login/ForgotPasswordForm'
@@ -13,8 +13,6 @@ export default function ResetPasswordPage() {
     }
 
     const loginResponse = useRecoilValue(loginPageResponse)
-
-    const navigate = useNavigate()
 
     const [searchParams] = useSearchParams()
     const token = searchParams.get('token')
