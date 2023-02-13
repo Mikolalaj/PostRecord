@@ -2,7 +2,10 @@ import { Alert } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
 import { Response } from '../../hooks/useAuth'
 
-export default function ResultAlert({ response }: { response: Response }) {
+export default function ResultAlert({ response }: { response?: Response }) {
+    if (!response) {
+        return null
+    }
     return (
         <Alert
             icon={<IconAlertCircle size={16} />}

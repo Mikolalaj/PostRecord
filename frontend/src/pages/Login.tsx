@@ -1,14 +1,12 @@
-import { Center, Container, Paper, Title, Text, Anchor } from '@mantine/core'
+import { Anchor, Center, Container, Paper, Text, Title } from '@mantine/core'
 import { useEffect, useState } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useNavigate, useSearchParams } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { userState } from '../atoms'
 import LogInForm from '../components/login/LogInForm'
 import ResultAlert from '../components/login/ResultAlert'
 import SignUpForm from '../components/login/SignUpForm'
-import { Response } from '../hooks/useAuth'
-import { useSearchParams, useNavigate } from 'react-router-dom'
-import useAuth from '../hooks/useAuth'
+import useAuth, { Response } from '../hooks/useAuth'
 
 export default function LoginPage() {
     const user = useRecoilValue(userState)
@@ -19,7 +17,7 @@ export default function LoginPage() {
     const navigate = useNavigate()
 
     const [isSignUp, setIsSignUp] = useState(false)
-    const [response, setResponse] = useState<Response | null>(null)
+    const [response, setResponse] = useState<Response | undefined>(undefined)
 
     const { confirmEmail } = useAuth()
 
@@ -47,7 +45,7 @@ export default function LoginPage() {
     }
 
     const toggleForm = () => {
-        setResponse(null)
+        setResponse(undefined)
         setIsSignUp(v => !v)
     }
 
@@ -71,7 +69,7 @@ export default function LoginPage() {
                         </Anchor>
                     </Text>
                     <Paper radius='md' p='xl' withBorder style={{ width: '100%' }}>
-                        {response && <ResultAlert response={response} />}
+                        <ResultAlert response={response} />
                         {isSignUp ? <SignUpForm onFormResult={onFormResult} /> : <LogInForm onFormResult={onFormResult} />}
                     </Paper>
                 </Container>

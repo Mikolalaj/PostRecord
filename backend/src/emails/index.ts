@@ -1,7 +1,8 @@
 import { render } from '@react-email/render'
+import * as dotenv from 'dotenv'
 import nodemailer from 'nodemailer'
 import Registration from './templates/Registration'
-import * as dotenv from 'dotenv'
+import ResetPassword from './templates/ResetPassword'
 
 dotenv.config()
 
@@ -40,6 +41,28 @@ export function sendRegistrationEmail(firstName: string, registrationToken: stri
         },
         to: recipentEmail,
         subject: 'Welcome to PostRecord',
+        html: emailHtml,
+    })
+}
+
+export function sendResetPasswordEmail(firstName: string, resetToken: string, recipentEmail: string) {
+    if (!emailUser || !emailPassword) {
+        throw new Error('Email user and password must be set')
+    }
+    const emailHtml = render(
+        ResetPassword({
+            firstName,
+            resetToken,
+            email: recipentEmail,
+        })
+    )
+    transporter.sendMail({
+        from: {
+            name: 'PostRecord',
+            address: emailUser,
+        },
+        to: recipentEmail,
+        subject: 'Reset your password at PostRecord',
         html: emailHtml,
     })
 }

@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Navigate, useNavigate, useSearchParams } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { userState } from '../atoms'
-import ForgotPasswordForm, { ResetPasswordResponse } from '../components/login/ForgotPasswordForm'
+import ForgotPasswordForm, { ForgotPasswordResponse } from '../components/login/ForgotPasswordForm'
 import ResetPasswordForm from '../components/login/ResetPasswordForm'
 import ResultAlert from '../components/login/ResultAlert'
 import { Response } from '../hooks/useAuth'
@@ -18,14 +18,18 @@ export default function ResetPasswordPage() {
 
     const navigate = useNavigate()
 
-    const [response, setResponse] = useState<Response | null>(null)
+    const [response, setResponse] = useState<Response | undefined>(undefined)
 
     const [searchParams] = useSearchParams()
+    const token = searchParams.get('token')
+    const email = searchParams.get('email')
+
+    const isResetPassword = token && email
 
     const onError = (error: AxiosError) => {
         setResponse({ isSuccess: false, message: parseErrorMessage(error) })
     }
-    const onSuccess = ({ data }: ResetPasswordResponse) => {
+    const onSuccess = ({ data }: ForgotPasswordResponse) => {
         setResponse({ isSuccess: true, message: data.message })
     }
 
@@ -34,17 +38,17 @@ export default function ResetPasswordPage() {
             <Center>
                 <Container style={{ width: 550 }}>
                     <Title order={2} ta='center' mb={15}>
-                        {searchParams.get('token') ? 'Set up your newpassword' : 'Forgot your password?'}
+                        {isResetPassword ? 'Set up your newpassword' : 'Forgot your password?'}
                     </Title>
-                    {!searchParams.get('token') && (
+                    {!isResetPassword && (
                         <Text color='dimmed' size='sm' align='center' mb={20}>
                             Enter your email to get a reset link
                         </Text>
                     )}
                     <Paper radius='md' p='xl' withBorder style={{ width: '100%' }}>
-                        {response && <ResultAlert response={response} />}
-                        {searchParams.get('token') ? (
-                            <ResetPasswordForm onError={onError} onSuccess={onSuccess} />
+                        <ResultAlert response={response} />
+                        {isResetPassword ? (
+                            <ResetPasswordForm onError={onError} onSuccess={onSuccess} resetToken={token} email={email} />
                         ) : (
                             <ForgotPasswordForm onError={onError} onSuccess={onSuccess} />
                         )}

@@ -9,6 +9,8 @@ import { passwordValidation } from '../../utils/validations'
 interface Props {
     onSuccess: ({ data }: ResetPasswordResponse) => void
     onError: (error: AxiosError) => void
+    resetToken: string
+    email: string
 }
 
 export interface ResetPasswordFormValues {
@@ -22,7 +24,13 @@ export interface ResetPasswordResponse {
     }
 }
 
-export default function ForgotPasswordForm({ onSuccess, onError }: Props) {
+type ResetPasswordRequest = {
+    password: string
+    token: string
+    email: string
+}
+
+export default function ForgotPasswordForm({ onSuccess, onError, resetToken, email }: Props) {
     const navigate = useNavigate()
     const form = useForm({
         initialValues: {
@@ -36,7 +44,7 @@ export default function ForgotPasswordForm({ onSuccess, onError }: Props) {
     })
 
     const mutation = useMutation(
-        (data: ResetPasswordFormValues) => {
+        (data: ResetPasswordRequest) => {
             return axios.post('/api/auth/resetPassword', data)
         },
         {
@@ -46,7 +54,15 @@ export default function ForgotPasswordForm({ onSuccess, onError }: Props) {
     )
 
     return (
-        <form noValidate onSubmit={form.onSubmit(values => mutation.mutate(values))}>
+        <form
+            noValidate
+            onSubmit={form.onSubmit(values =>
+                mutation.mutate({
+                    password: values.password,
+                    token: resetToken,
+                    email: email,
+                })
+            )}>
             <Stack>
                 <PasswordInput
                     required

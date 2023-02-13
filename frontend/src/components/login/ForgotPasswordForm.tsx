@@ -6,15 +6,15 @@ import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 
 interface Props {
-    onSuccess: ({ data }: ResetPasswordResponse) => void
+    onSuccess: ({ data }: ForgotPasswordResponse) => void
     onError: (error: AxiosError) => void
 }
 
-export interface ResetPasswordFormValues {
+export interface ForgotPasswordFormValues {
     email: string
 }
 
-export interface ResetPasswordResponse {
+export interface ForgotPasswordResponse {
     data: {
         message: string
     }
@@ -32,8 +32,8 @@ export default function ForgotPasswordForm({ onSuccess, onError }: Props) {
     })
 
     const mutation = useMutation(
-        (data: ResetPasswordFormValues) => {
-            return axios.post('/api/auth/resetPassword', data)
+        (data: ForgotPasswordFormValues) => {
+            return axios.post('/api/auth/forgotPassword', data)
         },
         {
             onError,
