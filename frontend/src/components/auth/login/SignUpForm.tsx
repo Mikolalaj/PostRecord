@@ -2,9 +2,9 @@ import { Button, Checkbox, Group, PasswordInput, Stack, TextInput } from '@manti
 import { useForm } from '@mantine/form'
 import { IconAt, IconLock } from '@tabler/icons-react'
 import { useSetRecoilState } from 'recoil'
-import { loginPageResponse } from '../../atoms'
-import useAuth from '../../hooks/useAuth'
-import { passwordValidation } from '../../utils/validations'
+import { loginPageResponse } from '../../../atoms'
+import useAuth from '../../../hooks/useAuth'
+import { passwordValidation } from '../../../utils/validations'
 import { LogInFormValues } from './LogInForm'
 
 interface SignUpFormValues extends LogInFormValues {

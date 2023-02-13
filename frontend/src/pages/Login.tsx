@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react'
 import { Navigate, useNavigate, useSearchParams } from 'react-router-dom'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { loginPageResponse, userState } from '../atoms'
-import LogInForm from '../components/login/LogInForm'
-import ResultAlert from '../components/login/ResultAlert'
-import SignUpForm from '../components/login/SignUpForm'
+import LogInForm from '../components/auth/login/LogInForm'
+import ResultAlert from '../components/auth/login/ResultAlert'
+import SignUpForm from '../components/auth/login/SignUpForm'
 import useAuth from '../hooks/useAuth'
 
 export default function LoginPage() {

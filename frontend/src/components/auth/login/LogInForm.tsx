@@ -3,8 +3,8 @@ import { useForm } from '@mantine/form'
 import { IconAt, IconLock } from '@tabler/icons-react'
 import { useNavigate } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil'
-import { loginPageResponse } from '../../atoms'
-import useAuth from '../../hooks/useAuth'
+import { loginPageResponse } from '../../../atoms'
+import useAuth from '../../../hooks/useAuth'
 
 export interface LogInFormValues {
     email: string

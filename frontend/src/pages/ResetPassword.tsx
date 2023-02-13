@@ -2,9 +2,9 @@ import { Center, Container, Paper, Text, Title } from '@mantine/core'
 import { Navigate, useSearchParams } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { loginPageResponse, userState } from '../atoms'
-import ForgotPasswordForm from '../components/login/ForgotPasswordForm'
-import ResetPasswordForm from '../components/login/ResetPasswordForm'
-import ResultAlert from '../components/login/ResultAlert'
+import ResultAlert from '../components/auth/login/ResultAlert'
+import ForgotPasswordForm from '../components/auth/resetPassword/ForgotPasswordForm'
+import ResetPasswordForm from '../components/auth/resetPassword/ResetPasswordForm'
 
 export default function ResetPasswordPage() {
     const user = useRecoilValue(userState)

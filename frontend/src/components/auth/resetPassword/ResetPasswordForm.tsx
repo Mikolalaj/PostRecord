@@ -5,9 +5,9 @@ import axios, { AxiosError, AxiosResponse } from 'axios'
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil'
-import { loginPageResponse } from '../../atoms'
-import { parseErrorMessage, parseResponseMessage } from '../../utils/axios'
-import { passwordValidation } from '../../utils/validations'
+import { loginPageResponse } from '../../../atoms'
+import { parseErrorMessage, parseResponseMessage } from '../../../utils/axios'
+import { passwordValidation } from '../../../utils/validations'
 
 interface Props {
     resetToken: string

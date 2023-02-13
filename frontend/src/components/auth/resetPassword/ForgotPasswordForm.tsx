@@ -5,8 +5,8 @@ import axios, { AxiosError, AxiosResponse } from 'axios'
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil'
-import { loginPageResponse } from '../../atoms'
-import { parseErrorMessage, parseResponseMessage } from '../../utils/axios'
+import { loginPageResponse } from '../../../atoms'
+import { parseErrorMessage, parseResponseMessage } from '../../../utils/axios'
 
 export interface ForgotPasswordRequest {
     email: string
