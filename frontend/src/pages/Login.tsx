@@ -1,12 +1,12 @@
 import { Anchor, Center, Container, Paper, Text, Title } from '@mantine/core'
 import { useEffect, useState } from 'react'
-import { Navigate, useNavigate, useSearchParams } from 'react-router-dom'
+import { Navigate, useSearchParams } from 'react-router-dom'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { loginPageResponse, userState } from '../atoms'
 import LogInForm from '../components/auth/login/LogInForm'
 import ResultAlert from '../components/auth/login/ResultAlert'
 import SignUpForm from '../components/auth/login/SignUpForm'
-import useAuth from '../hooks/useAuth'
+import { useConfirmEmailMutation } from '../hooks/auth/useConfirmEmailMutation'
 
 export default function LoginPage() {
     const user = useRecoilValue(userState)
@@ -16,23 +16,16 @@ export default function LoginPage() {
 
     const [loginResponse, setLoginResponse] = useRecoilState(loginPageResponse)
 
-    const navigate = useNavigate()
-
     const [isSignUp, setIsSignUp] = useState(false)
-
-    const { confirmEmail } = useAuth()
 
     const [searchParams] = useSearchParams()
 
     useEffect(() => {
         async function checkToken() {
             const token = searchParams.get('token')
+            const mutation = useConfirmEmailMutation()
             if (token) {
-                const response = await confirmEmail(token)
-                if (response.isSuccess) {
-                    navigate('/login')
-                }
-                setLoginResponse(response)
+                mutation.mutate(token)
             }
         }
         checkToken()
@@ -48,10 +41,9 @@ export default function LoginPage() {
             <Center>
                 <Container style={{ width: 550 }}>
                     <Title order={2} ta='center' mb={15}>
-                        {isSignUp ? 'Create a new account!' : 'Welcome back! Log in to'}
+                        {isSignUp ? 'Create a new account! ' : 'Welcome back! Log in to '}
                         {!isSignUp && (
                             <Text component='span' inherit variant='gradient' gradient={{ from: 'red.7', to: 'violet.6', deg: 120 }}>
-                                {' '}
                                 PostRecord
                             </Text>
                         )}

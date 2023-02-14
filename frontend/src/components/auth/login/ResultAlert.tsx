@@ -11,7 +11,8 @@ export default function ResultAlert({ response }: { response: Response | null })
             icon={<IconAlertCircle size={16} />}
             title={response.isSuccess ? 'Success!' : 'Bummer!'}
             color={response.isSuccess ? 'green' : 'red'}
-            radius='md'>
+            radius='md'
+            mb={15}>
             {response.message}
         </Alert>
     )
