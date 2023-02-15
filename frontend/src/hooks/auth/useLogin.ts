@@ -1,11 +1,10 @@
-import axios, { AxiosResponse } from 'axios'
+import axios, { AxiosError, AxiosResponse } from 'axios'
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil'
 import { loginPageResponse, User, userState } from '../../atoms'
 import { LoginForm } from '../../pages/Login'
-import { parseResponse } from '../../utils/axios'
-import { onError } from './common'
+import { parseErrorMessage, parseResponse } from '../../utils/axios'
 
 interface SignInRequestBody {
     email: string
@@ -22,6 +21,10 @@ export function useLogin() {
     const setLoginResponse = useSetRecoilState(loginPageResponse)
     const setIsSignUp = useSetRecoilState(LoginForm)
     const navigate = useNavigate()
+
+    const onError = (error: AxiosError) => {
+        setLoginResponse({ isSuccess: false, message: parseErrorMessage(error) })
+    }
 
     const signUpMutation = useMutation(
         (data: SignUpRequestBody) => {

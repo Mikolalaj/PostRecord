@@ -24,10 +24,10 @@ export default function SignUpForm() {
         },
     })
 
-    const { signIn } = useLogin()
+    const { signUp } = useLogin()
 
     return (
-        <form noValidate onSubmit={form.onSubmit(values => signIn(values))}>
+        <form noValidate onSubmit={form.onSubmit(values => signUp(values))}>
             <Stack>
                 <TextInput required label='First Name' placeholder='Your first name' {...form.getInputProps('firstName')} />
                 <TextInput required label='Last Name' placeholder='Your last name' {...form.getInputProps('lastName')} />

@@ -1,10 +1,9 @@
-import axios, { AxiosResponse } from 'axios'
+import axios, { AxiosError, AxiosResponse } from 'axios'
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil'
 import { loginPageResponse } from '../../atoms'
-import { parseResponse } from '../../utils/axios'
-import { onError } from './common'
+import { parseErrorMessage, parseResponse } from '../../utils/axios'
 
 type ResetPasswordRequest = {
     password: string
@@ -16,6 +15,14 @@ export function useAccount() {
     const setLoginResponse = useSetRecoilState(loginPageResponse)
     const navigate = useNavigate()
 
+    const onError = (error: AxiosError) => {
+        setLoginResponse({ isSuccess: false, message: parseErrorMessage(error) })
+    }
+
+    const setMessageOnSuccess = (response: AxiosResponse) => {
+        setLoginResponse({ isSuccess: true, message: parseResponse(response).message })
+    }
+
     const confirmEmailMutation = useMutation(
         (token: string) => {
             return axios.post('/api/auth/confirmEmail', { token })
@@ -24,7 +31,7 @@ export function useAccount() {
             onError,
             onSuccess: (response: AxiosResponse) => {
                 navigate('/login')
-                setLoginResponse({ isSuccess: true, message: parseResponse(response).message })
+                setMessageOnSuccess(response)
             },
         }
     )
@@ -36,7 +43,7 @@ export function useAccount() {
         {
             onError,
             onSuccess: (response: AxiosResponse) => {
-                setLoginResponse({ isSuccess: true, message: parseResponse(response).message })
+                setMessageOnSuccess(response)
             },
         }
     )
@@ -49,7 +56,7 @@ export function useAccount() {
             onError,
             onSuccess: (response: AxiosResponse) => {
                 navigate('/login')
-                setLoginResponse({ isSuccess: true, message: parseResponse(response).message })
+                setMessageOnSuccess(response)
             },
         }
     )
