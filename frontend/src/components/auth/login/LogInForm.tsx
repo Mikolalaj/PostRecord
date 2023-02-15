@@ -4,12 +4,7 @@ import { IconAt, IconLock } from '@tabler/icons-react'
 import { useNavigate } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil'
 import { loginPageResponse } from '../../../atoms'
-import useAuth from '../../../hooks/useAuth'
-
-export interface LogInFormValues {
-    email: string
-    password: string
-}
+import { useLogin } from '../../../hooks/auth/useLogin'
 
 export default function LogInForm() {
     const navigate = useNavigate()
@@ -26,15 +21,10 @@ export default function LogInForm() {
 
     const setLoginResponse = useSetRecoilState(loginPageResponse)
 
-    const { loginUser } = useAuth()
-
-    const onLogin = async (values: LogInFormValues) => {
-        const response = await loginUser(values.email, values.password)
-        setLoginResponse(response)
-    }
+    const { signIn } = useLogin()
 
     return (
-        <form noValidate onSubmit={logInForm.onSubmit(values => onLogin(values))}>
+        <form noValidate onSubmit={logInForm.onSubmit(values => signIn(values))}>
             <Stack>
                 <TextInput
                     required

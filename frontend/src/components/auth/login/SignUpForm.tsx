@@ -1,23 +1,10 @@
 import { Button, Checkbox, Group, PasswordInput, Stack, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { IconAt, IconLock } from '@tabler/icons-react'
-import { useSetRecoilState } from 'recoil'
-import { loginPageResponse } from '../../../atoms'
-import useAuth from '../../../hooks/useAuth'
+import { useLogin } from '../../../hooks/auth/useLogin'
 import { passwordValidation } from '../../../utils/validations'
-import { LogInFormValues } from './LogInForm'
 
-interface SignUpFormValues extends LogInFormValues {
-    firstName: string
-    lastName: string
-    terms: boolean
-}
-
-interface FormProps {
-    changeToSignIn: () => void
-}
-
-export default function SignUpForm({ changeToSignIn }: FormProps) {
+export default function SignUpForm() {
     const form = useForm({
         initialValues: {
             firstName: '',
@@ -37,20 +24,10 @@ export default function SignUpForm({ changeToSignIn }: FormProps) {
         },
     })
 
-    const setLoginResponse = useSetRecoilState(loginPageResponse)
-
-    const { registerUser } = useAuth()
-
-    const onSignUp = async (values: SignUpFormValues) => {
-        const response = await registerUser(values.email, values.firstName, values.lastName, values.password)
-        setLoginResponse(response)
-        if (response.isSuccess) {
-            changeToSignIn()
-        }
-    }
+    const { signIn } = useLogin()
 
     return (
-        <form noValidate onSubmit={form.onSubmit(values => onSignUp(values))}>
+        <form noValidate onSubmit={form.onSubmit(values => signIn(values))}>
             <Stack>
                 <TextInput required label='First Name' placeholder='Your first name' {...form.getInputProps('firstName')} />
                 <TextInput required label='Last Name' placeholder='Your last name' {...form.getInputProps('lastName')} />

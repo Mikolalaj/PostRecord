@@ -1,16 +1,10 @@
 import { Anchor, Button, Center, Stack, Text, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { IconArrowLeft, IconAt } from '@tabler/icons-react'
-import axios, { AxiosError, AxiosResponse } from 'axios'
-import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil'
 import { loginPageResponse } from '../../../atoms'
-import { parseErrorMessage, parseResponseMessage } from '../../../utils/axios'
-
-export interface ForgotPasswordRequest {
-    email: string
-}
+import { useAccount } from '../../../hooks/auth/useAccount'
 
 export default function ForgotPasswordForm() {
     const navigate = useNavigate()
@@ -23,24 +17,12 @@ export default function ForgotPasswordForm() {
         },
     })
 
+    const { forgotPassword } = useAccount()
+
     const setLoginResponse = useSetRecoilState(loginPageResponse)
 
-    const mutation = useMutation(
-        (data: ForgotPasswordRequest) => {
-            return axios.post('/api/auth/forgotPassword', data)
-        },
-        {
-            onError: (error: AxiosError) => {
-                setLoginResponse({ isSuccess: false, message: parseErrorMessage(error) })
-            },
-            onSuccess: (response: AxiosResponse) => {
-                setLoginResponse({ isSuccess: true, message: parseResponseMessage(response) })
-            },
-        }
-    )
-
     return (
-        <form noValidate onSubmit={form.onSubmit(values => mutation.mutate(values))}>
+        <form noValidate onSubmit={form.onSubmit(values => forgotPassword(values))}>
             <Stack>
                 <TextInput
                     required

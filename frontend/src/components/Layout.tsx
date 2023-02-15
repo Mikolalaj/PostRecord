@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react'
-import { createStyles, Header, Container, Group, Burger, AppShell, Button, Space, Title, Text, Image } from '@mantine/core'
+import { AppShell, Burger, Button, Container, createStyles, Group, Header, Image, Space, Text, Title } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { useRecoilValue } from 'recoil'
-import { userState } from '../atoms'
-import useAuth from '../hooks/useAuth'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import ThemePicker from './ThemePicker'
+import { useRecoilValue } from 'recoil'
 import Logo from '../assets/PostRecord.svg'
+import { userState } from '../atoms'
+import { useLogin } from '../hooks/auth/useLogin'
+import ThemePicker from './ThemePicker'
 
 const useStyles = createStyles(theme => ({
     header: {
@@ -62,7 +62,7 @@ export default function Layout({ children }: Props) {
     const user = useRecoilValue(userState)
     const navigate = useNavigate()
 
-    const { logoutUser } = useAuth()
+    const { logOut } = useLogin()
     const [opened, { toggle }] = useDisclosure(false)
     const [active, setActive] = useState(MenuLinks[0].link)
     const { classes, cx } = useStyles()
@@ -107,7 +107,7 @@ export default function Layout({ children }: Props) {
                         <Group spacing={30}>
                             {user && <Text fw={500}>Hello {user.firstName}!</Text>}
                             <ThemePicker />
-                            <Button onClick={logoutUser}>Log out</Button>
+                            <Button onClick={() => logOut()}>Log out</Button>
                         </Group>
                         <Burger opened={opened} onClick={toggle} className={classes.burger} size='sm' />
                     </Container>

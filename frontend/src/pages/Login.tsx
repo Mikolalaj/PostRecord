@@ -1,12 +1,17 @@
 import { Anchor, Center, Container, Paper, Text, Title } from '@mantine/core'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Navigate, useSearchParams } from 'react-router-dom'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { atom, useRecoilState, useRecoilValue } from 'recoil'
 import { loginPageResponse, userState } from '../atoms'
 import LogInForm from '../components/auth/login/LogInForm'
 import ResultAlert from '../components/auth/login/ResultAlert'
 import SignUpForm from '../components/auth/login/SignUpForm'
-import { useConfirmEmailMutation } from '../hooks/auth/useConfirmEmailMutation'
+import { useAccount } from '../hooks/auth/useAccount'
+
+export const LoginForm = atom({
+    key: 'LoginForm',
+    default: false,
+})
 
 export default function LoginPage() {
     const user = useRecoilValue(userState)
@@ -15,17 +20,17 @@ export default function LoginPage() {
     }
 
     const [loginResponse, setLoginResponse] = useRecoilState(loginPageResponse)
-
-    const [isSignUp, setIsSignUp] = useState(false)
+    const [isSignUp, setIsSignUp] = useRecoilState(LoginForm)
 
     const [searchParams] = useSearchParams()
+
+    const { confirmEmail } = useAccount()
 
     useEffect(() => {
         async function checkToken() {
             const token = searchParams.get('token')
-            const mutation = useConfirmEmailMutation()
             if (token) {
-                mutation.mutate(token)
+                confirmEmail(token)
             }
         }
         checkToken()
@@ -56,7 +61,7 @@ export default function LoginPage() {
                     </Text>
                     <Paper radius='md' p='xl' withBorder style={{ width: '100%' }}>
                         <ResultAlert response={loginResponse} />
-                        {isSignUp ? <SignUpForm changeToSignIn={() => setIsSignUp(false)} /> : <LogInForm />}
+                        {isSignUp ? <SignUpForm /> : <LogInForm />}
                     </Paper>
                 </Container>
             </Center>

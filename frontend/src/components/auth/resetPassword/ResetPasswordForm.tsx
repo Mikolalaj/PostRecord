@@ -1,12 +1,7 @@
 import { Button, PasswordInput, Stack } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { IconLock } from '@tabler/icons-react'
-import axios, { AxiosError, AxiosResponse } from 'axios'
-import { useMutation } from 'react-query'
-import { useNavigate } from 'react-router-dom'
-import { useSetRecoilState } from 'recoil'
-import { loginPageResponse } from '../../../atoms'
-import { parseErrorMessage, parseResponseMessage } from '../../../utils/axios'
+import { useAccount } from '../../../hooks/auth/useAccount'
 import { passwordValidation } from '../../../utils/validations'
 
 interface Props {
@@ -14,14 +9,7 @@ interface Props {
     email: string
 }
 
-type ResetPasswordRequest = {
-    password: string
-    token: string
-    email: string
-}
-
 export default function ResetPasswordForm({ resetToken, email }: Props) {
-    const navigate = useNavigate()
     const form = useForm({
         initialValues: {
             password: '',
@@ -33,28 +21,13 @@ export default function ResetPasswordForm({ resetToken, email }: Props) {
         },
     })
 
-    const setLoginResponse = useSetRecoilState(loginPageResponse)
-
-    const mutation = useMutation(
-        (data: ResetPasswordRequest) => {
-            return axios.post('/api/auth/resetPassword', data)
-        },
-        {
-            onError: (error: AxiosError) => {
-                setLoginResponse({ isSuccess: false, message: parseErrorMessage(error) })
-            },
-            onSuccess: (response: AxiosResponse) => {
-                navigate('/login')
-                setLoginResponse({ isSuccess: true, message: parseResponseMessage(response) })
-            },
-        }
-    )
+    const { resetPassword } = useAccount()
 
     return (
         <form
             noValidate
             onSubmit={form.onSubmit(values =>
-                mutation.mutate({
+                resetPassword({
                     password: values.password,
                     token: resetToken,
                     email: email,

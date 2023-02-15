@@ -12,7 +12,7 @@ export function parseError(error: AxiosError): ErrorResponse {
         }
     }
     return {
-        message: error.message,
+        message: `Something went wrong... ${error.message}`,
         data: null,
     }
 }
@@ -21,15 +21,6 @@ export function parseErrorMessage(error: AxiosError): string {
     return parseError(error).message
 }
 
-interface ServerResponse {
-    message: string
-    data?: any
-}
-
-export function parseResponse(response: AxiosResponse<ServerResponse>): ServerResponse {
+export function parseResponse<T>(response: AxiosResponse<T>) {
     return response.data
-}
-
-export function parseResponseMessage(response: AxiosResponse<ServerResponse>): string {
-    return parseResponse(response).message
 }
