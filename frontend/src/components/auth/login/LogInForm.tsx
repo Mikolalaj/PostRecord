@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil'
 import { loginPageResponse } from '../../../atoms'
 import { useLogin } from '../../../hooks/auth/useLogin'
+import { emailValidation } from '../../../utils/validations'
 
 export default function LogInForm() {
     const navigate = useNavigate()
@@ -14,7 +15,7 @@ export default function LogInForm() {
             password: '',
         },
         validate: {
-            email: val => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
+            email: emailValidation,
             password: val => (val.length < 1 ? 'Password is required' : null),
         },
     })

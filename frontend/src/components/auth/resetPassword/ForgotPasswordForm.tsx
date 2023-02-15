@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil'
 import { loginPageResponse } from '../../../atoms'
 import { useAccount } from '../../../hooks/auth/useAccount'
+import { emailValidation } from '../../../utils/validations'
 
 export default function ForgotPasswordForm() {
     const navigate = useNavigate()
@@ -13,7 +14,7 @@ export default function ForgotPasswordForm() {
             email: '',
         },
         validate: {
-            email: val => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
+            email: emailValidation,
         },
     })
 

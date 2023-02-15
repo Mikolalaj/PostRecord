@@ -2,7 +2,7 @@ import { Button, Checkbox, Group, PasswordInput, Stack, TextInput } from '@manti
 import { useForm } from '@mantine/form'
 import { IconAt, IconLock } from '@tabler/icons-react'
 import { useLogin } from '../../../hooks/auth/useLogin'
-import { passwordValidation } from '../../../utils/validations'
+import { emailValidation, passwordValidation } from '../../../utils/validations'
 
 export default function SignUpForm() {
     const form = useForm({
@@ -17,8 +17,8 @@ export default function SignUpForm() {
         validate: {
             firstName: value => (value.length < 2 ? 'Name must have at least 2 letters' : null),
             lastName: value => (value.length < 2 ? 'Last must have at least 2 letters' : null),
-            email: val => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
-            password: val => passwordValidation(val),
+            email: emailValidation,
+            password: passwordValidation,
             confirmPassword: (val, values) => (val !== values.password ? 'Passwords do not match' : null),
             terms: val => (val ? null : 'You must agree to sell your soul to us!!! 😈'),
         },
