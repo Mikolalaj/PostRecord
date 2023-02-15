@@ -1,6 +1,6 @@
 import { Alert } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
-import { Response } from '../../../hooks/useAuth'
+import { Response } from '../../../atoms'
 
 export default function ResultAlert({ response }: { response: Response | null }) {
     if (!response) {
