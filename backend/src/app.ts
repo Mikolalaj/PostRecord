@@ -1,15 +1,13 @@
-import * as dotenv from 'dotenv'
-import express, { Application } from 'express'
+import { PrismaClient, User } from '@prisma/client'
 import bodyParser from 'body-parser'
 import cookies from 'cookie-parser'
+import * as dotenv from 'dotenv'
+import express, { Application } from 'express'
+import authentication from './middlewares/authentication'
+import { morganMiddleware } from './middlewares/morgan'
+import { redisSession } from './middlewares/redisSession'
 import authRouter from './routes/authentication'
 import usersRouter from './routes/users'
-import authentication from './middlewares/authentication'
-import { User, PrismaClient } from '@prisma/client'
-import morgan from 'morgan'
-import session from 'express-session'
-import connectRedis from 'connect-redis'
-import { createClient } from 'redis'
 
 declare module 'express-session' {
     interface SessionData {
@@ -29,33 +27,10 @@ export const prisma = new PrismaClient()
 
 dotenv.config()
 
-const RedisStore = connectRedis(session)
-
-let redisClient = createClient({ legacyMode: true, password: 'redis' })
-redisClient.connect().catch(console.error)
-
 const app: Application = express()
 
-app.use(morgan('dev'))
-
-const sessionSecret = process.env.SESSION_SECRET
-
-if (!sessionSecret) {
-    throw new Error('Session Secret is not set')
-}
-
-app.use(
-    session({
-        store: new RedisStore({ client: redisClient }),
-        saveUninitialized: false,
-        secret: sessionSecret,
-        resave: false,
-        cookie: {
-            maxAge: 1000 * 60 * 60 * 24, // 1 day
-        },
-    })
-)
-
+app.use(morganMiddleware)
+app.use(redisSession)
 app.use(bodyParser.json())
 app.use(cookies())
 
