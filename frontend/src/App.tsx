@@ -1,12 +1,12 @@
-import { MantineProvider, ColorSchemeProvider, ColorScheme } from '@mantine/core'
+import { ColorScheme, ColorSchemeProvider, MantineProvider } from '@mantine/core'
+import { useState } from 'react'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { createBrowserRouter, createRoutesFromElements, Outlet, Route, RouterProvider } from 'react-router-dom'
+import { RecoilRoot } from 'recoil'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import ResetPassword from './pages/ResetPassword'
-import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route, Outlet } from 'react-router-dom'
 import PrivateRoute from './utils/PrivateRoute'
-import { RecoilRoot } from 'recoil'
-import { useState } from 'react'
-import { QueryClient, QueryClientProvider } from 'react-query'
 
 const queryClient = new QueryClient()
 
@@ -34,7 +34,7 @@ const router = createBrowserRouter(
 )
 
 function App() {
-    const [colorScheme, setColorScheme] = useState<ColorScheme>('dark')
+    const [colorScheme, setColorScheme] = useState<ColorScheme>((localStorage.getItem('colorScheme') as ColorScheme) || 'light')
     const toggleColorScheme = (value?: ColorScheme) => setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'))
 
     return (
