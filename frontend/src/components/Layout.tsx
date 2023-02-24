@@ -53,8 +53,7 @@ type Props = {
 
 const MenuLinks = [
     { label: 'Home', link: '/' },
-    { label: 'Find music', link: '/music' },
-    { label: 'Explore', link: '/explore' },
+    { label: 'Find music', link: '/explore' },
     { label: 'Marketplace', link: '/marketplace' },
 ]
 

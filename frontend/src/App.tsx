@@ -3,8 +3,10 @@ import { useState } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { createBrowserRouter, createRoutesFromElements, Outlet, Route, RouterProvider } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
+import Explore from './pages/Explore'
 import Home from './pages/Home'
 import Login from './pages/Login'
+import NotFoundPage from './pages/NotFoundPage'
 import ResetPassword from './pages/ResetPassword'
 import PrivateRoute from './utils/PrivateRoute'
 
@@ -18,7 +20,7 @@ const AuthProviderOutlet = () => (
 
 const router = createBrowserRouter(
     createRoutesFromElements(
-        <Route element={<AuthProviderOutlet />}>
+        <Route element={<AuthProviderOutlet />} errorElement={<NotFoundPage />}>
             <Route path='/login' element={<Login />} />
             <Route path='/resetPassword' element={<ResetPassword />} />
             <Route
@@ -26,6 +28,14 @@ const router = createBrowserRouter(
                 element={
                     <PrivateRoute>
                         <Home />
+                    </PrivateRoute>
+                }
+            />
+            <Route
+                path='/explore'
+                element={
+                    <PrivateRoute>
+                        <Explore />
                     </PrivateRoute>
                 }
             />
