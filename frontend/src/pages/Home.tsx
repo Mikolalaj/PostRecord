@@ -1,28 +1,11 @@
-import { useState, useEffect } from 'react'
+import Hero from '../components/home/Hero'
 
 type Props = {}
 
 export default function Home({}: Props) {
-    const [message, setMessage] = useState<string>('')
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const response = await fetch('/api/', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            })
-            const { message } = await response.json()
-            setMessage(message)
-        }
-        fetchData()
-    }, [])
-
     return (
         <>
-            <h3>Authenticated API fetch:</h3>
-            {<p>{message}</p>}
+            <Hero />
         </>
     )
 }
