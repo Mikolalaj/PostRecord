@@ -1,4 +1,5 @@
 import { Avatar } from '@mantine/core'
+import { useNavigate } from 'react-router-dom'
 import { User } from '../../atoms'
 
 interface UserAvatarProps {
@@ -15,8 +16,10 @@ function getRandomColor(user: User) {
 function UserAvatar({ user }: UserAvatarProps) {
     if (!user) return null
 
+    const navigate = useNavigate()
+
     return (
-        <Avatar color={getRandomColor(user)} radius='xl'>
+        <Avatar color={getRandomColor(user)} radius='xl' style={{ cursor: 'pointer' }} onClick={() => navigate('/profile')}>
             {user.firstName[0].toUpperCase() + user.lastName[0].toUpperCase()}
         </Avatar>
     )
