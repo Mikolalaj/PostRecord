@@ -1,8 +1,11 @@
+import Search from '../components/explore/Search'
+
 function Explore() {
     return (
-        <div>
+        <>
             <h1>Explore</h1>
-        </div>
+            <Search placeholder='Search albums' />
+        </>
     )
 }
 

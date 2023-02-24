@@ -1,4 +1,4 @@
-import { AppShell, Burger, Button, Container, createStyles, Group, Header, Image, Space, Text, Title } from '@mantine/core'
+import { AppShell, Burger, Button, Container, createStyles, Group, Header, Image, Space, Title } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -6,7 +6,8 @@ import { useRecoilValue } from 'recoil'
 import Logo from '../assets/PostRecord.svg'
 import { userState } from '../atoms'
 import { useLogin } from '../hooks/auth/useLogin'
-import ThemePicker from './ThemePicker'
+import ThemePicker from './common/ThemePicker'
+import UserAvatar from './common/UserAvatar'
 
 const useStyles = createStyles(theme => ({
     header: {
@@ -104,10 +105,12 @@ export default function Layout({ children }: Props) {
                             {items}
                         </Group>
                         <Group spacing={30}>
-                            {user && <Text fw={500}>Hello {user.firstName}!</Text>}
-                            <ThemePicker />
+                            <UserAvatar user={user} />
                             <Button onClick={() => logOut()}>Log out</Button>
                         </Group>
+                        <div style={{ position: 'absolute', right: 30 }}>
+                            <ThemePicker />
+                        </div>
                         <Burger opened={opened} onClick={toggle} className={classes.burger} size='sm' />
                     </Container>
                 </Header>
