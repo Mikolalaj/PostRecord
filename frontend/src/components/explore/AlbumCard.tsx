@@ -1,4 +1,5 @@
 import { Badge, Card, createStyles, Group, Image, Text } from '@mantine/core'
+import { useNavigate } from 'react-router-dom'
 
 const useStyles = createStyles(theme => ({
     card: {
@@ -43,11 +44,12 @@ interface AlbumCardProps {
     isNew: boolean
 }
 
-export function AlbumCard({ title, artist, image, isNew }: AlbumCardProps) {
-    const { classes } = useStyles()
+export function AlbumCard({ id, title, artist, image, isNew }: AlbumCardProps) {
+    const { classes, theme } = useStyles()
+    const navigate = useNavigate()
 
     return (
-        <Card withBorder radius='md' p='md' className={classes.card}>
+        <Card withBorder radius='md' p='md' className={classes.card} onClick={() => navigate(`/album/${id}`)}>
             <Card.Section style={{ overflow: 'hidden' }}>
                 <Image className={classes.image} src={image} alt={title} height={200} width={200} />
             </Card.Section>
@@ -58,7 +60,7 @@ export function AlbumCard({ title, artist, image, isNew }: AlbumCardProps) {
                         {title}
                     </Text>
                     {isNew && (
-                        <Badge color='pink' size='sm'>
+                        <Badge color={theme.colorScheme === 'light' ? 'pink' : 'purple'} size='sm'>
                             New
                         </Badge>
                     )}
