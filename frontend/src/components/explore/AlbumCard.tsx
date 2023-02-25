@@ -49,7 +49,7 @@ export function AlbumCard({ id, title, artist, image, isNew }: AlbumCardProps) {
     const navigate = useNavigate()
 
     return (
-        <Card withBorder radius='md' p='md' className={classes.card} onClick={() => navigate(`/album/${id}`)}>
+        <Card withBorder radius='md' p='md' shadow='sm' className={classes.card} onClick={() => navigate(`/album/${id}`)}>
             <Card.Section style={{ overflow: 'hidden' }}>
                 <Image className={classes.image} src={image} alt={title} height={200} width={200} />
             </Card.Section>
