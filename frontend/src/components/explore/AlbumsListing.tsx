@@ -1,4 +1,4 @@
-import { Flex } from '@mantine/core'
+import { SimpleGrid } from '@mantine/core'
 import AlbumCard from './AlbumCard'
 
 const albumsData = [
@@ -69,11 +69,11 @@ const albumsData = [
 
 function AlbumsListing() {
     return (
-        <Flex gap='lg' justify='space-between' wrap='wrap' my='lg'>
+        <SimpleGrid cols={5} spacing='lg' verticalSpacing='lg' my='lg'>
             {albumsData.map(album => (
                 <AlbumCard {...album} />
             ))}
-        </Flex>
+        </SimpleGrid>
     )
 }
 
