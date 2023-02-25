@@ -17,7 +17,7 @@ const useStyles = createStyles(theme => ({
     title: {
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
-        maxWidth: '200px',
+        maxWidth: 200,
         overflow: 'hidden',
     },
     section: {

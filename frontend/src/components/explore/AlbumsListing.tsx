@@ -37,6 +37,34 @@ const albumsData = [
         image: 'https://i.scdn.co/image/ab67616d00001e02667ca33e4b6d8e74b17a6529',
         isNew: true,
     },
+    {
+        id: '6',
+        title: 'Titanic Rising',
+        artist: 'Weyes Blood',
+        image: 'https://i.scdn.co/image/ab67616d00001e020c64e752dec4c08362cc4a88',
+        isNew: false,
+    },
+    {
+        id: '7',
+        title: 'And In The Darkness, Hearts Aglow',
+        artist: 'Weyes Blood',
+        image: 'https://i.scdn.co/image/ab67616d00001e02db8ab490bcedb6e518c37e6e',
+        isNew: true,
+    },
+    {
+        id: '8',
+        title: 'SOS',
+        artist: 'SZA',
+        image: 'https://i.scdn.co/image/ab67616d00001e0270dbc9f47669d120ad874ec1',
+        isNew: true,
+    },
+    {
+        id: '9',
+        title: 'folklore',
+        artist: 'Taylor Swift',
+        image: 'https://i.scdn.co/image/ab67616d00001e0295f754318336a07e85ec59bc',
+        isNew: false,
+    },
 ]
 
 function AlbumsListing() {
