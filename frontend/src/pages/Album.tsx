@@ -1,4 +1,5 @@
 import { Flex, Group, Image, Text, Title } from '@mantine/core'
+import SpotifyPlayer from '../components/albumDetails/SpotifyPlayer'
 import VinylPressings from '../components/albumDetails/VinylPressings'
 
 const albumData: AlbumProps = {
@@ -47,6 +48,7 @@ const albumData: AlbumProps = {
     genre: 'Pop',
     style: 'Indie Pop',
     year: '2022',
+    spotifyId: '2VeOtQQAJxR8VyvmoXqIbI',
     tracklist: [
         'Overdrive',
         "That's Where I Am",
@@ -72,6 +74,7 @@ interface AlbumProps {
     style: string
     year: string
     tracklist: string[]
+    spotifyId: string
     pressings: {
         id: string
         name: string
@@ -82,7 +85,7 @@ interface AlbumProps {
 
 function Album() {
     // function Album({ title, artist, image, pressings }: AlbumProps) {
-    const { title, artist, image, pressings } = albumData
+    const { title, artist, image, pressings, spotifyId } = albumData
     return (
         <>
             <Flex gap='lg' align='flex-start'>
@@ -118,13 +121,7 @@ function Album() {
                     {index + 1}. {track}
                 </Text>
             ))}
-            <iframe
-                style={{ borderRadius: '12px', border: '0px' }}
-                src='https://open.spotify.com/embed/album/2VeOtQQAJxR8VyvmoXqIbI?utm_source=generator'
-                width='100%'
-                height='152'
-                allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture'
-                loading='lazy'></iframe>
+            <SpotifyPlayer albumId={spotifyId} />
             <VinylPressings vinylPressings={pressings} />
         </>
     )
