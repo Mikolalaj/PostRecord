@@ -1,4 +1,14 @@
-import { Card, Image, Text, useMantineTheme } from '@mantine/core'
+import { Card, createStyles, Image, Modal, Text } from '@mantine/core'
+import { useState } from 'react'
+
+const useStyles = createStyles(theme => ({
+    image: {
+        transition: 'transform 0.2s ease-in-out',
+        '&:hover': {
+            transform: 'scale(1.05)',
+        },
+    },
+}))
 
 interface PressingProps {
     name: string
@@ -7,7 +17,8 @@ interface PressingProps {
 }
 
 function Pressing({ name, image, color }: PressingProps) {
-    const theme = useMantineTheme()
+    const { classes, theme } = useStyles()
+    const [openedModal, setOpenedModal] = useState(false)
 
     const getNameColor = () => {
         if (color === 'dark') {
@@ -24,16 +35,22 @@ function Pressing({ name, image, color }: PressingProps) {
     }
 
     return (
-        <Card radius='md' sx={{ backgroundImage: `url(${image})` }}>
-            <Card.Section>
-                <Image src={image} height={160} style={{ backgroundColor: getCardColor() }} />
-            </Card.Section>
-            <Card.Section py='sm'>
-                <Text color={getNameColor()} ta='center' weight={700}>
-                    {name}
-                </Text>
-            </Card.Section>
-        </Card>
+        <>
+            <Modal size={800} centered opened={openedModal} onClose={() => setOpenedModal(false)} title={name}>
+                <Image src={image} height={800} />
+            </Modal>
+
+            <Card radius='md' onClick={() => setOpenedModal(true)} style={{ cursor: 'pointer' }}>
+                <Card.Section style={{ overflow: 'hidden' }}>
+                    <Image height={180} className={classes.image} src={image} style={{ backgroundColor: getCardColor() }} />
+                </Card.Section>
+                <Card.Section py='sm'>
+                    <Text color={getNameColor()} ta='center' weight={700}>
+                        {name}
+                    </Text>
+                </Card.Section>
+            </Card>
+        </>
     )
 }
 

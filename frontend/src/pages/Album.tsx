@@ -1,12 +1,20 @@
 import { Flex, Group, Image, Text, Title } from '@mantine/core'
+import AboutArtist from '../components/albumDetails/AboutArtist'
 import SpotifyPlayer from '../components/albumDetails/SpotifyPlayer'
+import TrackList from '../components/albumDetails/TrackList'
 import VinylPressings from '../components/albumDetails/VinylPressings'
 
 const albumData: AlbumProps = {
     title: 'Surrender',
-    artist: 'Maggie Rogers',
+    artist: {
+        name: 'Maggie Rogers',
+        image: 'https://i.scdn.co/image/ab6761610000e5ebc8167bcebaf508dc6c3459b1',
+        description:
+            'Maggie Rogers is an American singer-songwriter and multi-instrumentalist. She released her debut EP, Now That \
+            the Light Is Fading, in 2015. Her debut studio album, Heard It in a Past Life, was released in 2019. Her second studio album, \
+            Heard It in a Past Life, was released in 2021. Her third studio album, Heard It in a Past Life, was released in 2022.',
+    },
     image: 'https://i.scdn.co/image/ab67616d00001e020fdfb62956211c999c39a5a3',
-    artistImage: 'https://i.scdn.co/image/ab6761610000e5ebc8167bcebaf508dc6c3459b1',
     pressings: [
         {
             id: '1',
@@ -67,9 +75,12 @@ const albumData: AlbumProps = {
 
 interface AlbumProps {
     title: string
-    artist: string
     image: string
-    artistImage: string
+    artist: {
+        name: string
+        image: string
+        description: string
+    }
     genre: string
     style: string
     year: string
@@ -85,18 +96,18 @@ interface AlbumProps {
 
 function Album() {
     // function Album({ title, artist, image, pressings }: AlbumProps) {
-    const { title, artist, image, pressings, spotifyId } = albumData
+    const { title, artist, image, pressings, spotifyId, tracklist } = albumData
     return (
-        <>
+        <Flex gap='xl' direction='column'>
             <Flex gap='lg' align='flex-start'>
                 <Image src={image} alt={title} width={250} height={250} />
                 <Flex direction='column' justify='flex-start' align='flex-start'>
                     <Title>
-                        <Text component='span' inherit color='violet'>
+                        <Text component='span' inherit color='violet' style={{ fontSize: 40 }}>
                             {title}
                         </Text>{' '}
                         <Text component='span' weight={200} size='xl'>
-                            by {artist}
+                            by {artist.name}
                         </Text>
                     </Title>
                     <Group style={{ width: '100%' }}>
@@ -115,15 +126,11 @@ function Album() {
                     </Group>
                 </Flex>
             </Flex>
-            <Title order={2}>Track list</Title>
-            {albumData.tracklist.map((track, index) => (
-                <Text key={index}>
-                    {index + 1}. {track}
-                </Text>
-            ))}
+            <TrackList tracklist={tracklist} />
             <SpotifyPlayer albumId={spotifyId} />
             <VinylPressings vinylPressings={pressings} />
-        </>
+            <AboutArtist {...artist} />
+        </Flex>
     )
 }
 

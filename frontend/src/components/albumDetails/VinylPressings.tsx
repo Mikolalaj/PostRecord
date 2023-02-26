@@ -1,5 +1,5 @@
 import { Carousel } from '@mantine/carousel'
-import { createStyles, Title } from '@mantine/core'
+import { createStyles, Flex, Title } from '@mantine/core'
 import Pressing from './Pressing'
 
 const IMAGE_PATH = 'https://postrecordstorageaccount.blob.core.windows.net/records/'
@@ -49,10 +49,11 @@ function VinylPressings({ vinylPressings }: VinylPressingsProps) {
     ))
 
     return (
-        <>
-            <Title order={2}>Vinyl Pressings</Title>
+        <Flex direction='column'>
+            <Title color='red.7' order={2} mb='md'>
+                Vinyl Pressings
+            </Title>
             <Carousel
-                pt='lg'
                 slideSize='25%'
                 breakpoints={[{ maxWidth: 'sm', slideSize: '100%', slideGap: 2 }]}
                 slideGap='xl'
@@ -61,7 +62,7 @@ function VinylPressings({ vinylPressings }: VinylPressingsProps) {
                 loop>
                 {slides}
             </Carousel>
-        </>
+        </Flex>
     )
 }
 
