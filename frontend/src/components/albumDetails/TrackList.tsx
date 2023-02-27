@@ -1,7 +1,11 @@
 import { Flex, Text, Title } from '@mantine/core'
 
 interface TrackListProps {
-    tracklist: string[]
+    tracklist: {
+        number: number
+        title: string
+        duration: string
+    }[]
 }
 
 function TrackList({ tracklist }: TrackListProps) {
@@ -10,9 +14,9 @@ function TrackList({ tracklist }: TrackListProps) {
             <Title color='red.7' order={2} mb='md'>
                 Track list
             </Title>
-            {tracklist.map((track, index) => (
-                <Text key={index}>
-                    {index + 1}. {track}
+            {tracklist.map(track => (
+                <Text key={track.number}>
+                    {track.number}. {track.title} - {track.duration}
                 </Text>
             ))}
         </Flex>

@@ -58,18 +58,66 @@ const albumData: AlbumProps = {
     year: '2022',
     spotifyId: '2VeOtQQAJxR8VyvmoXqIbI',
     tracklist: [
-        'Overdrive',
-        "That's Where I Am",
-        'Want Want',
-        'Anywhere With You',
-        'Horses',
-        'Be Cool',
-        'Shatter',
-        'Begging For Rain',
-        "I've Got A Friend",
-        'Honey',
-        'Symphony',
-        'Different Kind Of World',
+        {
+            number: 1,
+            title: 'Overdrive',
+            duration: '3:14',
+        },
+        {
+            number: 2,
+            title: "That's Where I Am",
+            duration: '4:12',
+        },
+        {
+            number: 3,
+            title: 'Want Want',
+            duration: '3:08',
+        },
+        {
+            number: 4,
+            title: 'Anywhere With You',
+            duration: '4:57',
+        },
+        {
+            number: 5,
+            title: 'Horses',
+            duration: '5:05',
+        },
+        {
+            number: 6,
+            title: 'Be Cool',
+            duration: '2:57',
+        },
+        {
+            number: 7,
+            title: 'Shatter',
+            duration: '3:40',
+        },
+        {
+            number: 8,
+            title: 'Begging For Rain',
+            duration: '4:13',
+        },
+        {
+            number: 9,
+            title: "I've Got A Friend",
+            duration: '3:12',
+        },
+        {
+            number: 10,
+            title: 'Honey',
+            duration: '3:42',
+        },
+        {
+            number: 11,
+            title: 'Symphony',
+            duration: '5:11',
+        },
+        {
+            number: 12,
+            title: 'Different Kind Of World',
+            duration: '2:45',
+        },
     ],
 }
 
@@ -84,7 +132,11 @@ interface AlbumProps {
     genre: string
     style: string
     year: string
-    tracklist: string[]
+    tracklist: {
+        number: number
+        title: string
+        duration: string
+    }[]
     spotifyId: string
     pressings: {
         id: string
