@@ -1,6 +1,6 @@
-import { Flex, Group, Image, Text, Title } from '@mantine/core'
+import { Button, Flex, Group, Image, Stack, Text, Title } from '@mantine/core'
+import { IconPlus } from '@tabler/icons-react'
 import AboutArtist from '../components/albumDetails/AboutArtist'
-import SpotifyPlayer from '../components/albumDetails/SpotifyPlayer'
 import TrackList from '../components/albumDetails/TrackList'
 import VinylPressings from '../components/albumDetails/VinylPressings'
 
@@ -153,7 +153,7 @@ function Album() {
         <Flex gap='xl' direction='column'>
             <Flex gap='lg' align='flex-start'>
                 <Image src={image} alt={title} width={250} height={250} />
-                <Flex direction='column' justify='flex-start' align='flex-start'>
+                <Stack align='flex-start' justify='space-between'>
                     <Title>
                         <Text component='span' inherit color='violet' style={{ fontSize: 40 }}>
                             {title}
@@ -176,10 +176,17 @@ function Album() {
                             <Text>{albumData.year}</Text>
                         </Flex>
                     </Group>
-                </Flex>
+                    <Group mt='xl'>
+                        <Button variant='light' leftIcon={<IconPlus size={20} />}>
+                            Add to collection
+                        </Button>
+                        <Button color='green.6' component='a' target='_blank' href={`https://open.spotify.com/album/${spotifyId}`}>
+                            Listen on Spotify
+                        </Button>
+                    </Group>
+                </Stack>
             </Flex>
             <TrackList tracklist={tracklist} />
-            <SpotifyPlayer albumId={spotifyId} />
             <VinylPressings vinylPressings={pressings} />
             <AboutArtist {...artist} />
         </Flex>

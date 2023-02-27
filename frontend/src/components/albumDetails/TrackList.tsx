@@ -1,4 +1,4 @@
-import { ActionIcon, Table } from '@mantine/core'
+import { ActionIcon, Flex, Table, Title } from '@mantine/core'
 import { IconHeart } from '@tabler/icons-react'
 
 interface TrackListProps {
@@ -24,9 +24,14 @@ function TrackList({ tracklist }: TrackListProps) {
     ))
 
     return (
-        <Table highlightOnHover>
-            <tbody>{rows}</tbody>
-        </Table>
+        <Flex direction='column'>
+            <Title color='red.7' order={2} mb='md'>
+                Tracklist
+            </Title>
+            <Table highlightOnHover>
+                <tbody>{rows}</tbody>
+            </Table>
+        </Flex>
     )
 }
 
