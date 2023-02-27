@@ -1,4 +1,5 @@
-import { Flex, Text, Title } from '@mantine/core'
+import { ActionIcon, Table } from '@mantine/core'
+import { IconHeart } from '@tabler/icons-react'
 
 interface TrackListProps {
     tracklist: {
@@ -9,17 +10,23 @@ interface TrackListProps {
 }
 
 function TrackList({ tracklist }: TrackListProps) {
+    const rows = tracklist.map(track => (
+        <tr key={track.number}>
+            <td>{track.number}</td>
+            <td>
+                <ActionIcon color='pink' radius='xl'>
+                    <IconHeart size={18} />
+                </ActionIcon>
+            </td>
+            <td>{track.title}</td>
+            <td>{track.duration}</td>
+        </tr>
+    ))
+
     return (
-        <Flex direction='column'>
-            <Title color='red.7' order={2} mb='md'>
-                Track list
-            </Title>
-            {tracklist.map(track => (
-                <Text key={track.number}>
-                    {track.number}. {track.title} - {track.duration}
-                </Text>
-            ))}
-        </Flex>
+        <Table highlightOnHover>
+            <tbody>{rows}</tbody>
+        </Table>
     )
 }
 
