@@ -1,6 +1,7 @@
 import { ActionIcon, Card, createStyles, Group, Image, Modal, Text } from '@mantine/core'
+import { useHover } from '@mantine/hooks'
 import { showNotification } from '@mantine/notifications'
-import { IconCheck, IconPlus } from '@tabler/icons-react'
+import { IconCheck, IconChecks, IconPlus, IconX } from '@tabler/icons-react'
 import { useState } from 'react'
 import { PressingType } from '../../types'
 
@@ -13,9 +14,10 @@ const useStyles = createStyles(() => ({
     },
 }))
 
-function Pressing({ name, image, color }: PressingType) {
+function Pressing({ name, image, color, isInCollection }: PressingType) {
     const { classes, theme } = useStyles()
     const [openedModal, setOpenedModal] = useState(false)
+    const { hovered, ref } = useHover()
 
     const getNameColor = () => {
         if (color === 'dark') {
@@ -46,21 +48,24 @@ function Pressing({ name, image, color }: PressingType) {
                         <Text color={getNameColor()} ta='center' weight={700}>
                             {name}
                         </Text>
-                        <ActionIcon
-                            color='violet'
-                            radius='xl'
-                            variant='subtle'
-                            onClick={() =>
-                                showNotification({
-                                    icon: <IconCheck size={18} />,
-                                    color: 'teal',
-                                    title: 'Collection updated!',
-                                    message: `You have added "${name}" pressing to your collection.`,
-                                })
-                            }
-                            style={{ position: 'absolute', right: 10 }}>
-                            <IconPlus size={18} />
-                        </ActionIcon>
+                        <div ref={ref} style={{ position: 'absolute', right: 10 }}>
+                            <ActionIcon
+                                color={isInCollection ? (hovered ? 'red' : 'teal') : 'blue.4'}
+                                radius='xl'
+                                variant='subtle'
+                                onClick={() =>
+                                    showNotification({
+                                        icon: <IconCheck size={18} />,
+                                        color: 'teal',
+                                        title: 'Collection updated!',
+                                        message: `You have ${
+                                            isInCollection ? 'removed' : 'added'
+                                        } "${name}" pressing to your collection.`,
+                                    })
+                                }>
+                                {isInCollection ? hovered ? <IconX size={18} /> : <IconChecks size={18} /> : <IconPlus size={18} />}
+                            </ActionIcon>
+                        </div>
                     </Group>
                 </Card.Section>
             </Card>
