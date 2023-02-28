@@ -1,5 +1,6 @@
 import { ActionIcon, Card, createStyles, Group, Image, Modal, Text } from '@mantine/core'
-import { IconPlus } from '@tabler/icons-react'
+import { showNotification } from '@mantine/notifications'
+import { IconCheck, IconPlus } from '@tabler/icons-react'
 import { useState } from 'react'
 
 const useStyles = createStyles(theme => ({
@@ -41,8 +42,8 @@ function Pressing({ name, image, color }: PressingProps) {
                 <Image src={image} height={800} />
             </Modal>
 
-            <Card radius='md' onClick={() => setOpenedModal(true)} style={{ cursor: 'pointer' }}>
-                <Card.Section style={{ overflow: 'hidden' }}>
+            <Card radius='md'>
+                <Card.Section onClick={() => setOpenedModal(true)} style={{ overflow: 'hidden', cursor: 'pointer' }}>
                     <Image height={180} className={classes.image} src={image} style={{ backgroundColor: getCardColor() }} />
                 </Card.Section>
                 <Card.Section py='sm'>
@@ -54,7 +55,14 @@ function Pressing({ name, image, color }: PressingProps) {
                             color='violet'
                             radius='xl'
                             variant='subtle'
-                            onClick={() => {}}
+                            onClick={() =>
+                                showNotification({
+                                    icon: <IconCheck size={18} />,
+                                    color: 'teal',
+                                    title: 'Collection updated!',
+                                    message: `You have added "${name}" pressing to your collection.`,
+                                })
+                            }
                             style={{ position: 'absolute', right: 10 }}>
                             <IconPlus size={18} />
                         </ActionIcon>

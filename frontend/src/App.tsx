@@ -1,4 +1,5 @@
 import { ColorScheme, ColorSchemeProvider, MantineProvider } from '@mantine/core'
+import { NotificationsProvider } from '@mantine/notifications'
 import { useState } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { createBrowserRouter, createRoutesFromElements, Outlet, Route, RouterProvider } from 'react-router-dom'
@@ -45,7 +46,9 @@ function App() {
         <QueryClientProvider client={queryClient}>
             <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
                 <MantineProvider withGlobalStyles withNormalizeCSS theme={{ colorScheme, primaryColor: 'violet' }}>
-                    <RouterProvider router={router} />
+                    <NotificationsProvider>
+                        <RouterProvider router={router} />
+                    </NotificationsProvider>
                 </MantineProvider>
             </ColorSchemeProvider>
         </QueryClientProvider>
