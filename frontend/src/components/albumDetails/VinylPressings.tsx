@@ -1,45 +1,13 @@
 import { Carousel } from '@mantine/carousel'
-import { createStyles, Flex, Title } from '@mantine/core'
+import { Flex, Title } from '@mantine/core'
+import { PressingType } from '../../types'
 import Pressing from './Pressing'
 
 const IMAGE_PATH = 'https://postrecordstorageaccount.blob.core.windows.net/records/'
 
 interface VinylPressingsProps {
-    vinylPressings: {
-        id: string
-        name: string
-        image: string
-        color: string
-    }[]
+    vinylPressings: PressingType[]
 }
-
-const useStyles = createStyles(theme => ({
-    card: {
-        height: 440,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        alignItems: 'flex-start',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-    },
-
-    title: {
-        fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-        fontWeight: 900,
-        color: theme.white,
-        lineHeight: 1.2,
-        fontSize: 32,
-        marginTop: theme.spacing.xs,
-    },
-
-    category: {
-        color: theme.white,
-        opacity: 0.7,
-        fontWeight: 700,
-        textTransform: 'uppercase',
-    },
-}))
 
 function VinylPressings({ vinylPressings }: VinylPressingsProps) {
     const slides = vinylPressings.map(pressing => (

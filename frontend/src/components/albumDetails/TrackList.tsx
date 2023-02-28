@@ -1,12 +1,9 @@
 import { ActionIcon, Flex, Table, Title } from '@mantine/core'
 import { IconHeart } from '@tabler/icons-react'
+import { TracklistType } from '../../types'
 
 interface TrackListProps {
-    tracklist: {
-        number: number
-        title: string
-        duration: string
-    }[]
+    tracklist: TracklistType
 }
 
 function TrackList({ tracklist }: TrackListProps) {

@@ -3,8 +3,9 @@ import { IconPlus } from '@tabler/icons-react'
 import AboutArtist from '../components/albumDetails/AboutArtist'
 import TrackList from '../components/albumDetails/TrackList'
 import VinylPressings from '../components/albumDetails/VinylPressings'
+import { AlbumType } from '../types'
 
-const albumData: AlbumProps = {
+const albumData: AlbumType = {
     title: 'Surrender',
     artist: {
         name: 'Maggie Rogers',
@@ -21,36 +22,42 @@ const albumData: AlbumProps = {
             name: 'Black',
             image: 'maggie-rogers-surrender-black.webp',
             color: 'dark',
+            isInCollection: false,
         },
         {
             id: '2',
             name: 'Hot Pink',
             image: 'maggie-rogers-surrender-pink.webp',
             color: 'pink',
+            isInCollection: false,
         },
         {
             id: '3',
             name: 'Teardrop Blue',
             image: 'maggie-rogers-surrender-blue.webp',
             color: 'blue',
+            isInCollection: true,
         },
         {
             id: '4',
             name: 'Orchid',
             image: 'maggie-rogers-surrender-purple.webp',
             color: 'grape',
+            isInCollection: false,
         },
         {
             id: '5',
             name: 'Spring Green',
             image: 'maggie-rogers-surrender-green.webp',
             color: 'green',
+            isInCollection: false,
         },
         {
             id: '6',
             name: 'Tangerine Dream',
             image: 'maggie-rogers-surrender-orange.webp',
             color: 'orange',
+            isInCollection: false,
         },
     ],
     genre: 'Pop',
@@ -119,31 +126,6 @@ const albumData: AlbumProps = {
             duration: '2:45',
         },
     ],
-}
-
-interface AlbumProps {
-    title: string
-    image: string
-    artist: {
-        name: string
-        image: string
-        description: string
-    }
-    genre: string
-    style: string
-    year: string
-    tracklist: {
-        number: number
-        title: string
-        duration: string
-    }[]
-    spotifyId: string
-    pressings: {
-        id: string
-        name: string
-        image: string
-        color: string
-    }[]
 }
 
 function Album() {

@@ -2,8 +2,9 @@ import { ActionIcon, Card, createStyles, Group, Image, Modal, Text } from '@mant
 import { showNotification } from '@mantine/notifications'
 import { IconCheck, IconPlus } from '@tabler/icons-react'
 import { useState } from 'react'
+import { PressingType } from '../../types'
 
-const useStyles = createStyles(theme => ({
+const useStyles = createStyles(() => ({
     image: {
         transition: 'transform 0.2s ease-in-out',
         '&:hover': {
@@ -12,13 +13,7 @@ const useStyles = createStyles(theme => ({
     },
 }))
 
-interface PressingProps {
-    name: string
-    image: string
-    color: string
-}
-
-function Pressing({ name, image, color }: PressingProps) {
+function Pressing({ name, image, color }: PressingType) {
     const { classes, theme } = useStyles()
     const [openedModal, setOpenedModal] = useState(false)
 
