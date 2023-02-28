@@ -1,4 +1,5 @@
-import { Card, createStyles, Image, Modal, Text } from '@mantine/core'
+import { ActionIcon, Card, createStyles, Group, Image, Modal, Text } from '@mantine/core'
+import { IconPlus } from '@tabler/icons-react'
 import { useState } from 'react'
 
 const useStyles = createStyles(theme => ({
@@ -45,9 +46,19 @@ function Pressing({ name, image, color }: PressingProps) {
                     <Image height={180} className={classes.image} src={image} style={{ backgroundColor: getCardColor() }} />
                 </Card.Section>
                 <Card.Section py='sm'>
-                    <Text color={getNameColor()} ta='center' weight={700}>
-                        {name}
-                    </Text>
+                    <Group position='center'>
+                        <Text color={getNameColor()} ta='center' weight={700}>
+                            {name}
+                        </Text>
+                        <ActionIcon
+                            color='violet'
+                            radius='xl'
+                            variant='subtle'
+                            onClick={() => {}}
+                            style={{ position: 'absolute', right: 10 }}>
+                            <IconPlus size={18} />
+                        </ActionIcon>
+                    </Group>
                 </Card.Section>
             </Card>
         </>
