@@ -1,5 +1,5 @@
-import { Button, Flex, Group, Image, Stack, Text, Title } from '@mantine/core'
-import { IconPlus } from '@tabler/icons-react'
+import { Button, Flex, Grid, Group, Image, Stack, Text, Title } from '@mantine/core'
+import { IconHeartPlus, IconPlus } from '@tabler/icons-react'
 import AboutArtist from '../components/albumDetails/AboutArtist'
 import TrackList from '../components/albumDetails/TrackList'
 import VinylPressings from '../components/albumDetails/VinylPressings'
@@ -11,9 +11,12 @@ const albumData: AlbumType = {
         name: 'Maggie Rogers',
         image: 'https://i.scdn.co/image/ab6761610000e5ebc8167bcebaf508dc6c3459b1',
         description:
-            'Maggie Rogers is an American singer-songwriter and multi-instrumentalist. She released her debut EP, Now That \
-            the Light Is Fading, in 2015. Her debut studio album, Heard It in a Past Life, was released in 2019. Her second studio album, \
-            Heard It in a Past Life, was released in 2021. Her third studio album, Heard It in a Past Life, was released in 2022.',
+            'Maggie Rogers is an American singer-songwriter, multi-instrumentalist and record producer from Easton, Maryland. \
+            Her big break came when her song "Alaska" was played to Pharrell Williams during a master class at New York University. \
+            She released her debut EP, Now That the Light Is Fading, in 2015. Her debut studio album, Heard It in a Past Life, was \
+            released in 2019. She was nominated for a Grammy Award for Best New Artist in 2019. Her second studio album, \
+            Heard It in a Past Life, was released in 2021. Her third studio album, Heard It in a Past Life, was released in 2022. \
+            She graduated from Harvard Divinity School in May 2022.',
     },
     image: 'https://i.scdn.co/image/ab67616d00001e020fdfb62956211c999c39a5a3',
     pressings: [
@@ -162,15 +165,24 @@ function Album() {
                         <Button variant='light' leftIcon={<IconPlus size={20} />}>
                             Add to collection
                         </Button>
+                        <Button color='pink' variant='outline' leftIcon={<IconHeartPlus size={20} />}>
+                            Set as favorite
+                        </Button>
                         <Button color='green.6' component='a' target='_blank' href={`https://open.spotify.com/album/${spotifyId}`}>
                             Listen on Spotify
                         </Button>
                     </Group>
                 </Stack>
             </Flex>
-            <TrackList tracklist={tracklist} />
+            <Grid gutter={50}>
+                <Grid.Col lg={6} sm={6} xs={12}>
+                    <TrackList tracklist={tracklist} />
+                </Grid.Col>
+                <Grid.Col lg={6} sm={6} xs={12}>
+                    <AboutArtist {...artist} />
+                </Grid.Col>
+            </Grid>
             <VinylPressings vinylPressings={pressings} />
-            <AboutArtist {...artist} />
         </Flex>
     )
 }
