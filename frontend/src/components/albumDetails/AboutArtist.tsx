@@ -18,7 +18,7 @@ function AboutArtist({ name, image, description }: AboutArtistProps) {
                     <Text weight={700} size='xl'>
                         {name}
                     </Text>
-                    <Text>{description}</Text>
+                    <Text align='justify'>{description}</Text>
                 </Text>
             </Container>
         </Flex>
