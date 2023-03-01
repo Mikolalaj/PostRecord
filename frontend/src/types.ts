@@ -1,4 +1,4 @@
-type MantineColors =
+type MantineColor =
     | 'dark'
     | 'gray'
     | 'red'
@@ -24,7 +24,7 @@ export type PressingType = {
     id: string
     name: string
     image: string
-    color: MantineColors
+    color: MantineColor
     isInCollection: boolean
 }
 
