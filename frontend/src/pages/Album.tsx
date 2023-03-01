@@ -149,49 +149,49 @@ const albumData: AlbumType = {
         name: 'Taylor Swift',
         image: 'https://i.scdn.co/image/ab676161000051745a00969a4698c3132a15fbb0',
         description:
-            'Maggie Rogers is an American singer-songwriter, multi-instrumentalist and record producer from Easton, Maryland. \
-            Her big break came when her song "Alaska" was played to Pharrell Williams during a master class at New York University. \
-            She released her debut EP, Now That the Light Is Fading, in 2015. Her debut studio album, Heard It in a Past Life, was \
-            released in 2019. She was nominated for a Grammy Award for Best New Artist in 2019. Her second studio album, \
-            Heard It in a Past Life, was released in 2021. Her third studio album, Heard It in a Past Life, was released in 2022. \
-            She graduated from Harvard Divinity School in May 2022.',
+            'Taylor Alison Swift is an American singer-songwriter. Her discography spans multiple genres, and her narrative \
+            songwriting, which is often inspired by her personal life, has received widespread media coverage and critical praise.\
+            Born in West Reading, Pennsylvania, Swift relocated to Nashville, Tennessee in 2004 to pursue a career in country music.\
+            She broke into the country music scene with her eponymous self-titled debut studio album, "Taylor Swift" in 2006, which \
+            included the singles "Teardrops on My Guitar" and "Our Song". Swift also released the holiday album, Sounds of the Season:\
+            The Taylor Swift Holiday Collection, later titled as "The Taylor Swift Holiday Collection" in October 2007.',
     },
     image: 'https://i.scdn.co/image/ab67616d00001e02bb54dde68cd23e2a268ae0f5',
     pressings: [
         {
             id: '1',
-            name: 'Lavender',
-            image: 'taylor-swift-midnights-lavender.png',
-            color: 'grape',
-            isInCollection: false,
-        },
-        {
-            id: '2',
-            name: 'Moonstone Blue',
-            image: 'taylor-swift-midnights-moonstone-blue.png',
-            color: 'blue',
-            isInCollection: true,
-        },
-        {
-            id: '3',
             name: 'Jade Green',
             image: 'taylor-swift-midnights-jade-green.png',
             color: 'green',
             isInCollection: false,
         },
         {
-            id: '4',
+            id: '2',
             name: 'Mahogany',
             image: 'taylor-swift-midnights-mahogany.png',
             color: 'orange',
             isInCollection: false,
         },
         {
-            id: '5',
+            id: '3',
             name: 'Blood Moon',
             image: 'taylor-swift-midnights-blood-moon.png',
             color: 'yellow',
             isInCollection: false,
+        },
+        {
+            id: '4',
+            name: 'Lavender',
+            image: 'taylor-swift-midnights-lavender.png',
+            color: 'grape',
+            isInCollection: false,
+        },
+        {
+            id: '5',
+            name: 'Moonstone Blue',
+            image: 'taylor-swift-midnights-moonstone-blue.png',
+            color: 'blue',
+            isInCollection: true,
         },
     ],
     genre: 'Pop',
