@@ -1,4 +1,6 @@
 import { Flex, Grid } from '@mantine/core'
+import { useMemo } from 'react'
+import { useParams } from 'react-router-dom'
 import AboutArtist from '../components/albumDetails/AboutArtist'
 import Header from '../components/albumDetails/Header'
 import TrackList from '../components/albumDetails/TrackList'
@@ -281,20 +283,32 @@ const albumDataMidnights: AlbumType = {
 }
 
 function Album() {
-    // function Album({ title, artist, image, pressings }: AlbumProps) {
-    const { artist, pressings, tracklist } = albumDataSurrender
+    const { id } = useParams()
+
+    const albumData = useMemo(() => {
+        if (!id) {
+            return null
+        }
+        if (id === '2') {
+            return albumDataSurrender
+        } else if (id === '3') {
+            return albumDataMidnights
+        }
+        return null
+    }, [])
+
     return (
         <Flex gap='xl' direction='column'>
-            <Header {...albumDataSurrender} />
+            <Header {...albumData!} />
             <Grid gutter={50}>
                 <Grid.Col lg={6} sm={6} xs={12}>
-                    <TrackList tracklist={tracklist} />
+                    <TrackList tracklist={albumData!.tracklist} />
                 </Grid.Col>
                 <Grid.Col lg={6} sm={6} xs={12}>
-                    <AboutArtist {...artist} />
+                    <AboutArtist {...albumData!.artist} />
                 </Grid.Col>
             </Grid>
-            <VinylPressings vinylPressings={pressings} />
+            <VinylPressings vinylPressings={albumData!.pressings} />
         </Flex>
     )
 }
