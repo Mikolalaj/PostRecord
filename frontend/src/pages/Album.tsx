@@ -23,42 +23,42 @@ const albumDataSurrender: AlbumType = {
         {
             id: '1',
             name: 'Black',
-            image: 'maggie-rogers-surrender-black.webp',
+            image: 'maggie-rogers-surrender-black.png',
             color: 'dark',
             isInCollection: false,
         },
         {
             id: '2',
             name: 'Hot Pink',
-            image: 'maggie-rogers-surrender-pink.webp',
+            image: 'maggie-rogers-surrender-pink.png',
             color: 'pink',
             isInCollection: false,
         },
         {
             id: '3',
             name: 'Teardrop Blue',
-            image: 'maggie-rogers-surrender-blue.webp',
+            image: 'maggie-rogers-surrender-blue.png',
             color: 'blue',
             isInCollection: true,
         },
         {
             id: '4',
             name: 'Orchid',
-            image: 'maggie-rogers-surrender-purple.webp',
+            image: 'maggie-rogers-surrender-purple.png',
             color: 'grape',
             isInCollection: false,
         },
         {
             id: '5',
             name: 'Spring Green',
-            image: 'maggie-rogers-surrender-green.webp',
+            image: 'maggie-rogers-surrender-green.png',
             color: 'green',
             isInCollection: false,
         },
         {
             id: '6',
             name: 'Tangerine Dream',
-            image: 'maggie-rogers-surrender-orange.webp',
+            image: 'maggie-rogers-surrender-orange.png',
             color: 'orange',
             isInCollection: false,
         },
@@ -143,7 +143,7 @@ const albumDataSurrender: AlbumType = {
     ],
 }
 
-const albumData: AlbumType = {
+const albumDataMidnights: AlbumType = {
     title: 'Midnights',
     artist: {
         name: 'Taylor Swift',
@@ -282,10 +282,10 @@ const albumData: AlbumType = {
 
 function Album() {
     // function Album({ title, artist, image, pressings }: AlbumProps) {
-    const { artist, pressings, tracklist } = albumData
+    const { artist, pressings, tracklist } = albumDataSurrender
     return (
         <Flex gap='xl' direction='column'>
-            <Header {...albumData} />
+            <Header {...albumDataSurrender} />
             <Grid gutter={50}>
                 <Grid.Col lg={6} sm={6} xs={12}>
                     <TrackList tracklist={tracklist} />
