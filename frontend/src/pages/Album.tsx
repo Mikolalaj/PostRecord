@@ -5,7 +5,7 @@ import TrackList from '../components/albumDetails/TrackList'
 import VinylPressings from '../components/albumDetails/VinylPressings'
 import { AlbumType } from '../types'
 
-const albumData: AlbumType = {
+const albumDataSurrender: AlbumType = {
     title: 'Surrender',
     artist: {
         name: 'Maggie Rogers',
@@ -127,6 +127,130 @@ const albumData: AlbumType = {
             number: 12,
             title: 'Different Kind Of World',
             duration: '2:45',
+        },
+    ],
+}
+
+const albumData: AlbumType = {
+    title: 'Midnights',
+    artist: {
+        name: 'Taylor Swift',
+        image: 'https://i.scdn.co/image/ab676161000051745a00969a4698c3132a15fbb0',
+        description:
+            'Maggie Rogers is an American singer-songwriter, multi-instrumentalist and record producer from Easton, Maryland. \
+            Her big break came when her song "Alaska" was played to Pharrell Williams during a master class at New York University. \
+            She released her debut EP, Now That the Light Is Fading, in 2015. Her debut studio album, Heard It in a Past Life, was \
+            released in 2019. She was nominated for a Grammy Award for Best New Artist in 2019. Her second studio album, \
+            Heard It in a Past Life, was released in 2021. Her third studio album, Heard It in a Past Life, was released in 2022. \
+            She graduated from Harvard Divinity School in May 2022.',
+    },
+    image: 'https://i.scdn.co/image/ab67616d00001e02bb54dde68cd23e2a268ae0f5',
+    pressings: [
+        {
+            id: '1',
+            name: 'Lavender',
+            image: 'taylor-swift-midnights-lavender.png',
+            color: 'grape',
+            isInCollection: false,
+        },
+        {
+            id: '2',
+            name: 'Moonstone Blue',
+            image: 'taylor-swift-midnights-moonstone-blue.png',
+            color: 'blue',
+            isInCollection: true,
+        },
+        {
+            id: '3',
+            name: 'Jade Green',
+            image: 'taylor-swift-midnights-jade-green.png',
+            color: 'green',
+            isInCollection: false,
+        },
+        {
+            id: '4',
+            name: 'Mahogany',
+            image: 'taylor-swift-midnights-mahogany.png',
+            color: 'orange',
+            isInCollection: false,
+        },
+        {
+            id: '5',
+            name: 'Blood Moon',
+            image: 'taylor-swift-midnights-blood-moon.png',
+            color: 'yellow',
+            isInCollection: false,
+        },
+    ],
+    genre: 'Pop',
+    style: 'Vocal',
+    year: '2022',
+    spotifyId: '151w1FgRZfnKZA9FEcg9Z3',
+    tracklist: [
+        {
+            number: 1,
+            title: 'Lavender Haze',
+            duration: '3:22',
+        },
+        {
+            number: 2,
+            title: 'Maroon',
+            duration: '3:38',
+        },
+        {
+            number: 3,
+            title: 'Anti-Hero',
+            duration: '3:20',
+        },
+        {
+            number: 4,
+            title: "You're On Your Own, Kid",
+            duration: '4:57',
+        },
+        {
+            number: 5,
+            title: 'Snow On The Beach',
+            duration: '5:05',
+        },
+        {
+            number: 6,
+            title: 'Midnight Rain',
+            duration: '2:57',
+        },
+        {
+            number: 7,
+            title: 'Question...?',
+            duration: '3:40',
+        },
+        {
+            number: 8,
+            title: 'Vigilante Shit',
+            duration: '4:13',
+        },
+        {
+            number: 9,
+            title: 'Bejeweled',
+            duration: '3:12',
+        },
+        {
+            number: 10,
+            title: 'Labryinth',
+            duration: '3:42',
+        },
+        {
+            number: 11,
+            title: 'Karma',
+            duration: '5:11',
+        },
+        {
+            number: 12,
+            title: 'Sweet Nothing',
+            duration: '2:45',
+        },
+        {
+            number: 13,
+            title: 'Mastermind',
+            duration: '3:11',
         },
     ],
 }

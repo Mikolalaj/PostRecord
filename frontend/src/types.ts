@@ -1,3 +1,19 @@
+type MantineColors =
+    | 'dark'
+    | 'gray'
+    | 'red'
+    | 'pink'
+    | 'grape'
+    | 'violet'
+    | 'indigo'
+    | 'blue'
+    | 'cyan'
+    | 'green'
+    | 'lime'
+    | 'yellow'
+    | 'orange'
+    | 'teal'
+
 export type TracklistType = {
     number: number
     title: string
@@ -8,7 +24,7 @@ export type PressingType = {
     id: string
     name: string
     image: string
-    color: string
+    color: MantineColors
     isInCollection: boolean
 }
 
