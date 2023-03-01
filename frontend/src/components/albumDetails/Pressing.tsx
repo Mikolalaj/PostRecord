@@ -1,4 +1,4 @@
-import { ActionIcon, Card, createStyles, Group, Image, Modal, Text } from '@mantine/core'
+import { ActionIcon, Card, Center, createStyles, Group, Image, Modal, Text } from '@mantine/core'
 import { useHover } from '@mantine/hooks'
 import { showNotification } from '@mantine/notifications'
 import { IconCheck, IconChecks, IconPlus, IconX } from '@tabler/icons-react'
@@ -36,12 +36,14 @@ function Pressing({ name, image, color, isInCollection }: PressingType) {
     return (
         <>
             <Modal size={800} centered opened={openedModal} onClose={() => setOpenedModal(false)} title={name}>
-                <Image src={image} height={800} />
+                <Center>
+                    <Image src={image} width={700} />
+                </Center>
             </Modal>
 
             <Card radius='md'>
                 <Card.Section onClick={() => setOpenedModal(true)} style={{ overflow: 'hidden', cursor: 'pointer' }}>
-                    <Image height={180} className={classes.image} src={image} style={{ backgroundColor: getCardColor() }} />
+                    <Image px={30} py={20} className={classes.image} src={image} style={{ backgroundColor: getCardColor() }} />
                 </Card.Section>
                 <Card.Section py='sm'>
                     <Group position='center'>
