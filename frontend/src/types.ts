@@ -18,6 +18,7 @@ export type TracklistType = {
     number: number
     title: string
     duration: string
+    features: string | null
 }[]
 
 export type PressingType = {
