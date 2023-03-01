@@ -9,7 +9,11 @@ function TrackList({ tracklist }: TrackListProps) {
     const rows = tracklist.map(track => (
         <tr key={track.number}>
             <td>{track.number}</td>
-            <td>{track.title}</td>
+            <td>
+                <Text>
+                    {track.title} {track.features && <Text component='span' c='dimmed'>{`(feat. ${track.features})`}</Text>}
+                </Text>
+            </td>
             <td>
                 <Text align='right'>{track.duration}</Text>
             </td>
