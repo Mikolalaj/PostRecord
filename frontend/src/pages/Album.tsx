@@ -282,6 +282,174 @@ const albumDataMidnights: AlbumType = {
     ],
 }
 
+const albumDataDykttiatuob: AlbumType = {
+    title: 'Did You Know That There Is A Tunnel Under Ocean Blvd',
+    artist: {
+        name: 'Lana Del Rey',
+        image: 'https://i.scdn.co/image/ab67616100005174b99cacf8acd5378206767261',
+        description:
+            'Elizabeth Woolridge Grant, known professionally as Lana Del Rey, is an American singer-songwriter and producer. Her music \
+            is noted for its cinematic quality and exploration of tragic romance, glamour, and melancholia, with frequent references to \
+            contemporary pop culture and 1950s-1960s Americana. She is the recipient of various accolades, including two Brit Awards, \
+            two MTV Europe Music Awards, and a Satellite Award, in addition to nominations for six Grammy Awards and a Golden Globe Award. \
+            Variety honored her at their Hitmakers Awards for being "one of the most influential singer-songwriters of the 21st century".',
+    },
+    image: 'https://i.scdn.co/image/ab67616d00001e0259ae8cf65d498afdd5585634',
+    pressings: [
+        {
+            id: '1',
+            name: 'Standard Black',
+            image: 'lana-del-rey-dykttiatuob-black.png',
+            color: 'gray',
+            isInCollection: true,
+        },
+        {
+            id: '2',
+            name: 'Retail Red',
+            image: 'lana-del-rey-dykttiatuob-red.png',
+            color: 'red',
+            isInCollection: false,
+        },
+        {
+            id: '3',
+            name: 'Amazon Green',
+            image: 'lana-del-rey-dykttiatuob-green.png',
+            color: 'green',
+            isInCollection: false,
+        },
+        {
+            id: '4',
+            name: 'Indie Pink',
+            image: 'lana-del-rey-dykttiatuob-pink.png',
+            color: 'pink',
+            isInCollection: false,
+        },
+        {
+            id: '5',
+            name: 'Webstore White',
+            image: 'lana-del-rey-dykttiatuob-white.png',
+            color: 'gray',
+            isInCollection: true,
+        },
+        {
+            id: '6',
+            name: 'Limited Nude',
+            image: 'lana-del-rey-dykttiatuob-nude.png',
+            color: 'gray',
+            isInCollection: false,
+        },
+        {
+            id: '7',
+            name: 'Picture Disk',
+            image: 'lana-del-rey-dykttiatuob-picture.png',
+            color: 'gray',
+            isInCollection: false,
+        },
+    ],
+    genre: 'Pop',
+    style: 'Indie',
+    year: '2023',
+    spotifyId: '5HOHne1wzItQlIYmLXLYfZ',
+    tracklist: [
+        {
+            number: 1,
+            title: 'The Grants',
+            duration: '4:55',
+            features: null,
+        },
+        {
+            number: 2,
+            title: 'Did you know that there\'s a tunnel under Ocean Blvd',
+            duration: '4:56',
+            features: null,
+        },
+        {
+            number: 3,
+            title: 'Sweet',
+            duration: '3:35',
+            features: null,
+        },
+        {
+            number: 4,
+            title: "A&W",
+            duration: '3:09',
+            features: null,
+        },
+        {
+            number: 5,
+            title: 'Judah Smith Interlude',
+            duration: '4:36',
+            features: 'Lana Del Rey',
+        },
+        {
+            number: 6,
+            title: 'Candy Necklace',
+            duration: '5:14',
+            features: 'John Batiste',
+        },
+        {
+            number: 7,
+            title: 'John Batiste Interlude',
+            duration: '3:33',
+            features: null,
+        },
+        {
+            number: 8,
+            title: 'Kintsugi',
+            duration: '6:18',
+            features: null,
+        },
+        {
+            number: 9,
+            title: 'Fingertips',
+            duration: '5:48',
+            features: null,
+        },
+        {
+            number: 10,
+            title: 'Paris, Texas',
+            duration: '3:26',
+            features: 'SYML',
+        },
+        {
+            number: 11,
+            title: 'Grandfather please stand on the shoulder of my father while he\'s deep sea fishing',
+            duration: '5:11',
+            features: 'RIOPY',
+        },
+        {
+            number: 12,
+            title: 'let The Light In',
+            duration: '2:45',
+            features: 'Father John Misty',
+        },
+        {
+            number: 13,
+            title: 'Margaret',
+            duration: '3:11',
+            features: 'Bleachers',
+        },
+        {
+            number: 14,
+            title: 'Fishtail',
+            duration: '3:11',
+            features: null,
+        },
+        {
+            number: 13,
+            title: 'Peppers',
+            duration: '3:11',
+            features: 'Tommy Genesis',
+        },
+        {
+            number: 13,
+            title: 'Taco Truck x VB',
+            duration: '5:53',
+            features: null,
+        },
+    ],
+}
+
 function Album() {
     const { id } = useParams()
 
@@ -293,6 +461,8 @@ function Album() {
             return albumDataSurrender
         } else if (id === '3') {
             return albumDataMidnights
+        } else if (id === '11') {
+            return albumDataDykttiatuob
         }
         return null
     }, [])

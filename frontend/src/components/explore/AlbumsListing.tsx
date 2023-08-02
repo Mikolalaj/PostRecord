@@ -72,6 +72,13 @@ const albumsData = [
         image: 'https://i.scdn.co/image/ab67616d00001e0295f754318336a07e85ec59bc',
         isNew: false,
     },
+    {
+        id: '11',
+        title: 'Did You Know That There Is A Tunnel Under Ocean Blvd',
+        artist: 'Lana Del Rey',
+        image: 'https://i.scdn.co/image/ab67616d00001e0259ae8cf65d498afdd5585634',
+        isNew: true,
+    },
 ]
 
 function AlbumsListing() {
