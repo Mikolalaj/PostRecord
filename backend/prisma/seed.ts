@@ -1,7 +1,7 @@
 import { prisma } from '../src/app'
 
 async function main() {
-    const admin = await prisma.user.upsert({
+    await prisma.user.upsert({
         where: { email: 'olejnikmikolaj@gmail.com' },
         update: {},
         create: {
@@ -13,7 +13,6 @@ async function main() {
             registrationToken: null,
         },
     })
-    console.log({ admin })
 }
 
 main()

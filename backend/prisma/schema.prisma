@@ -20,3 +20,20 @@ model User {
   registrationToken String?   @unique
   lastLogin         DateTime?
 }
+
+model Album {
+  id              String     @id @default(uuid()) @db.Uuid
+  artistSpotifyId String
+  spotifyId       String     @unique
+  genre           String
+  pressings       Pressing[]
+}
+
+model Pressing {
+  id      String @id @default(uuid()) @db.Uuid
+  name    String
+  album   Album  @relation(fields: [albumId], references: [id])
+  albumId String @db.Uuid
+  color   String
+  image   String
+}
