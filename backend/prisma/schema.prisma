@@ -19,6 +19,7 @@ model User {
   isAdmin           Boolean   @default(false)
   registrationToken String?   @unique
   lastLogin         DateTime?
+  spotifyToken      String?
 }
 
 model Album {
