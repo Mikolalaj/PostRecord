@@ -16,11 +16,11 @@
     "@mantine/hooks": "^5.10.3",
     "@mantine/notifications": "^5.10.5",
     "@tabler/icons-react": "^2.1.2",
+    "@tanstack/react-query": "^4.32.6",
     "axios": "^1.3.2",
     "embla-carousel-react": "^7.0.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-query": "^3.39.3",
     "react-router-dom": "^6.8.0",
     "recoil": "^0.7.6"
   },

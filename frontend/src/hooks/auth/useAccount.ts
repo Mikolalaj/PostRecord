@@ -1,5 +1,5 @@
+import { useMutation } from '@tanstack/react-query'
 import axios, { AxiosError, AxiosResponse } from 'axios'
-import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil'
 import { loginPageResponse } from '../../atoms'
