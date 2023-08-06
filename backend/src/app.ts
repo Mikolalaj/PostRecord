@@ -6,20 +6,22 @@ import express, { Application } from 'express'
 import authentication from './middlewares/authentication'
 import { morganMiddleware } from './middlewares/morgan'
 import { redisSession } from './middlewares/redisSession'
+import albumsRouter from './routes/albums'
 import authRouter from './routes/authentication'
 import usersRouter from './routes/users'
+import { createClient } from 'redis'
+
+export const client = createClient({
+    url: `redis://default:${process.env.REDIS_CACHE_PASSWORD}@localhost:${process.env.REDIS_CACHE_PORT}`,
+})
+
+client.on('error', (error: any) => console.log('Redis Client Error', error))
+
+client.connect()
 
 declare module 'express-session' {
     interface SessionData {
         user: User
-    }
-}
-
-declare global {
-    namespace Express {
-        export interface Request {
-            user: User
-        }
     }
 }
 
@@ -39,6 +41,7 @@ app.use('/api/auth', authRouter)
 app.use(authentication)
 
 app.use('/api/users', usersRouter)
+app.use('/api/albums', albumsRouter)
 
 app.get('/api', (req, res) => {
     res.send({ message: 'Hello from the PostRecord API!' })

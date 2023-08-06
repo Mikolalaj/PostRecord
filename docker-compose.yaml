@@ -16,6 +16,16 @@ services:
         command: --requirepass redis
         ports:
             - '6379:6379'
+    spotifyCache:
+        image: redis:7.0.8
+        restart: always
+        command: --requirepass redis-cache --port 6380
+        ports:
+            - '6380:6380'
+        volumes:
+            - cache:/data
 volumes:
     db:
+        driver: local
+    cache:
         driver: local

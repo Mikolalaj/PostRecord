@@ -297,13 +297,6 @@ const albumDataDykttiatuob: AlbumType = {
     image: 'https://i.scdn.co/image/ab67616d00001e0259ae8cf65d498afdd5585634',
     pressings: [
         {
-            id: '1',
-            name: 'Standard Black',
-            image: 'lana-del-rey-dykttiatuob-black.png',
-            color: 'gray',
-            isInCollection: true,
-        },
-        {
             id: '2',
             name: 'Retail Red',
             image: 'lana-del-rey-dykttiatuob-red.png',
