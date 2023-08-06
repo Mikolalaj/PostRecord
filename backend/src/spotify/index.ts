@@ -48,7 +48,7 @@ async function getAccessToken(userId: string): Promise<string> {
 export async function getSpotifyData(userId: string, url: string) {
     const cachedData = await cache.get(url)
     if (cachedData) {
-        logger.info('Using cached data')
+        logger.info(`Using cached data for ${url}`)
         return JSON.parse(cachedData)
     }
     const token = await getAccessToken(userId)

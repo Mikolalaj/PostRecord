@@ -39,12 +39,12 @@ const useStyles = createStyles(theme => ({
 interface AlbumCardProps {
     id: string
     title: string
-    artist: string
+    artistName: string
     image: string
     isNew: boolean
 }
 
-export function AlbumCard({ id, title, artist, image, isNew }: AlbumCardProps) {
+export function AlbumCard({ id, title, artistName, image, isNew }: AlbumCardProps) {
     const { classes, theme } = useStyles()
     const navigate = useNavigate()
 
@@ -66,7 +66,7 @@ export function AlbumCard({ id, title, artist, image, isNew }: AlbumCardProps) {
                     )}
                 </Group>
                 <Text size='sm' mt='xs'>
-                    {artist}
+                    {artistName}
                 </Text>
             </Card.Section>
         </Card>

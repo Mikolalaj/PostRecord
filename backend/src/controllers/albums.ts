@@ -25,14 +25,12 @@ export type Artist = {
 
 type Album = {
     id: string
+    artistName: string
     title: string
     image: string
     genre: string
-    year: string
+    releaseDate: string
     spotifyId: string
-    // artist: Artist
-    // tracklist: Tracklist
-    // pressings: Pressing[]
 }
 
 export async function getAlbums(req: Request, res: Response): Promise<Response> {
@@ -49,10 +47,11 @@ export async function getAlbums(req: Request, res: Response): Promise<Response> 
             const spotifyAlbum = await getSpotifyData(userId, `https://api.spotify.com/v1/albums/${album.spotifyId}`)
             return {
                 id: album.id,
+                artistName: spotifyAlbum.artists[0].name,
                 title: spotifyAlbum.name,
                 image: spotifyAlbum.images[1].url,
                 genre: album.genre,
-                year: spotifyAlbum.release_date.slice(0, 4),
+                releaseDate: spotifyAlbum.release_date,
                 spotifyId: album.spotifyId,
             }
         })
