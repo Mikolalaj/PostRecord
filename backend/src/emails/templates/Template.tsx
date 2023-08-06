@@ -20,7 +20,12 @@ function Template({ preview, children }: TemplateProps) {
             <Preview>{preview}</Preview>
             <Section style={main}>
                 <Container style={container}>
-                    <Img src={`${process.env.APP_URL}/src/assets/logo-filled.png`} height='50' alt='PostRecord' style={logo} />
+                    <Img
+                        src='https://postrecordstorageaccount.blob.core.windows.net/branding/logo-mail.png'
+                        height='50'
+                        alt='PostRecord'
+                        style={logo}
+                    />
                     {children}
                     <Text style={paragraph}>
                         Best,
