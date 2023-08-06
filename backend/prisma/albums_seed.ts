@@ -16,6 +16,26 @@ async function createAlbums() {
             genre: 'Alternative/Indie',
         },
     })
+    await prisma.album.upsert({
+        where: { id: 'ad322cd7-696f-4e0d-9e6d-f438f329437f' },
+        update: {},
+        create: {
+            id: 'ad322cd7-696f-4e0d-9e6d-f438f329437f',
+            spotifyId: '2VeOtQQAJxR8VyvmoXqIbI', // Surrender
+            artistSpotifyId: '4NZvixzsSefsNiIqXn0NDe', // Maggie Rogers
+            genre: 'Indie Pop',
+        },
+    })
+    await prisma.album.upsert({
+        where: { id: '99f1160a-be73-4287-91e2-f8a5c9710f48' },
+        update: {},
+        create: {
+            id: '99f1160a-be73-4287-91e2-f8a5c9710f48',
+            spotifyId: '151w1FgRZfnKZA9FEcg9Z3', // Midnights
+            artistSpotifyId: '06HL4z0CvFAxyc27GXpf02', // Taylor Swift
+            genre: 'Pop',
+        },
+    })
 }
 
 async function createPressings() {
@@ -108,6 +128,149 @@ async function createPressings() {
             name: 'Picture Disk',
             image: 'lana-del-rey-dykttiatuob-picture.png',
             color: 'gray',
+        },
+    })
+    await prisma.pressing.upsert({
+        where: { id: 'caea3aaa-bdb1-4a8b-b8eb-4d90a523cc87' },
+        update: {},
+        create: {
+            id: 'caea3aaa-bdb1-4a8b-b8eb-4d90a523cc87',
+            album: {
+                connect: { id: 'ad322cd7-696f-4e0d-9e6d-f438f329437f' },
+            },
+            name: 'Black',
+            image: 'maggie-rogers-surrender-black.png',
+            color: 'dark',
+        },
+    })
+    await prisma.pressing.upsert({
+        where: { id: 'ef2aa0d5-8947-4112-8a70-cee14e65e06e' },
+        update: {},
+        create: {
+            id: 'ef2aa0d5-8947-4112-8a70-cee14e65e06e',
+            album: {
+                connect: { id: 'ad322cd7-696f-4e0d-9e6d-f438f329437f' },
+            },
+            name: 'Hot Pink',
+            image: 'maggie-rogers-surrender-pink.png',
+            color: 'pink',
+        },
+    })
+    await prisma.pressing.upsert({
+        where: { id: 'cc73b71f-a8b2-4841-a508-11b2dd5703b0' },
+        update: {},
+        create: {
+            id: 'cc73b71f-a8b2-4841-a508-11b2dd5703b0',
+            album: {
+                connect: { id: 'ad322cd7-696f-4e0d-9e6d-f438f329437f' },
+            },
+            name: 'Teardrop Blue',
+            image: 'maggie-rogers-surrender-blue.png',
+            color: 'blue',
+        },
+    })
+    await prisma.pressing.upsert({
+        where: { id: 'f4379ee9-450c-4ff0-af43-a235f9bd0a6b' },
+        update: {},
+        create: {
+            id: 'f4379ee9-450c-4ff0-af43-a235f9bd0a6b',
+            album: {
+                connect: { id: 'ad322cd7-696f-4e0d-9e6d-f438f329437f' },
+            },
+            name: 'Orchid',
+            image: 'maggie-rogers-surrender-purple.png',
+            color: 'grape',
+        },
+    })
+    await prisma.pressing.upsert({
+        where: { id: 'ddc47e7d-6f1e-4a5c-b65e-aa8b7b3847ea' },
+        update: {},
+        create: {
+            id: 'ddc47e7d-6f1e-4a5c-b65e-aa8b7b3847ea',
+            album: {
+                connect: { id: 'ad322cd7-696f-4e0d-9e6d-f438f329437f' },
+            },
+            name: 'Spring Green',
+            image: 'maggie-rogers-surrender-green.png',
+            color: 'green',
+        },
+    })
+    await prisma.pressing.upsert({
+        where: { id: '5c8af1ea-0d01-4b7f-a979-3b93b9a67cf6' },
+        update: {},
+        create: {
+            id: '5c8af1ea-0d01-4b7f-a979-3b93b9a67cf6',
+            album: {
+                connect: { id: 'ad322cd7-696f-4e0d-9e6d-f438f329437f' },
+            },
+            name: 'Tangerine Dream',
+            image: 'maggie-rogers-surrender-orange.png',
+            color: 'orange',
+        },
+    })
+    await prisma.pressing.upsert({
+        where: { id: '0b468081-bd6e-4614-8db5-163aa65bccbd' },
+        update: {},
+        create: {
+            id: '0b468081-bd6e-4614-8db5-163aa65bccbd',
+            album: {
+                connect: { id: '99f1160a-be73-4287-91e2-f8a5c9710f48' },
+            },
+            name: 'Jade Green',
+            image: 'taylor-swift-midnights-jade-green.png',
+            color: 'green',
+        },
+    })
+    await prisma.pressing.upsert({
+        where: { id: 'd0e72ec6-cddc-420b-813d-c805c8c4f83e' },
+        update: {},
+        create: {
+            id: 'd0e72ec6-cddc-420b-813d-c805c8c4f83e',
+            album: {
+                connect: { id: '99f1160a-be73-4287-91e2-f8a5c9710f48' },
+            },
+            name: 'Mahogany',
+            image: 'taylor-swift-midnights-mahogany.png',
+            color: 'orange',
+        },
+    })
+    await prisma.pressing.upsert({
+        where: { id: '575186ad-4b72-4fed-9f12-1a1ef4cdfb62' },
+        update: {},
+        create: {
+            id: '575186ad-4b72-4fed-9f12-1a1ef4cdfb62',
+            album: {
+                connect: { id: '99f1160a-be73-4287-91e2-f8a5c9710f48' },
+            },
+            name: 'Blood Moon',
+            image: 'taylor-swift-midnights-blood-moon.png',
+            color: 'yellow',
+        },
+    })
+    await prisma.pressing.upsert({
+        where: { id: '35418d9b-c6d8-488e-b330-57347ebd395a' },
+        update: {},
+        create: {
+            id: '35418d9b-c6d8-488e-b330-57347ebd395a',
+            album: {
+                connect: { id: '99f1160a-be73-4287-91e2-f8a5c9710f48' },
+            },
+            name: 'Lavender',
+            image: 'taylor-swift-midnights-lavender.png',
+            color: 'grape',
+        },
+    })
+    await prisma.pressing.upsert({
+        where: { id: '52f1c288-e23d-49ff-b58f-976a59f99db4' },
+        update: {},
+        create: {
+            id: '52f1c288-e23d-49ff-b58f-976a59f99db4',
+            album: {
+                connect: { id: '99f1160a-be73-4287-91e2-f8a5c9710f48' },
+            },
+            name: 'Moonstone Blue',
+            image: 'taylor-swift-midnights-moonstone-blue.png',
+            color: 'blue',
         },
     })
 }
