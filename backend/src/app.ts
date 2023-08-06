@@ -3,21 +3,28 @@ import bodyParser from 'body-parser'
 import cookies from 'cookie-parser'
 import * as dotenv from 'dotenv'
 import express, { Application } from 'express'
+import { createClient } from 'redis'
+import winston from 'winston'
 import authentication from './middlewares/authentication'
 import { morganMiddleware } from './middlewares/morgan'
 import { redisSession } from './middlewares/redisSession'
 import albumsRouter from './routes/albums'
 import authRouter from './routes/authentication'
 import usersRouter from './routes/users'
-import { createClient } from 'redis'
 
-export const client = createClient({
+export const logger = winston.createLogger({
+    level: 'info',
+    format: winston.format.simple(),
+    transports: [new winston.transports.Console()],
+})
+
+export const cache = createClient({
     url: `redis://default:${process.env.REDIS_CACHE_PASSWORD}@localhost:${process.env.REDIS_CACHE_PORT}`,
 })
 
-client.on('error', (error: any) => console.log('Redis Client Error', error))
+cache.on('error', (error: any) => console.log('Redis Client Error', error))
 
-client.connect()
+cache.connect()
 
 declare module 'express-session' {
     interface SessionData {

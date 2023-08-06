@@ -1,5 +1,5 @@
 import { env } from 'process'
-import { client, prisma } from '../app'
+import { cache, logger, prisma } from '../app'
 
 async function generateNewAccessToken() {
     let auth = env.SPOTIFY_CLIENT_ID + ':' + env.SPOTIFY_CLIENT_SECRET
@@ -46,9 +46,9 @@ async function getAccessToken(userId: string): Promise<string> {
 }
 
 export async function getSpotifyData(userId: string, url: string) {
-    const cachedData = await client.get(url)
+    const cachedData = await cache.get(url)
     if (cachedData) {
-        console.log('using cached data')
+        logger.info('Using cached data')
         return JSON.parse(cachedData)
     }
     const token = await getAccessToken(userId)
@@ -73,7 +73,7 @@ export async function getSpotifyData(userId: string, url: string) {
             return data
         }
         const data = await response.json()
-        await client.set(url, JSON.stringify(data))
+        await cache.set(url, JSON.stringify(data))
         return data
     } catch (error) {
         console.error(error)
