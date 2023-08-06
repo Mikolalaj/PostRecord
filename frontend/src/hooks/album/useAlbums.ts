@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { useQuery } from '@tanstack/react-query'
 
 export type Album = {
@@ -17,7 +17,7 @@ type Error = {
 }
 
 function useAlbums() {
-    return useQuery<Album[], Error>(['albums'], async () => (await axios.get('/api/albums')).data, {
+    return useQuery<Album[], AxiosError<Error>>(['albums'], async () => (await axios.get('/api/albums')).data, {
         staleTime: 1000 * 60 * 2,
         select: data =>
             data.map((album: Album) => ({
@@ -25,7 +25,6 @@ function useAlbums() {
                 // album is new if it's release date was in the last month
                 isNew: new Date(album.date) > new Date(Date.now() - 1000 * 60 * 60 * 24 * 30),
             })),
-        placeholderData: [],
     })
 }
 

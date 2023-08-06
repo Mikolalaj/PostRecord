@@ -35,7 +35,6 @@ type Album = {
 
 export async function getAlbums(req: Request, res: Response): Promise<Response> {
     const { sortBy, skip } = req.params
-
     const userId = req.session.user?.id
     if (!userId) {
         return res.status(401).send({ message: 'Unauthorized' })
