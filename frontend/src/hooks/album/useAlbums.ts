@@ -1,5 +1,5 @@
-import axios, { AxiosError } from 'axios'
 import { useQuery } from '@tanstack/react-query'
+import axios, { AxiosError } from 'axios'
 
 export interface Album {
     id: string

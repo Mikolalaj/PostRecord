@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express'
-import { getAlbums, getAlbum } from '../controllers/albums'
+import { getAlbum, getAlbums } from '../controllers/albums'
 
 const router = Router()
 

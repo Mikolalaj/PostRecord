@@ -3,7 +3,7 @@ import { useHover } from '@mantine/hooks'
 import { showNotification } from '@mantine/notifications'
 import { IconCheck, IconChecks, IconPlus, IconX } from '@tabler/icons-react'
 import { useState } from 'react'
-import { Pressing } from '../../hooks/album/useAlbums'
+import { Pressing as PressingType } from '../../hooks/album/useAlbums'
 
 const useStyles = createStyles(() => ({
     image: {
@@ -14,7 +14,7 @@ const useStyles = createStyles(() => ({
     },
 }))
 
-function Pressing({ name, image, color, isInCollection }: Pressing) {
+function Pressing({ name, image, color, isInCollection }: PressingType) {
     const { classes, theme } = useStyles()
     const [openedModal, setOpenedModal] = useState(false)
     const { hovered, ref } = useHover()

@@ -1,7 +1,7 @@
+import { Pressing } from '@prisma/client'
 import { Request, Response } from 'express'
 import { prisma } from '../app'
 import { getSpotifyData } from '../spotify'
-import { Pressing } from '@prisma/client'
 
 export type Tracklist = {
     number: number
