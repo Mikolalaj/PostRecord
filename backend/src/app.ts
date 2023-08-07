@@ -21,9 +21,7 @@ export const logger = winston.createLogger({
 export const cache = createClient({
     url: `redis://default:${process.env.REDIS_CACHE_PASSWORD}@localhost:${process.env.REDIS_CACHE_PORT}`,
 })
-
 cache.on('error', (error: any) => console.log('Redis Client Error', error))
-
 cache.connect()
 
 declare module 'express-session' {

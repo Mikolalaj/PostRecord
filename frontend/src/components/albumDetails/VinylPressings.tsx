@@ -1,6 +1,6 @@
 import { Carousel } from '@mantine/carousel'
 import { Flex, Title } from '@mantine/core'
-import { PressingType } from '../../types'
+import { Pressing as PressingType } from '../../hooks/album/useAlbums'
 import Pressing from './Pressing'
 
 const IMAGE_PATH = 'https://postrecordstorageaccount.blob.core.windows.net/records/'

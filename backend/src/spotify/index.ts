@@ -1,5 +1,5 @@
 import { env } from 'process'
-import { cache, logger, prisma } from '../app'
+import { cache, logger } from '../app'
 
 async function generateNewAccessToken() {
     let auth = env.SPOTIFY_CLIENT_ID + ':' + env.SPOTIFY_CLIENT_SECRET
@@ -22,36 +22,27 @@ async function generateNewAccessToken() {
     }
 }
 
-async function saveNewAccessToken(userId: string) {
+async function saveNewAccessToken(): Promise<string> {
     const newToken = await generateNewAccessToken()
-    await prisma.user.update({
-        where: { id: userId },
-        data: { spotifyToken: newToken },
-    })
+    await cache.set('spotifyAccessToken', newToken)
     return newToken
 }
 
-async function getAccessToken(userId: string): Promise<string> {
-    const user = await prisma.user.findUnique({
-        where: { id: userId },
-        select: { spotifyToken: true },
-    })
-    if (user === null) {
-        throw new Error('User not found')
+async function getAccessToken(): Promise<string> {
+    const spotifyAccessToken = await cache.get('spotifyAccessToken')
+    if (spotifyAccessToken !== null) {
+        return spotifyAccessToken
     }
-    if (user.spotifyToken === null) {
-        return await saveNewAccessToken(userId)
-    }
-    return user.spotifyToken
+    return await saveNewAccessToken()
 }
 
-export async function getSpotifyData(userId: string, url: string) {
+export async function getSpotifyData(url: string) {
     const cachedData = await cache.get(url)
     if (cachedData) {
         logger.info(`Using cached data for ${url}`)
         return JSON.parse(cachedData)
     }
-    const token = await getAccessToken(userId)
+    const token = await getAccessToken()
     const options = {
         method: 'GET',
         headers: {
@@ -59,16 +50,16 @@ export async function getSpotifyData(userId: string, url: string) {
         },
     }
     try {
-        const response = await fetch(url, options)
+        const response = await fetch('https://api.spotify.com/v1' + url, options)
         if (response.status === 401) {
-            const newToken = await await saveNewAccessToken(userId)
+            const newToken = await saveNewAccessToken()
             const options = {
                 method: 'GET',
                 headers: {
                     Authorization: 'Bearer ' + newToken,
                 },
             }
-            const response = await fetch(url, options)
+            const response = await fetch('https://api.spotify.com/v1' + url, options)
             const data = await response.json()
             return data
         }

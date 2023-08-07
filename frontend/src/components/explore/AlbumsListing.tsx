@@ -1,6 +1,6 @@
 import { SimpleGrid } from '@mantine/core'
 import AlbumCard from './AlbumCard'
-import useAlbums from '../../hooks/album/useAlbums'
+import { useAlbums } from '../../hooks/album/useAlbums'
 import QueryRenderer from '../common/QueryRenderer'
 
 function AlbumsListing() {

@@ -1,18 +1,20 @@
 import { Button, Flex, Group, Image, Stack, Text, Title } from '@mantine/core'
 import { IconHeartPlus, IconPlus } from '@tabler/icons-react'
-import { ArtistType } from '../../types'
 
 interface HeaderProps {
     title: string
     image: string
-    artist: ArtistType
+    artist: {
+        name: string
+        image: string
+        description: string
+    }
     genre: string
-    style: string
-    year: string
+    releaseDate: Date
     spotifyId: string
 }
 
-function Header({ title, image, artist, genre, style, year, spotifyId }: HeaderProps) {
+function Header({ title, image, artist, genre, releaseDate, spotifyId }: HeaderProps) {
     return (
         <Flex gap='lg' align='flex-start'>
             <Image src={image} alt={title} width={250} height={250} />
@@ -29,14 +31,12 @@ function Header({ title, image, artist, genre, style, year, spotifyId }: HeaderP
                     <Flex direction='column' justify='center' align='flex-start'>
                         <Text weight={500}>Label: </Text>
                         <Text weight={500}>Genre: </Text>
-                        <Text weight={500}>Style: </Text>
                         <Text weight={500}>Year: </Text>
                     </Flex>
                     <Flex direction='column' justify='center' align='flex-start'>
                         <Text>Capitol Records</Text>
                         <Text>{genre}</Text>
-                        <Text>{style}</Text>
-                        <Text>{year}</Text>
+                        <Text>{releaseDate.getFullYear()}</Text>
                     </Flex>
                 </Group>
                 <Group mt='xl'>
