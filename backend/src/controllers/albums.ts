@@ -1,7 +1,8 @@
 import { Pressing } from '@prisma/client'
 import { Request, Response } from 'express'
 import { prisma } from '../app'
-import { getSpotifyData } from '../spotify'
+import { getSpotifyData } from '../external/spotify'
+import { getArtistBio } from '../external/lastfm'
 
 export type Tracklist = {
     number: number
@@ -70,6 +71,8 @@ export async function getAlbum(albumId: string): Promise<AlbumDetails | null> {
         where: { albumId },
     })
 
+    const artistBio = await getArtistBio(spotifyAlbum.artists[0].name)
+
     return {
         id: album.id,
         title: spotifyAlbum.name,
@@ -80,7 +83,7 @@ export async function getAlbum(albumId: string): Promise<AlbumDetails | null> {
         artist: {
             name: spotifyAlbum.artists[0].name,
             image: spotifyArtist.images[1].url,
-            description: '',
+            description: artistBio,
         },
         tracklist: spotifyAlbum.tracks.items.map((track: any, index: number) => ({
             number: index + 1,

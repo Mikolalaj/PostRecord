@@ -1,5 +1,5 @@
 import { env } from 'process'
-import { cache, logger } from '../app'
+import { cache, logger } from '../../app'
 
 async function generateNewAccessToken() {
     let auth = env.SPOTIFY_CLIENT_ID + ':' + env.SPOTIFY_CLIENT_SECRET
