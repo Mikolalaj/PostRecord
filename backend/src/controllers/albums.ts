@@ -31,6 +31,7 @@ interface AlbumDetails extends Omit<Album, 'artistName'> {
     artist: Artist
     tracklist: Tracklist
     pressings: (Pressing & { isInCollection: boolean })[]
+    imageBig: string
 }
 
 export async function getAlbums(req: Request, res: Response): Promise<Response> {
@@ -77,6 +78,7 @@ export async function getAlbum(albumId: string): Promise<AlbumDetails | null> {
         id: album.id,
         title: spotifyAlbum.name,
         image: spotifyAlbum.images[1].url,
+        imageBig: spotifyAlbum.images[0].url,
         genre: album.genre,
         releaseDate: spotifyAlbum.release_date,
         spotifyId: album.spotifyId,

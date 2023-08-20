@@ -16,7 +16,7 @@ function Album() {
             query={useAlbum(id)}
             render={albumData => {
                 return (
-                    <Flex gap='xl' direction='column'>
+                    <Flex gap='xl' direction='column' mt={30}>
                         <Header {...albumData} />
                         <Grid gutter={50}>
                             <Grid.Col lg={6} sm={6} xs={12}>

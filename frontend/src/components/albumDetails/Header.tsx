@@ -1,9 +1,11 @@
-import { Button, Flex, Group, Image, Stack, Text, Title } from '@mantine/core'
+import { Button, Flex, Group, Image, Stack, Text, Title, createStyles, Modal } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
 import { IconHeartPlus, IconPlus } from '@tabler/icons-react'
 
 interface HeaderProps {
     title: string
     image: string
+    imageBig: string
     artist: {
         name: string
         image: string
@@ -14,10 +16,28 @@ interface HeaderProps {
     spotifyId: string
 }
 
-function Header({ title, image, artist, genre, releaseDate, spotifyId }: HeaderProps) {
+const useStyles = createStyles(() => ({
+    image: {
+        transition: 'transform 0.2s ease-in-out',
+        '&:hover': {
+            transform: 'scale(1.03)',
+            cursor: 'pointer',
+        },
+    },
+}))
+
+function Header({ title, image, imageBig, artist, genre, releaseDate, spotifyId }: HeaderProps) {
+    const { classes } = useStyles()
+
+    const [opened, { open, close }] = useDisclosure(false)
+
     return (
         <Flex gap='lg' align='flex-start'>
-            <Image src={image} alt={title} width={250} height={250} />
+            <Image className={classes.image} src={image} alt={title} width={250} height={250} onClick={open} />
+            <Modal opened={opened} onClose={close} withCloseButton={false} centered size="auto">
+                <Image src={imageBig} alt={title} width={600} height={600} />
+            </Modal>
+
             <Stack align='flex-start' justify='space-between'>
                 <Title>
                     <Text component='span' inherit color='violet' style={{ fontSize: 40 }}>
