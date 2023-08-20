@@ -49,7 +49,7 @@ async function createPressings() {
             },
             name: 'Standard Black',
             image: 'lana-del-rey-dykttiatuob-black.png',
-            color: 'gray',
+            color: 'dark',
         },
     })
     await prisma.pressing.upsert({
@@ -114,7 +114,7 @@ async function createPressings() {
             },
             name: 'Limited Nude',
             image: 'lana-del-rey-dykttiatuob-nude.png',
-            color: 'gray',
+            color: 'dark',
         },
     })
     await prisma.pressing.upsert({
