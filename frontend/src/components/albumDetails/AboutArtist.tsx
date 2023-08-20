@@ -1,4 +1,4 @@
-import { Container, Flex, Image, Text, Title } from '@mantine/core'
+import { Container, Flex, Image, Spoiler, Text, Title } from '@mantine/core'
 
 interface AboutArtistProps {
     name: string
@@ -12,7 +12,7 @@ function AboutArtist({ name, image, description }: AboutArtistProps) {
             <Title color='red.7' order={2} mb='md'>
                 About This Artist
             </Title>
-            <Container px={0}>
+            <Spoiler maxHeight={400} showLabel='Show more' hideLabel='Hide'>
                 <Image mr='lg' radius={100} src={image} width={190} height={190} style={{ display: 'block', float: 'left' }} />
                 <Text>
                     <Text weight={700} size='xl'>
@@ -20,7 +20,7 @@ function AboutArtist({ name, image, description }: AboutArtistProps) {
                     </Text>
                     <Text align='justify'>{description}</Text>
                 </Text>
-            </Container>
+            </Spoiler>
         </Flex>
     )
 }
