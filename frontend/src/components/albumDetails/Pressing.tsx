@@ -43,7 +43,7 @@ function Pressing({ name, image, color, isInCollection }: PressingType) {
 
             <Card radius='md'>
                 <Card.Section onClick={() => setOpenedModal(true)} style={{ overflow: 'hidden', cursor: 'pointer' }}>
-                    <Image px={30} py={20} className={classes.image} src={image} style={{ backgroundColor: getCardColor() }} />
+                    <Image px={30} py={20} height={140} fit='contain' className={classes.image} src={image} style={{ backgroundColor: getCardColor() }} />
                 </Card.Section>
                 <Card.Section py='sm'>
                     <Group position='center'>

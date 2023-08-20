@@ -1,4 +1,4 @@
-import { Container, Flex, Image, Spoiler, Text, Title } from '@mantine/core'
+import { Flex, Image, Spoiler, Text, Title } from '@mantine/core'
 
 interface AboutArtistProps {
     name: string
