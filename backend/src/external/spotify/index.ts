@@ -64,7 +64,9 @@ export async function getSpotifyData(url: string) {
             return data
         }
         const data = await response.json()
-        await cache.set(url, JSON.stringify(data))
+        await cache.set(url, JSON.stringify(data), {
+            EX: 60 * 60 * 24 * 2, // 1 day
+        })
         return data
     } catch (error) {
         console.error(error)

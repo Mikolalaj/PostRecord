@@ -17,10 +17,12 @@ export async function getArtistBio(name: string) {
         })
         if (response.status === 200) {
             const data = await response.json()
-            let bio = stripHtml(data['artist']['bio']['summary']).result
+            let bio = data['artist']['bio']['content']
+            bio = stripHtml(bio).result // remove html tags
             bio = bio.replace('\n\n', ' ')
-            bio = bio.replace(' Read more on Last.fm', '.')
-            await cache.set(name, bio)
+            await cache.set(name, bio, {
+                EX: 60 * 60 * 24 * 2, // 2 days
+            })
             return bio as string
         } else {
             console.log(response)
