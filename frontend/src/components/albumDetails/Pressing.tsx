@@ -1,9 +1,9 @@
 import { ActionIcon, Card, Center, createStyles, Group, Image, Modal, Text } from '@mantine/core'
 import { useHover } from '@mantine/hooks'
-import { showNotification } from '@mantine/notifications'
-import { IconCheck, IconChecks, IconPlus, IconX } from '@tabler/icons-react'
+import { IconChecks, IconPlus, IconX } from '@tabler/icons-react'
 import { useState } from 'react'
-import { Pressing as PressingType } from '../../hooks/album/useAlbums'
+import { Pressing as PressingType } from '../../types'
+import { useAddToCollection } from '../../hooks/album/useCollection'
 
 const useStyles = createStyles(() => ({
     image: {
@@ -14,10 +14,12 @@ const useStyles = createStyles(() => ({
     },
 }))
 
-function Pressing({ name, image, color, isInCollection }: PressingType) {
+function Pressing({ id, name, image, color, isInCollection }: PressingType) {
     const { classes, theme } = useStyles()
     const [openedModal, setOpenedModal] = useState(false)
     const { hovered, ref } = useHover()
+
+    const addToCollection = useAddToCollection()
 
     const getNameColor = () => {
         if (color === 'dark') {
@@ -43,7 +45,15 @@ function Pressing({ name, image, color, isInCollection }: PressingType) {
 
             <Card radius='md'>
                 <Card.Section onClick={() => setOpenedModal(true)} style={{ overflow: 'hidden', cursor: 'pointer' }}>
-                    <Image px={30} py={20} height={140} fit='contain' className={classes.image} src={image} style={{ backgroundColor: getCardColor() }} />
+                    <Image
+                        px={30}
+                        py={20}
+                        height={140}
+                        fit='contain'
+                        className={classes.image}
+                        src={image}
+                        style={{ backgroundColor: getCardColor() }}
+                    />
                 </Card.Section>
                 <Card.Section py='sm'>
                     <Group position='center'>
@@ -55,16 +65,7 @@ function Pressing({ name, image, color, isInCollection }: PressingType) {
                                 color={isInCollection ? (hovered ? 'red' : 'teal') : 'blue.4'}
                                 radius='xl'
                                 variant='subtle'
-                                onClick={() =>
-                                    showNotification({
-                                        icon: <IconCheck size={18} />,
-                                        color: 'teal',
-                                        title: 'Collection updated!',
-                                        message: `You have ${
-                                            isInCollection ? 'removed' : 'added'
-                                        } "${name}" pressing to your collection.`,
-                                    })
-                                }>
+                                onClick={() => addToCollection.mutateAsync(id)}>
                                 {isInCollection ? hovered ? <IconX size={18} /> : <IconChecks size={18} /> : <IconPlus size={18} />}
                             </ActionIcon>
                         </div>

@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import axios, { AxiosError } from 'axios'
+import { Pressing, Error } from '../../types'
 
 export interface Album {
     id: string
@@ -19,14 +20,6 @@ export interface Track {
     features: string | null
 }
 
-export interface Pressing {
-    id: string
-    name: string
-    image: string
-    color: MantineColor
-    isInCollection: boolean
-}
-
 export interface AlbumDetails extends Omit<Album, 'artistName'> {
     artist: {
         name: string
@@ -35,10 +28,6 @@ export interface AlbumDetails extends Omit<Album, 'artistName'> {
     }
     tracklist: Track[]
     pressings: Pressing[]
-}
-
-type Error = {
-    message: string
 }
 
 const basePath = '/api/albums/'
