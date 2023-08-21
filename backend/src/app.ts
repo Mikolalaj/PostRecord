@@ -9,6 +9,7 @@ import authentication from './middlewares/authentication'
 import { morganMiddleware } from './middlewares/morgan'
 import { redisSession } from './middlewares/redisSession'
 import albumsRouter from './routes/albums'
+import collectionRouter from './routes/collection'
 import authRouter from './routes/authentication'
 import usersRouter from './routes/users'
 
@@ -47,6 +48,7 @@ app.use(authentication)
 
 app.use('/api/users', usersRouter)
 app.use('/api/albums', albumsRouter)
+app.use('/api/collection', collectionRouter)
 
 app.get('/api', (req, res) => {
     res.send({ message: 'Hello from the PostRecord API!' })
