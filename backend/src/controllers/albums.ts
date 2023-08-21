@@ -56,7 +56,11 @@ export async function getAlbums(req: Request, res: Response): Promise<Response> 
     return res.status(200).send(spotifyAlbums)
 }
 
-export async function getAlbum(albumId: string): Promise<AlbumDetails | null> {
+export async function getAlbum(albumId: string, userId: string): Promise<AlbumDetails | null> {
+    const user = await prisma.user.findUnique({ where: { id: userId }, include: { collection: true } })
+    if (!user) {
+        return null
+    }
     const album = await prisma.album.findFirst({ where: { id: albumId } })
     if (!album) {
         return null
@@ -97,7 +101,7 @@ export async function getAlbum(albumId: string): Promise<AlbumDetails | null> {
         })),
         pressings: pressings.map(pressing => ({
             ...pressing,
-            isInCollection: false,
+            isInCollection: user.collection.some(collectionPressing => collectionPressing.id === pressing.id) ?? false,
         })),
     }
 }
