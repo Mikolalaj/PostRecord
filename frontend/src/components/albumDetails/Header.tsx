@@ -1,7 +1,9 @@
 import { Button, Flex, Group, Image, Stack, Text, Title, createStyles, Modal } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { IconHeartPlus, IconPlus } from '@tabler/icons-react'
+import { IconHeartPlus, IconHeartMinus, IconPlus } from '@tabler/icons-react'
 import { AlbumDetails } from '../../hooks/album/useAlbums'
+import { useRecoilValue } from 'recoil'
+import { userState } from '../../atoms'
 
 const useStyles = createStyles(() => ({
     image: {
@@ -15,9 +17,10 @@ const useStyles = createStyles(() => ({
 
 interface HeaderProps extends Omit<AlbumDetails, 'tracklist'> {}
 
-function Header({ title, image, imageBig, artist, genre, releaseDate, spotifyId }: HeaderProps) {
+function Header({ id, title, image, imageBig, artist, genre, releaseDate, spotifyId }: HeaderProps) {
     const { classes } = useStyles()
-
+    const user = useRecoilValue(userState)
+    if (!user) return null
     const [opened, { open, close }] = useDisclosure(false)
 
     return (
@@ -52,8 +55,11 @@ function Header({ title, image, imageBig, artist, genre, releaseDate, spotifyId 
                     <Button variant='light' leftIcon={<IconPlus size={20} />}>
                         Add to collection
                     </Button>
-                    <Button color='pink' variant='outline' leftIcon={<IconHeartPlus size={20} />}>
-                        Set as favorite
+                    <Button
+                        color='pink'
+                        variant={user.albumId === id ? 'filled' : 'outline'}
+                        leftIcon={user.albumId === id ? <IconHeartMinus size={20} /> : <IconHeartPlus size={20} />}>
+                        {user.albumId === id ? 'Remove from favorite' : 'Set as favorite'}
                     </Button>
                     <Button color='green.6' component='a' target='_blank' href={`https://open.spotify.com/album/${spotifyId}`}>
                         Listen on Spotify

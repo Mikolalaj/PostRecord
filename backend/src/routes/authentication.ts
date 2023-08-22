@@ -30,6 +30,7 @@ router.post('/signIn', async (req: SignInRequest, res: Response) => {
             firstName: user.firstName,
             lastName: user.lastName,
             isAdmin: user.isAdmin,
+            albumId: user.albumId,
         },
     })
 })

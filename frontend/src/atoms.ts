@@ -7,12 +7,14 @@ export interface User {
     firstName: string
     lastName: string
     isAdmin: boolean
+    albumId: string // favourite album
 }
 
 async function getUser() {
     try {
         const { data, status } = await axios.get('/api/users')
-        if (status !== 200) {
+        console.log(data.user)
+        if (status !== 200 && status !== 304) {
             return null
         }
         return data.user

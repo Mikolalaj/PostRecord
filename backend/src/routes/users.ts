@@ -10,21 +10,21 @@ router.get('/', async (req: Request, res: Response) => {
         where: {
             id: userId,
         },
+        select: {
+            id: true,
+            email: true,
+            firstName: true,
+            lastName: true,
+            isAdmin: true,
+            albumId: true,
+        },
     })
 
     if (!user) {
         return res.status(404).send({ message: 'User not found' })
     }
 
-    return res.json({
-        user: {
-            id: user.id,
-            email: user.email,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            isAdmin: user.isAdmin,
-        },
-    })
+    return res.json(user)
 })
 
 type UpdateUserBody = {
@@ -58,7 +58,7 @@ router.put('/', async (req: Request, res: Response) => {
             firstName: true,
             lastName: true,
             isAdmin: true,
-            favouriteAlbum: true,
+            albumId: true,
         },
     })
 
