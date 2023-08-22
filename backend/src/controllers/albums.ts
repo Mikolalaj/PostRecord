@@ -30,7 +30,6 @@ interface Album {
 interface AlbumDetails extends Omit<Album, 'artistName'> {
     artist: Artist
     tracklist: Tracklist
-    pressings: (Pressing & { isInCollection: boolean })[]
     imageBig: string
 }
 
@@ -98,10 +97,6 @@ export async function getAlbum(albumId: string, userId: string): Promise<AlbumDe
                           .map((artist: any) => artist.name)
                           .join(', ')
                     : null,
-        })),
-        pressings: pressings.map(pressing => ({
-            ...pressing,
-            isInCollection: user.collection.some(collectionPressing => collectionPressing.id === pressing.id) ?? false,
         })),
     }
 }
