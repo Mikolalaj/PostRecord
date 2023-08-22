@@ -6,11 +6,11 @@ import AlbumCard from './AlbumCard'
 function AlbumsListing() {
     return (
         <QueryRenderer
-            query={useAlbums()}
-            render={data => {
+            queries={[useAlbums()]}
+            render={albums => {
                 return (
                     <SimpleGrid cols={5} spacing='lg' verticalSpacing='lg' my='lg'>
-                        {data.map(album => (
+                        {albums.map(album => (
                             <AlbumCard {...album} key={album.id} />
                         ))}
                     </SimpleGrid>

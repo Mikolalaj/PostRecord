@@ -8,16 +8,17 @@ type Error = {
 }
 
 export type QueryData<T> = UseQueryResult<T, AxiosError<Error>>
-type QueryRenderData<TQueries extends readonly QueryData<any>[]> = {
-    [K in keyof TQueries]: TQueries[K] extends QueryData<infer T> ? T : never
+
+type QueryRenderData<T> = {
+    [K in keyof T]: T[K] extends QueryData<infer T> ? T : never
 }
 
-interface QueryRendererProps<TQueries extends readonly QueryData<any>[]> {
-    queries: TQueries
-    render: (...data: QueryRenderData<TQueries>) => JSX.Element
+interface QueryRendererProps<T extends readonly QueryData<any>[]> {
+    queries: T
+    render: (...data: QueryRenderData<T>) => JSX.Element
 }
 
-function QueryRenderer<TQueries extends readonly QueryData<any>[]>({ queries, render }: QueryRendererProps<TQueries>) {
+function QueryRenderer<T extends readonly QueryData<any>[]>({ queries, render }: QueryRendererProps<T>) {
     const allQueriesSuccess = queries.every(query => query.isSuccess)
 
     if (queries.some(query => query.isLoading)) {
@@ -38,7 +39,7 @@ function QueryRenderer<TQueries extends readonly QueryData<any>[]>({ queries, re
     }
 
     if (allQueriesSuccess) {
-        const data = queries.map(query => query.data) as QueryRenderData<TQueries>
+        const data = queries.map(query => query.data) as QueryRenderData<T>
         return render(...data)
     }
 
