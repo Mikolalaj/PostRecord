@@ -2,8 +2,9 @@ import { ActionIcon, Card, Center, createStyles, Group, Image, Modal, Text } fro
 import { useHover } from '@mantine/hooks'
 import { IconChecks, IconPlus, IconX } from '@tabler/icons-react'
 import { useState } from 'react'
-import { Pressing as PressingType } from '../../types'
-import { useAddToCollection } from '../../hooks/album/useCollection'
+import { useAddToCollection, useRemoveFromCollection } from '../../hooks/album/useCollection'
+import { Pressing as PressingType } from '../../hooks/album/usePressings'
+import { useLocation } from 'react-router-dom'
 
 const useStyles = createStyles(() => ({
     image: {
@@ -15,11 +16,15 @@ const useStyles = createStyles(() => ({
 }))
 
 function Pressing({ id, name, image, color, isInCollection }: PressingType) {
+    const location = useLocation()
+    const albumId = location.pathname.split('/')[2]
+
     const { classes, theme } = useStyles()
     const [openedModal, setOpenedModal] = useState(false)
     const { hovered, ref } = useHover()
 
     const addToCollection = useAddToCollection()
+    const removeFromCollection = useRemoveFromCollection()
 
     const getNameColor = () => {
         if (color === 'dark') {
@@ -65,7 +70,11 @@ function Pressing({ id, name, image, color, isInCollection }: PressingType) {
                                 color={isInCollection ? (hovered ? 'red' : 'teal') : 'blue.4'}
                                 radius='xl'
                                 variant='subtle'
-                                onClick={() => addToCollection.mutateAsync(id)}>
+                                onClick={() =>
+                                    isInCollection
+                                        ? removeFromCollection.mutateAsync({ pressingId: id, albumId })
+                                        : addToCollection.mutateAsync({ pressingId: id, albumId })
+                                }>
                                 {isInCollection ? hovered ? <IconX size={18} /> : <IconChecks size={18} /> : <IconPlus size={18} />}
                             </ActionIcon>
                         </div>

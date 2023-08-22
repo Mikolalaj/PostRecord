@@ -1,20 +1,7 @@
 import { Button, Flex, Group, Image, Stack, Text, Title, createStyles, Modal } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconHeartPlus, IconPlus } from '@tabler/icons-react'
-
-interface HeaderProps {
-    title: string
-    image: string
-    imageBig: string
-    artist: {
-        name: string
-        image: string
-        description: string
-    }
-    genre: string
-    releaseDate: Date
-    spotifyId: string
-}
+import { AlbumDetails } from '../../hooks/album/useAlbums'
 
 const useStyles = createStyles(() => ({
     image: {
@@ -26,6 +13,8 @@ const useStyles = createStyles(() => ({
     },
 }))
 
+interface HeaderProps extends Omit<AlbumDetails, 'tracklist'> {}
+
 function Header({ title, image, imageBig, artist, genre, releaseDate, spotifyId }: HeaderProps) {
     const { classes } = useStyles()
 
@@ -34,7 +23,7 @@ function Header({ title, image, imageBig, artist, genre, releaseDate, spotifyId 
     return (
         <Flex gap='lg' align='flex-start'>
             <Image className={classes.image} src={image} alt={title} width={250} height={250} onClick={open} />
-            <Modal opened={opened} onClose={close} withCloseButton={false} centered size="auto">
+            <Modal opened={opened} onClose={close} withCloseButton={false} centered size='auto'>
                 <Image src={imageBig} alt={title} width={600} height={600} />
             </Modal>
 

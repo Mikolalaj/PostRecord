@@ -1,6 +1,6 @@
 import { Carousel } from '@mantine/carousel'
 import { Flex, Title } from '@mantine/core'
-import { Pressing as PressingType } from '../../hooks/album/useAlbums'
+import { Pressing as PressingType } from '../../hooks/album/usePressings'
 import Pressing from './Pressing'
 
 const IMAGE_PATH = 'https://postrecordstorageaccount.blob.core.windows.net/records/'
@@ -12,7 +12,7 @@ interface VinylPressingsProps {
 function VinylPressings({ vinylPressings }: VinylPressingsProps) {
     const slides = vinylPressings.map(pressing => (
         <Carousel.Slide key={pressing.id}>
-            <Pressing {...{ ...pressing, image: IMAGE_PATH + pressing.image }} />
+            <Pressing {...pressing} image={IMAGE_PATH + pressing.image} />
         </Carousel.Slide>
     ))
 
