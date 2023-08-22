@@ -21,6 +21,8 @@ model User {
   lastLogin         DateTime?
   spotifyToken      String?
   collection        Pressing[]
+  favouriteAlbum    Album?     @relation(fields: [albumId], references: [id])
+  albumId           String?    @db.Uuid
 }
 
 model Album {
@@ -29,6 +31,7 @@ model Album {
   spotifyId       String     @unique
   genre           String
   pressings       Pressing[]
+  User            User[]
 }
 
 model Pressing {
