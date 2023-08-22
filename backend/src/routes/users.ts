@@ -1,13 +1,14 @@
 import { prisma } from '../app'
 import { Request, Response, Router } from 'express'
+import { getUserId } from '../common/utils'
 const router = Router()
 
 router.get('/', async (req: Request, res: Response) => {
-    const { id } = req.session.user!
+    const userId = getUserId(req)
 
     const user = await prisma.user.findUnique({
         where: {
-            id: id,
+            id: userId,
         },
     })
 
@@ -24,6 +25,44 @@ router.get('/', async (req: Request, res: Response) => {
             isAdmin: user.isAdmin,
         },
     })
+})
+
+type UpdateUserBody = {
+    firstName?: string
+    lastName?: string
+    email?: string
+    favouriteAlbumId?: string
+}
+
+router.put('/', async (req: Request, res: Response) => {
+    const userId = getUserId(req)
+    const { firstName, lastName, email, favouriteAlbumId }: UpdateUserBody = req.body
+
+    const user = await prisma.user.update({
+        where: {
+            id: userId,
+        },
+        data: {
+            firstName,
+            lastName,
+            email,
+            favouriteAlbum: {
+                connect: {
+                    id: favouriteAlbumId,
+                },
+            },
+        },
+        select: {
+            id: true,
+            email: true,
+            firstName: true,
+            lastName: true,
+            isAdmin: true,
+            favouriteAlbum: true,
+        },
+    })
+
+    return res.status(200).send(user)
 })
 
 export default router
