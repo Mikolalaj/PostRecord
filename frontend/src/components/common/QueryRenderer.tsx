@@ -10,7 +10,7 @@ type Error = {
 export type QueryData<T> = UseQueryResult<T, AxiosError<Error>>
 
 type QueryRenderData<T> = {
-    [K in keyof T]: T[K] extends QueryData<infer T> ? T : never
+    [K in keyof T]: T[K] extends QueryData<infer DataType> ? DataType : never
 }
 
 interface QueryRendererProps<T extends readonly QueryData<any>[]> {
