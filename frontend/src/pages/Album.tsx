@@ -6,6 +6,7 @@ import TrackList from '../components/albumDetails/TrackList'
 import VinylPressings from '../components/albumDetails/VinylPressings'
 import QueryRenderer from '../components/common/QueryRenderer'
 import { useAlbum } from '../hooks/album/useAlbums'
+import { usePressings } from '../hooks/album/usePressings'
 
 function Album() {
     const { id } = useParams()
@@ -13,23 +14,21 @@ function Album() {
 
     return (
         <QueryRenderer
-            query={useAlbum(id)}
-            render={albumData => {
-                return (
-                    <Flex gap='xl' direction='column' mt={30}>
-                        <Header {...albumData} />
-                        <Grid gutter={50}>
-                            <Grid.Col lg={6} sm={6} xs={12}>
-                                <TrackList tracklist={albumData.tracklist} />
-                            </Grid.Col>
-                            <Grid.Col lg={6} sm={6} xs={12}>
-                                <AboutArtist {...albumData.artist} />
-                            </Grid.Col>
-                        </Grid>
-                        <VinylPressings vinylPressings={albumData.pressings} />
-                    </Flex>
-                )
-            }}
+            queries={[useAlbum(id), usePressings(id)] as const}
+            render={(albumData, pressings) => (
+                <Flex gap='xl' direction='column' mt={30}>
+                    <Header {...albumData} />
+                    <Grid gutter={50}>
+                        <Grid.Col lg={6} sm={6} xs={12}>
+                            <TrackList tracklist={albumData.tracklist} />
+                        </Grid.Col>
+                        <Grid.Col lg={6} sm={6} xs={12}>
+                            <AboutArtist {...albumData.artist} />
+                        </Grid.Col>
+                    </Grid>
+                    <VinylPressings vinylPressings={pressings} />
+                </Flex>
+            )}
         />
     )
 }
