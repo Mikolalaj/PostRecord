@@ -38,6 +38,21 @@ router.put('/', async (req: Request, res: Response) => {
     const userId = getUserId(req)
     const { firstName, lastName, email, favouriteAlbumId }: UpdateUserBody = req.body
 
+    let favouriteAlbum
+    if (favouriteAlbumId == null) {
+        favouriteAlbum = {
+            disconnect: true,
+        }
+    } else if (favouriteAlbumId) {
+        favouriteAlbum = {
+            connect: {
+                id: favouriteAlbumId,
+            },
+        }
+    } else {
+        favouriteAlbum = undefined
+    }
+
     const user = await prisma.user.update({
         where: {
             id: userId,
@@ -46,11 +61,7 @@ router.put('/', async (req: Request, res: Response) => {
             firstName,
             lastName,
             email,
-            favouriteAlbum: {
-                connect: {
-                    id: favouriteAlbumId,
-                },
-            },
+            favouriteAlbum: favouriteAlbum,
         },
         select: {
             id: true,

@@ -1,9 +1,9 @@
-import { Button, Flex, Group, Image, Stack, Text, Title, createStyles, Modal } from '@mantine/core'
+import { Button, Flex, Group, Image, Modal, Stack, Text, Title, createStyles } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { IconHeartPlus, IconHeartMinus, IconPlus } from '@tabler/icons-react'
-import { AlbumDetails } from '../../hooks/album/useAlbums'
+import { IconHeartMinus, IconHeartPlus, IconPlus } from '@tabler/icons-react'
 import { useRecoilValue } from 'recoil'
 import { userState } from '../../atoms'
+import { AlbumDetails, useSetFavouriteAlbum } from '../../hooks/album/useAlbums'
 
 const useStyles = createStyles(() => ({
     image: {
@@ -21,7 +21,11 @@ function Header({ id, title, image, imageBig, artist, genre, releaseDate, spotif
     const { classes } = useStyles()
     const user = useRecoilValue(userState)
     if (!user) return null
+
     const [opened, { open, close }] = useDisclosure(false)
+
+    const isFavourite = user.albumId === id
+    const setFavourite = useSetFavouriteAlbum()
 
     return (
         <Flex gap='lg' align='flex-start'>
@@ -57,9 +61,11 @@ function Header({ id, title, image, imageBig, artist, genre, releaseDate, spotif
                     </Button>
                     <Button
                         color='pink'
-                        variant={user.albumId === id ? 'filled' : 'outline'}
-                        leftIcon={user.albumId === id ? <IconHeartMinus size={20} /> : <IconHeartPlus size={20} />}>
-                        {user.albumId === id ? 'Remove from favorite' : 'Set as favorite'}
+                        variant={isFavourite ? 'filled' : 'outline'}
+                        leftIcon={isFavourite ? <IconHeartMinus size={20} /> : <IconHeartPlus size={20} />}
+                        onClick={() => setFavourite.mutate(isFavourite ? null : id)}
+                    >
+                        {isFavourite ? 'Remove from favorite' : 'Set as favorite'}
                     </Button>
                     <Button color='green.6' component='a' target='_blank' href={`https://open.spotify.com/album/${spotifyId}`}>
                         Listen on Spotify

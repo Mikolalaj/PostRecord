@@ -1,6 +1,10 @@
-import { useQuery } from '@tanstack/react-query'
+import { showNotification } from '@mantine/notifications'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios, { AxiosError } from 'axios'
-import { Error } from '../../types'
+import { notificationCheck } from '../../components/common'
+import { Error, MessageResponse } from '../../types'
+import { User, userState } from '../../atoms'
+import { useRecoilState, useSetRecoilState } from 'recoil'
 
 export interface Album {
     id: string
@@ -53,6 +57,34 @@ export function useAlbum(albumId: string) {
                 // album is new if it's release date was in the last month
                 releaseDate: new Date(album.releaseDate),
             }
+        },
+    })
+}
+
+export function useSetFavouriteAlbum() {
+    const [user, setUser] = useRecoilState(userState)
+    //const setUser = useSetRecoilState(userState)
+    const queryClient = useQueryClient()
+    return useMutation<User, AxiosError<Error>, string | null>({
+        mutationFn: async albumId => {
+            const response = await axios.put('/api/users', { favouriteAlbumId: albumId })
+            return response.data
+        },
+        onSuccess: (_, albumId) => {
+            setUser({ ...(user as User), albumId: albumId })
+            let message
+            if (albumId === null) {
+                message = 'Favourite album removed!'
+            } else {
+                const album = queryClient.getQueryData<AlbumDetails>(['albums', albumId])
+                message = `Album ${album && '"' + album.title + '"'} was set as your favourite!`
+            }
+            showNotification({
+                icon: notificationCheck,
+                color: 'teal',
+                title: 'Profile updated!',
+                message: message,
+            })
         },
     })
 }

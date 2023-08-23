@@ -7,7 +7,7 @@ export interface User {
     firstName: string
     lastName: string
     isAdmin: boolean
-    albumId: string // favourite album
+    albumId: string | null // favourite album
 }
 
 async function getUser() {
