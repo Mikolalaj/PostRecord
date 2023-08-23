@@ -1,10 +1,11 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios, { AxiosError, AxiosResponse } from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil'
-import { User, loginPageResponse, userState } from '../../atoms'
+import { loginPageResponse } from '../../atoms'
 import { LoginForm } from '../../pages/Login'
 import { parseErrorMessage, parseResponse } from '../../utils/axios'
+import { User } from './useUser'
 
 interface SignInRequestBody {
     email: string
@@ -17,7 +18,7 @@ interface SignUpRequestBody extends SignInRequestBody {
 }
 
 export function useLogin() {
-    const setUser = useSetRecoilState(userState)
+    const queryClient = useQueryClient()
     const setLoginResponse = useSetRecoilState(loginPageResponse)
     const setIsSignUp = useSetRecoilState(LoginForm)
     const navigate = useNavigate()
@@ -47,7 +48,7 @@ export function useLogin() {
             onError,
             onSuccess: (response: AxiosResponse<{ user: User }>) => {
                 const responseData = parseResponse(response)
-                setUser(responseData.user)
+                queryClient.setQueryData(['user'], responseData.user)
                 navigate('/')
             },
         }
@@ -60,7 +61,7 @@ export function useLogin() {
         {
             onError,
             onSuccess: () => {
-                setUser(null)
+                queryClient.setQueryData(['user'], null)
                 navigate('/login')
             },
         }

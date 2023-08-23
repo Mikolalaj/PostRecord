@@ -1,10 +1,9 @@
 import { showNotification } from '@mantine/notifications'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios, { AxiosError } from 'axios'
-import { useRecoilState } from 'recoil'
-import { User, userState } from '../../atoms'
 import { notificationCheck } from '../../components/common'
 import { Error } from '../../types'
+import { User } from '../auth/useUser'
 
 export interface Album {
     id: string
@@ -62,7 +61,6 @@ export function useAlbum(albumId: string) {
 }
 
 export function useSetFavouriteAlbum() {
-    const [user, setUser] = useRecoilState(userState)
     const queryClient = useQueryClient()
     return useMutation<User, AxiosError<Error>, string | null>({
         mutationFn: async albumId => {
@@ -70,7 +68,7 @@ export function useSetFavouriteAlbum() {
             return response.data
         },
         onSuccess: (_, albumId) => {
-            setUser({ ...(user as User), albumId: albumId })
+            queryClient.invalidateQueries(['user'])
             let message
             if (albumId === null) {
                 message = 'Favourite album removed!'

@@ -2,12 +2,11 @@ import { AppShell, Burger, Button, Container, createStyles, Group, Header, Image
 import { useDisclosure } from '@mantine/hooks'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useRecoilValue } from 'recoil'
 import Logo from '../assets/PostRecord.svg'
-import { userState } from '../atoms'
 import { useLogin } from '../hooks/auth/useLogin'
 import ThemePicker from './common/ThemePicker'
 import UserAvatar from './common/UserAvatar'
+import { useUser } from '../hooks/auth/useUser'
 
 const useStyles = createStyles(theme => ({
     header: {
@@ -59,7 +58,7 @@ const MenuLinks = [
 ]
 
 export default function Layout({ children }: Props) {
-    const user = useRecoilValue(userState)
+    const { data: user } = useUser()
     const navigate = useNavigate()
 
     const { logOut } = useLogin()
@@ -80,7 +79,8 @@ export default function Layout({ children }: Props) {
                 event.preventDefault()
                 setActive(link.link)
                 navigate(link.link)
-            }}>
+            }}
+        >
             {link.label}
         </a>
     ))
@@ -98,7 +98,8 @@ export default function Layout({ children }: Props) {
                                 order={1}
                                 ta='center'
                                 variant='gradient'
-                                gradient={{ from: 'red.7', to: 'violet.6', deg: 120 }}>
+                                gradient={{ from: 'red.7', to: 'violet.6', deg: 120 }}
+                            >
                                 PostRecord
                             </Title>
                             <Space w='xl' />
@@ -117,7 +118,8 @@ export default function Layout({ children }: Props) {
             }
             styles={theme => ({
                 main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
-            })}>
+            })}
+        >
             <Container size='lg' px='xs' mb='xl'>
                 {children}
             </Container>

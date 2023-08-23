@@ -1,9 +1,8 @@
 import { Button, Flex, Group, Image, Modal, Stack, Text, Title, createStyles } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconHeartMinus, IconHeartPlus, IconPlus } from '@tabler/icons-react'
-import { useRecoilValue } from 'recoil'
-import { userState } from '../../atoms'
 import { AlbumDetails, useSetFavouriteAlbum } from '../../hooks/album/useAlbums'
+import { useUser } from '../../hooks/auth/useUser'
 
 const useStyles = createStyles(() => ({
     image: {
@@ -19,7 +18,7 @@ interface HeaderProps extends Omit<AlbumDetails, 'tracklist'> {}
 
 function Header({ id, title, image, imageBig, artist, genre, releaseDate, spotifyId }: HeaderProps) {
     const { classes } = useStyles()
-    const user = useRecoilValue(userState)
+    const { data: user } = useUser()
     if (!user) return null
 
     const [opened, { open, close }] = useDisclosure(false)

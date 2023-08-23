@@ -1,16 +1,14 @@
 import { Center, Container, Paper, Text, Title } from '@mantine/core'
 import { Navigate, useSearchParams } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
-import { loginPageResponse, userState } from '../atoms'
+import { loginPageResponse } from '../atoms'
 import ResultAlert from '../components/auth/login/ResultAlert'
 import ForgotPasswordForm from '../components/auth/resetPassword/ForgotPasswordForm'
 import ResetPasswordForm from '../components/auth/resetPassword/ResetPasswordForm'
+import { useUser } from '../hooks/auth/useUser'
 
 export default function ResetPasswordPage() {
-    const user = useRecoilValue(userState)
-    if (user) {
-        return <Navigate to='/' />
-    }
+    const { data: user } = useUser()
 
     const loginResponse = useRecoilValue(loginPageResponse)
 
@@ -20,6 +18,9 @@ export default function ResetPasswordPage() {
 
     const isResetPassword = token && email
 
+    if (user) {
+        return <Navigate to='/' />
+    }
     return (
         <Center style={{ width: '100%', height: '100%' }}>
             <Center>

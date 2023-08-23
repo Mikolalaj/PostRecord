@@ -23,7 +23,7 @@ function QueryRenderer<T extends readonly QueryData<any>[]>({ queries, render }:
 
     if (queries.some(query => query.isLoading)) {
         return (
-            <Flex justify='center' align='center' mih={100}>
+            <Flex justify='center' align='center' h='100%'>
                 <Loader />
             </Flex>
         )
