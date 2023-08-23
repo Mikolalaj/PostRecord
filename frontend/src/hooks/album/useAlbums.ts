@@ -1,10 +1,10 @@
 import { showNotification } from '@mantine/notifications'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios, { AxiosError } from 'axios'
-import { notificationCheck } from '../../components/common'
-import { Error, MessageResponse } from '../../types'
+import { useRecoilState } from 'recoil'
 import { User, userState } from '../../atoms'
-import { useRecoilState, useSetRecoilState } from 'recoil'
+import { notificationCheck } from '../../components/common'
+import { Error } from '../../types'
 
 export interface Album {
     id: string
@@ -63,7 +63,6 @@ export function useAlbum(albumId: string) {
 
 export function useSetFavouriteAlbum() {
     const [user, setUser] = useRecoilState(userState)
-    //const setUser = useSetRecoilState(userState)
     const queryClient = useQueryClient()
     return useMutation<User, AxiosError<Error>, string | null>({
         mutationFn: async albumId => {
