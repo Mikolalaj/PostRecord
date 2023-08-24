@@ -74,7 +74,8 @@ function Pressing({ id, name, image, color, isInCollection }: PressingType) {
                                     isInCollection
                                         ? removeFromCollection.mutateAsync({ pressingId: id, albumId })
                                         : addToCollection.mutateAsync({ pressingId: id, albumId })
-                                }>
+                                }
+                            >
                                 {isInCollection ? hovered ? <IconX size={18} /> : <IconChecks size={18} /> : <IconPlus size={18} />}
                             </ActionIcon>
                         </div>

@@ -52,9 +52,10 @@ type Props = {
 }
 
 const MenuLinks = [
-    { label: 'Home', link: '/' },
-    { label: 'Find music', link: '/explore' },
-    { label: 'Marketplace', link: '/marketplace' },
+    { label: 'Home', link: '/', adminRequired: false },
+    { label: 'Find music', link: '/explore', adminRequired: false },
+    { label: 'Marketplace', link: '/marketplace', adminRequired: false },
+    { label: 'Admin', link: '/admin', adminRequired: true },
 ]
 
 export default function Layout({ children }: Props) {
@@ -70,20 +71,23 @@ export default function Layout({ children }: Props) {
         setActive(window.location.pathname)
     }, [])
 
-    const items = MenuLinks.map(link => (
-        <a
-            key={link.label}
-            href={link.link}
-            className={cx(classes.link, { [classes.linkActive]: active === link.link })}
-            onClick={event => {
-                event.preventDefault()
-                setActive(link.link)
-                navigate(link.link)
-            }}
-        >
-            {link.label}
-        </a>
-    ))
+    const items = MenuLinks.map(link => {
+        if (link.adminRequired && !user?.isAdmin) return null
+        return (
+            <a
+                key={link.label}
+                href={link.link}
+                className={cx(classes.link, { [classes.linkActive]: active === link.link })}
+                onClick={event => {
+                    event.preventDefault()
+                    setActive(link.link)
+                    navigate(link.link)
+                }}
+            >
+                {link.label}
+            </a>
+        )
+    })
 
     return (
         <AppShell
