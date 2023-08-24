@@ -27,13 +27,13 @@ function Header({ id, title, image, imageBig, artist, genre, releaseDate, spotif
     const setFavourite = useSetFavouriteAlbum()
 
     return (
-        <Flex gap='lg' align='flex-start'>
+        <Flex gap='lg' align='flex-start' h={250}>
             <Image className={classes.image} src={image} alt={title} width={250} height={250} onClick={open} />
             <Modal opened={opened} onClose={close} withCloseButton={false} centered size='auto'>
                 <Image src={imageBig} alt={title} width={600} height={600} />
             </Modal>
 
-            <Stack align='flex-start' justify='space-between'>
+            <Flex direction='column' align='flex-start' justify='space-between' h='100%'>
                 <Title>
                     <Text component='span' inherit color='violet' style={{ fontSize: 40 }}>
                         {title}
@@ -70,7 +70,7 @@ function Header({ id, title, image, imageBig, artist, genre, releaseDate, spotif
                         Listen on Spotify
                     </Button>
                 </Group>
-            </Stack>
+            </Flex>
         </Flex>
     )
 }
