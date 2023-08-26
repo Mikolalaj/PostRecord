@@ -36,6 +36,36 @@ async function createAlbums() {
             genre: 'Pop',
         },
     })
+    await prisma.album.upsert({
+        where: { id: '703fe9d3-5a13-4ce6-b4d9-418d9faba1f9' },
+        update: {},
+        create: {
+            id: '703fe9d3-5a13-4ce6-b4d9-418d9faba1f9',
+            spotifyId: '0ntTitta8btOS93RiM3TrO', // Portraits
+            artistSpotifyId: '2WX2uTcsvV5OnS0inACecP', // Birdy
+            genre: 'Alternative/Indie',
+        },
+    })
+    await prisma.album.upsert({
+        where: { id: '1b1bc3dd-8bcf-434e-a51a-e19383c5899b' },
+        update: {},
+        create: {
+            id: '1b1bc3dd-8bcf-434e-a51a-e19383c5899b',
+            spotifyId: '0e9GjrztzBw8oMC6n2CDeI', // The Record
+            artistSpotifyId: '1hLiboQ98IQWhpKeP9vRFw', // boygenius
+            genre: 'Indie Rock',
+        },
+    })
+    await prisma.album.upsert({
+        where: { id: 'd3e7cbef-5970-4712-ac1f-4b858539aab0' },
+        update: {},
+        create: {
+            id: 'd3e7cbef-5970-4712-ac1f-4b858539aab0',
+            spotifyId: '0TFpENEamBfIfGISdSTXFB', // Unreal Unearth
+            artistSpotifyId: '1hLiboQ98IQWhpKeP9vRFw', // Hozier
+            genre: 'Rock',
+        },
+    })
 }
 
 async function createPressings() {
@@ -271,6 +301,149 @@ async function createPressings() {
             name: 'Moonstone Blue',
             image: 'taylor-swift-midnights-moonstone-blue.png',
             color: 'blue',
+        },
+    })
+    await prisma.pressing.upsert({
+        where: { id: '50de1d52-cc7c-4381-ac6f-ada7f3310248' },
+        update: {},
+        create: {
+            id: '50de1d52-cc7c-4381-ac6f-ada7f3310248',
+            album: {
+                connect: { id: '703fe9d3-5a13-4ce6-b4d9-418d9faba1f9' },
+            },
+            name: 'Standard Black',
+            image: 'birdy-portraits-black.png',
+            color: 'dark',
+        },
+    })
+    await prisma.pressing.upsert({
+        where: { id: 'd787ce0c-d4cb-46a6-8c50-b5b365b8bdcb' },
+        update: {},
+        create: {
+            id: 'd787ce0c-d4cb-46a6-8c50-b5b365b8bdcb',
+            album: {
+                connect: { id: '703fe9d3-5a13-4ce6-b4d9-418d9faba1f9' },
+            },
+            name: 'Exclusive Recycled',
+            image: 'birdy-portraits-recycled.png',
+            color: 'violet',
+        },
+    })
+    await prisma.pressing.upsert({
+        where: { id: '365ca71b-df84-4c5d-91a7-2e8c67410928' },
+        update: {},
+        create: {
+            id: '365ca71b-df84-4c5d-91a7-2e8c67410928',
+            album: {
+                connect: { id: '703fe9d3-5a13-4ce6-b4d9-418d9faba1f9' },
+            },
+            name: 'Retail Purple',
+            image: 'birdy-portraits-purple.png',
+            color: 'pink',
+        },
+    })
+    await prisma.pressing.upsert({
+        where: { id: '491b0c68-7167-4804-a4c9-4a3566bcc849' },
+        update: {},
+        create: {
+            id: '491b0c68-7167-4804-a4c9-4a3566bcc849',
+            album: {
+                connect: { id: '1b1bc3dd-8bcf-434e-a51a-e19383c5899b' },
+            },
+            name: 'Urban Outfitters Pink',
+            image: 'boygenius-the-record-pink.png',
+            color: 'pink',
+        },
+    })
+    await prisma.pressing.upsert({
+        where: { id: '90eac5d6-d231-4c5b-aaee-a922b54baac9' },
+        update: {},
+        create: {
+            id: '90eac5d6-d231-4c5b-aaee-a922b54baac9',
+            album: {
+                connect: { id: '1b1bc3dd-8bcf-434e-a51a-e19383c5899b' },
+            },
+            name: 'Indie Blue',
+            image: 'boygenius-the-record-blue.png',
+            color: 'blue',
+        },
+    })
+    await prisma.pressing.upsert({
+        where: { id: '9012da7a-936f-4f27-a9bc-494dd0565aac' },
+        update: {},
+        create: {
+            id: '9012da7a-936f-4f27-a9bc-494dd0565aac',
+            album: {
+                connect: { id: '1b1bc3dd-8bcf-434e-a51a-e19383c5899b' },
+            },
+            name: 'Standard Black',
+            image: 'boygenius-the-record-black.png',
+            color: 'gray',
+        },
+    })
+    await prisma.pressing.upsert({
+        where: { id: '167d1bef-8502-4225-a4da-5ec4704fde52' },
+        update: {},
+        create: {
+            id: '167d1bef-8502-4225-a4da-5ec4704fde52',
+            album: {
+                connect: { id: '1b1bc3dd-8bcf-434e-a51a-e19383c5899b' },
+            },
+            name: 'Exclusive Gray',
+            image: 'boygenius-the-record-gray.png',
+            color: 'gray',
+        },
+    })
+    await prisma.pressing.upsert({
+        where: { id: 'd749a751-0a5a-402b-8c78-98d1cc7b5195' },
+        update: {},
+        create: {
+            id: 'd749a751-0a5a-402b-8c78-98d1cc7b5195',
+            album: {
+                connect: { id: '1b1bc3dd-8bcf-434e-a51a-e19383c5899b' },
+            },
+            name: 'Retail Orange',
+            image: 'boygenius-the-record-orange.png',
+            color: 'orange',
+        },
+    })
+    await prisma.pressing.upsert({
+        where: { id: '776b9751-b3cb-46d9-a50b-ce895f6f1cb2' },
+        update: {},
+        create: {
+            id: '776b9751-b3cb-46d9-a50b-ce895f6f1cb2',
+            album: {
+                connect: { id: 'd3e7cbef-5970-4712-ac1f-4b858539aab0' },
+            },
+            name: 'Raw Ochre',
+            image: 'hozier-unreal-unearth-raw-ochre.png',
+            color: 'orange',
+        },
+    })
+    await prisma.pressing.upsert({
+        where: { id: '68f8ca22-fda9-4be9-abaf-39075c556439' },
+        update: {},
+        create: {
+            id: '68f8ca22-fda9-4be9-abaf-39075c556439',
+            album: {
+                connect: { id: 'd3e7cbef-5970-4712-ac1f-4b858539aab0' },
+            },
+            name: 'Standard Black',
+            image: 'hozier-unreal-unearth-black.png',
+            color: 'dark',
+        },
+    })
+    await prisma.pressing.upsert({
+        where: { id: '21195c0e-0969-4df3-a8f8-cf3e9d212b2f' },
+        update: {},
+        create: {
+            id: '21195c0e-0969-4df3-a8f8-cf3e9d212b2f',
+            album: {
+                connect: { id: 'd3e7cbef-5970-4712-ac1f-4b858539aab0' },
+            },
+            name: 'Burn Clay',
+            image: 'hozier-unreal-unearth-burnt-clay.png',
+            color: 'red',
         },
     })
 }

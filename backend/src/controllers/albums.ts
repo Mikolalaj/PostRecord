@@ -1,8 +1,8 @@
 import { Pressing } from '@prisma/client'
 import { Request, Response } from 'express'
 import { prisma } from '../app'
-import { getSpotifyData } from '../external/spotify'
 import { getArtistBio } from '../external/lastfm'
+import { getSpotifyData } from '../external/spotify'
 
 export type Tracklist = {
     number: number
@@ -34,9 +34,20 @@ interface AlbumDetails extends Omit<Album, 'artistName'> {
 }
 
 export async function getAlbums(req: Request, res: Response): Promise<Response> {
-    const { sortBy, skip } = req.params
+    const { sortBy, skip, query, get } = req.query
+    const albums = await prisma.album.findMany({
+        // where: {
+        //     OR: [
+        //         { title: { contains: query as string, mode: 'insensitive' } },
+        //         { genre: { contains: query as string, mode: 'insensitive' } },
+        //     ],
+        // },
+        take: Number(get),
+        skip: Number(skip),
+        // orderBy: { releaseDate: sortBy === 'newest' ? 'desc' : 'asc' },
+    })
+    const albumsCount = await prisma.album.count()
 
-    const albums = await prisma.album.findMany()
     const spotifyAlbums: Album[] = await Promise.all(
         albums.map(async album => {
             const spotifyAlbum = await getSpotifyData(`/albums/${album.spotifyId}`)
@@ -51,8 +62,10 @@ export async function getAlbums(req: Request, res: Response): Promise<Response> 
             }
         })
     )
-
-    return res.status(200).send(spotifyAlbums)
+    return res.status(200).send({
+        albums: spotifyAlbums,
+        total: albumsCount,
+    })
 }
 
 export async function getAlbum(albumId: string, userId: string): Promise<AlbumDetails | null> {
@@ -66,10 +79,6 @@ export async function getAlbum(albumId: string, userId: string): Promise<AlbumDe
     }
     const spotifyAlbum = await getSpotifyData(`/albums/${album.spotifyId}`)
     const spotifyArtist = await getSpotifyData(`/artists/${spotifyAlbum.artists[0].id}`)
-
-    const pressings = await prisma.pressing.findMany({
-        where: { albumId },
-    })
 
     const artistBio = await getArtistBio(spotifyAlbum.artists[0].name)
 
