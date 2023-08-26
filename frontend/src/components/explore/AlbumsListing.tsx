@@ -1,4 +1,4 @@
-import { Center, Pagination, SimpleGrid } from '@mantine/core'
+import { Pagination, SimpleGrid, Select, Flex } from '@mantine/core'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { albumsParams, useAlbums } from '../../hooks/album/useAlbums'
 import QueryRenderer from '../common/QueryRenderer'
@@ -8,6 +8,12 @@ function AlbumsListing() {
     const { get, skip } = useRecoilValue(albumsParams)
     const setAlbumsParams = useSetRecoilState(albumsParams)
 
+    const pagination = [
+        { value: '5', label: '5' },
+        { value: '15', label: '15' },
+        { value: '20', label: '20' },
+        { value: '30', label: '30' },
+    ]
     const activePage = (skip || 0) / (get || 5) + 1
     console.log(activePage)
     const setPage = (page: number) => {
@@ -28,9 +34,21 @@ function AlbumsListing() {
                                 <AlbumCard {...album} key={album.id} />
                             ))}
                         </SimpleGrid>
-                        <Center>
-                            <Pagination page={activePage} onChange={setPage} total={Math.ceil(data.total / (get || 5))} />
-                        </Center>
+                        <Flex align='center' direction='column'>
+                            <Pagination page={activePage} onChange={setPage} total={Math.ceil(data.total / get)} />
+                            <Select
+                                style={{ position: 'relative', top: '-45px', alignSelf: 'end' }}
+                                label='Show'
+                                value={get.toString()}
+                                onChange={value => {
+                                    setAlbumsParams(a => {
+                                        return { ...a, get: value ? parseInt(value) : 5 }
+                                    })
+                                }}
+                                data={pagination}
+                                w={100}
+                            />
+                        </Flex>
                     </>
                 )
             }}
