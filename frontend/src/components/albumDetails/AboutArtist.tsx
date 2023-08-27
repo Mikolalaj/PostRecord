@@ -1,12 +1,7 @@
 import { Flex, Image, Spoiler, Text, Title } from '@mantine/core'
+import { Artist } from '../../hooks/album/useAlbums'
 
-interface AboutArtistProps {
-    name: string
-    image: string
-    description: string
-}
-
-function AboutArtist({ name, image, description }: AboutArtistProps) {
+function AboutArtist({ name, image, bio }: Artist) {
     return (
         <Flex direction='column'>
             <Title color='red.7' order={2} mb='md'>
@@ -18,7 +13,7 @@ function AboutArtist({ name, image, description }: AboutArtistProps) {
                     <Text weight={700} size='xl'>
                         {name}
                     </Text>
-                    <Text align='justify'>{description}</Text>
+                    <Text align='justify'>{bio}</Text>
                 </Text>
             </Spoiler>
         </Flex>

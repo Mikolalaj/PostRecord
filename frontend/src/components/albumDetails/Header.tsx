@@ -16,7 +16,7 @@ const useStyles = createStyles(() => ({
 
 interface HeaderProps extends Omit<AlbumDetails, 'tracklist'> {}
 
-function Header({ id, title, image, imageBig, artist, genre, releaseDate, spotifyId }: HeaderProps) {
+function Header({ id, title, image, imageLarge, artist, genre, releaseDate, spotifyId }: HeaderProps) {
     const { classes } = useStyles()
     const { data: user } = useUser()
     if (!user) return null
@@ -30,7 +30,7 @@ function Header({ id, title, image, imageBig, artist, genre, releaseDate, spotif
         <Flex gap='lg' align='flex-start' h={250}>
             <Image className={classes.image} src={image} alt={title} width={250} height={250} onClick={open} />
             <Modal opened={opened} onClose={close} withCloseButton={false} centered size='auto'>
-                <Image src={imageBig} alt={title} width={600} height={600} />
+                <Image src={imageLarge} alt={title} width={600} height={600} />
             </Modal>
 
             <Flex direction='column' align='flex-start' justify='space-between' h='100%'>

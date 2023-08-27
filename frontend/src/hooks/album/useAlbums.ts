@@ -24,13 +24,15 @@ export interface Track {
     features: string | null
 }
 
+export interface Artist {
+    name: string
+    image: string
+    bio: string
+}
+
 export interface AlbumDetails extends Omit<Album, 'artistName'> {
-    artist: {
-        name: string
-        image: string
-        description: string
-    }
-    imageBig: string
+    artist: Artist
+    imageLarge: string
     tracklist: Track[]
 }
 

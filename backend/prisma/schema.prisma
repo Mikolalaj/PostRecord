@@ -26,12 +26,38 @@ model User {
 }
 
 model Album {
-  id              String     @id @default(uuid()) @db.Uuid
-  artistSpotifyId String
-  spotifyId       String     @unique
-  genre           String
-  pressings       Pressing[]
-  User            User[]
+  id          String     @id @default(uuid()) @db.Uuid
+  title       String
+  genre       String
+  image       String
+  imageLarge  String
+  releaseDate DateTime
+  spotifyId   String     @unique
+  pressings   Pressing[]
+  User        User[]
+  artist      Artist     @relation(fields: [artistId], references: [id])
+  artistId    String     @db.Uuid
+  tracklist   Track[]
+}
+
+model Artist {
+  id        String  @id @default(uuid()) @db.Uuid
+  spotifyId String  @unique
+  name      String
+  image     String
+  bio       String
+  albums    Album[]
+}
+
+model Track {
+  id        String  @id @default(uuid()) @db.Uuid
+  title     String
+  duration  Int
+  album     Album   @relation(fields: [albumId], references: [id])
+  albumId   String  @db.Uuid
+  number    Int
+  features  String?
+  spotifyId String  @unique
 }
 
 model Pressing {
