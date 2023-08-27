@@ -90,6 +90,7 @@ export function useAlbum(albumId: string) {
                 ...album,
                 // album is new if it's release date was in the last month
                 releaseDate: new Date(album.releaseDate),
+                tracklist: album.tracklist.sort((a, b) => a.number - b.number),
             }
         },
     })
