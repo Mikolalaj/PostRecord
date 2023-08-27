@@ -27,7 +27,8 @@ function VinylPressings({ vinylPressings }: VinylPressingsProps) {
                 slideGap='xl'
                 align='start'
                 slidesToScroll={1}
-                loop>
+                loop
+            >
                 {slides}
             </Carousel>
         </Flex>

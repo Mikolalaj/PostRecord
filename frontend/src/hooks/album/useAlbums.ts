@@ -58,6 +58,9 @@ interface AlbumsResponse {
     total: number
 }
 
+// album is new if it's release date was in the last month
+const isAlbumNew = (releaseData: Date) => new Date(releaseData) > new Date(Date.now() - 1000 * 60 * 60 * 24 * 30)
+
 export function useAlbums() {
     const { get, skip, query } = useRecoilValue(albumsParams)
     return useQuery<AlbumsResponse, AxiosError<Error>>(
@@ -73,8 +76,8 @@ export function useAlbums() {
                     ...data,
                     albums: data.albums.map((album: Album) => ({
                         ...album,
-                        // album is new if it's release date was in the last month
-                        isNew: new Date(album.releaseDate) > new Date(Date.now() - 1000 * 60 * 60 * 24 * 30),
+
+                        isNew: isAlbumNew(new Date(album.releaseDate)),
                     })),
                 }
             },
@@ -88,9 +91,9 @@ export function useAlbum(albumId: string) {
         select: (album: AlbumDetails) => {
             return {
                 ...album,
-                // album is new if it's release date was in the last month
                 releaseDate: new Date(album.releaseDate),
                 tracklist: album.tracklist.sort((a, b) => a.number - b.number),
+                isNew: isAlbumNew(new Date(album.releaseDate)),
             }
         },
     })

@@ -1,8 +1,9 @@
-import { Button, Flex, Group, Image, Modal, Stack, Text, Title, createStyles } from '@mantine/core'
+import { Badge, Button, Flex, Group, Image, Modal, Stack, Text, Title, createStyles } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconHeartMinus, IconHeartPlus, IconPlus } from '@tabler/icons-react'
 import { AlbumDetails, useSetFavouriteAlbum } from '../../hooks/album/useAlbums'
 import { useUser } from '../../hooks/auth/useUser'
+import { relative } from 'path'
 
 const useStyles = createStyles(() => ({
     image: {
@@ -16,7 +17,7 @@ const useStyles = createStyles(() => ({
 
 interface HeaderProps extends Omit<AlbumDetails, 'tracklist'> {}
 
-function Header({ id, title, image, imageLarge, artist, genre, releaseDate, spotifyId }: HeaderProps) {
+function Header({ id, title, image, imageLarge, artist, genre, releaseDate, spotifyId, isNew }: HeaderProps) {
     const { classes } = useStyles()
     const { data: user } = useUser()
     if (!user) return null
@@ -33,15 +34,22 @@ function Header({ id, title, image, imageLarge, artist, genre, releaseDate, spot
                 <Image src={imageLarge} alt={title} width={600} height={600} />
             </Modal>
 
-            <Flex direction='column' align='flex-start' justify='space-between' h='100%'>
-                <Title>
-                    <Text component='span' inherit color='violet' style={{ fontSize: 40 }}>
-                        {title}
-                    </Text>{' '}
-                    <Text component='span' weight={200} size='xl'>
-                        by {artist.name}
-                    </Text>
-                </Title>
+            <Flex direction='column' align='flex-start' justify='space-between' h='100%' w='100%'>
+                <Flex justify='space-between' align='center' w='100%'>
+                    <Title>
+                        <Text component='span' inherit color='violet' style={{ fontSize: 40 }}>
+                            {title}
+                        </Text>{' '}
+                        <Text component='span' weight={200} size='xl'>
+                            by {artist.name}
+                        </Text>
+                    </Title>
+                    {isNew && (
+                        <Badge color='pink' size='lg' variant='filled'>
+                            New
+                        </Badge>
+                    )}
+                </Flex>
                 <Group style={{ width: '100%' }}>
                     <Flex direction='column' justify='center' align='flex-start'>
                         <Text weight={500}>Label: </Text>
