@@ -13,12 +13,12 @@ type QueryRenderData<T> = {
     [K in keyof T]: T[K] extends QueryData<infer DataType> ? DataType : never
 }
 
-interface QueryRendererProps<T extends readonly QueryData<any>[]> {
+interface QueryRendererProps<T extends ReadonlyArray<QueryData<any>>> {
     queries: T
     render: (...data: QueryRenderData<T>) => JSX.Element
 }
 
-function QueryRenderer<T extends readonly QueryData<any>[]>({ queries, render }: QueryRendererProps<T>) {
+function QueryRenderer<T extends ReadonlyArray<QueryData<any>>>({ queries, render }: QueryRendererProps<T>) {
     const allQueriesSuccess = queries.every(query => query.isSuccess)
 
     if (queries.some(query => query.isLoading)) {

@@ -6,7 +6,7 @@ import Pressing from './Pressing'
 const IMAGE_PATH = 'https://postrecordstorageaccount.blob.core.windows.net/records/'
 
 interface VinylPressingsProps {
-    vinylPressings: PressingType[]
+    vinylPressings: Array<PressingType>
 }
 
 function VinylPressings({ vinylPressings }: VinylPressingsProps) {

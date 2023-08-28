@@ -33,7 +33,7 @@ export interface Artist {
 export interface AlbumDetails extends Omit<Album, 'artistName'> {
     artist: Artist
     imageLarge: string
-    tracklist: Track[]
+    tracklist: Array<Track>
 }
 
 const basePath = '/api/albums/'
@@ -54,7 +54,7 @@ export const albumsParams = atom<AlbumsParams>({
 })
 
 interface AlbumsResponse {
-    albums: Album[]
+    albums: Array<Album>
     total: number
 }
 

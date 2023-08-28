@@ -2,7 +2,7 @@ import { Flex, Table, Text, Title } from '@mantine/core'
 import { Track } from '../../hooks/album/useAlbums'
 
 interface TrackListProps {
-    tracklist: Track[]
+    tracklist: Array<Track>
 }
 
 function TrackList({ tracklist }: TrackListProps) {

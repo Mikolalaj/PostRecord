@@ -8,7 +8,7 @@ import { Pressing } from './usePressings'
 const basePath = '/api/collection/'
 
 export function useCollection() {
-    return useQuery<Pressing[], AxiosError<Error>>(['collection'], async () => (await axios.get(basePath)).data, {
+    return useQuery<Array<Pressing>, AxiosError<Error>>(['collection'], async () => (await axios.get(basePath)).data, {
         staleTime: 1000 * 60 * 2,
     })
 }

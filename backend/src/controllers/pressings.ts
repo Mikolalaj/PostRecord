@@ -3,7 +3,7 @@ import { prisma } from '../app'
 import { getUserId } from '../common/utils'
 import { Pressing } from '@prisma/client'
 
-type Pressings = (Pressing & { isInCollection: boolean })[]
+type Pressings = Array<Pressing & { isInCollection: boolean }>
 
 export async function getPressings(albumId: string, request: Request, response: Response) {
     const userId = getUserId(request)

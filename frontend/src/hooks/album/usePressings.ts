@@ -14,7 +14,11 @@ export interface Pressing {
 }
 
 export function usePressings(albumId: string) {
-    return useQuery<Pressing[], AxiosError<Error>>(['pressings', albumId], async () => (await axios.get(basePath + albumId)).data, {
-        staleTime: 1000 * 60 * 2,
-    })
+    return useQuery<Array<Pressing>, AxiosError<Error>>(
+        ['pressings', albumId],
+        async () => (await axios.get(basePath + albumId)).data,
+        {
+            staleTime: 1000 * 60 * 2,
+        }
+    )
 }

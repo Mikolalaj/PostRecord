@@ -60,7 +60,11 @@ export function AlbumCard({ id, title, artistName, image, isNew }: AlbumCardProp
                         {title}
                     </Text>
                     {isNew && (
-                        <Badge color={theme.colorScheme === 'light' ? 'pink' : 'purple'} size='sm'>
+                        <Badge
+                            style={{ position: 'absolute', top: 5, right: 5 }}
+                            variant='filled'
+                            color={theme.colorScheme === 'light' ? 'pink' : 'purple'}
+                        >
                             New
                         </Badge>
                     )}
