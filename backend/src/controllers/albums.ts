@@ -14,7 +14,7 @@ interface Album {
 
 interface AlbumDetails extends Omit<Album, 'artistName'> {
     artist: Artist
-    tracklist: Track[]
+    tracklist: Array<Track>
     imageLarge: string
 }
 
