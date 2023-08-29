@@ -18,14 +18,34 @@ interface AlbumDetails extends Omit<Album, 'artistName'> {
     imageLarge: string
 }
 
-export async function getAlbums(req: Request, res: Response): Promise<Response> {
-    const { skip, query, get } = req.query
+type OrderBy = 'newest' | 'oldest' | 'mostPopular' | 'leastPopular'
+
+export interface AlbumsParams {
+    skip: number
+    get: number
+    query: string
+    orderBy: OrderBy
+}
+
+export async function getAlbums(req: Request<{}, {}, {}, AlbumsParams>, res: Response): Promise<Response> {
+    const { skip, query, get, orderBy } = req.query
+
+    let orderValue: 'asc' | 'desc' = 'asc'
+    let orderField: 'releaseDate' | 'popularity' = 'releaseDate'
+
+    if (orderBy === 'newest' || orderBy === 'mostPopular') {
+        orderValue = 'desc'
+    }
+    if (orderBy === 'mostPopular' || orderBy === 'leastPopular') {
+        orderField = 'popularity'
+    }
+
     const albums = await prisma.album.findMany({
         where: {
             OR: [
-                { title: { contains: query as string } },
-                { artist: { name: { contains: query as string } } },
-                { genre: { contains: query as string } },
+                { title: { contains: query as string, mode: 'insensitive' } },
+                { artist: { name: { contains: query as string, mode: 'insensitive' } } },
+                { genre: { contains: query as string, mode: 'insensitive' } },
             ],
         },
         take: Number(get),
@@ -36,6 +56,9 @@ export async function getAlbums(req: Request, res: Response): Promise<Response> 
                     name: true,
                 },
             },
+        },
+        orderBy: {
+            [orderField]: orderValue,
         },
     })
 

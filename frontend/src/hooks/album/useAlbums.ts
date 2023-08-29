@@ -38,10 +38,13 @@ export interface AlbumDetails extends Omit<Album, 'artistName'> {
 
 const basePath = '/api/albums/'
 
+export type OrderBy = 'newest' | 'oldest' | 'mostPopular' | 'leastPopular'
+
 interface AlbumsParams {
     get: number
     skip: number
     query: string
+    orderBy: OrderBy
 }
 
 export const albumsParams = atom<AlbumsParams>({
@@ -50,6 +53,7 @@ export const albumsParams = atom<AlbumsParams>({
         get: 5,
         skip: 0,
         query: '',
+        orderBy: 'newest',
     },
 })
 
@@ -62,11 +66,11 @@ interface AlbumsResponse {
 const isAlbumNew = (releaseData: Date) => new Date(releaseData) > new Date(Date.now() - 1000 * 60 * 60 * 24 * 30)
 
 export function useAlbums() {
-    const { get, skip, query } = useRecoilValue(albumsParams)
+    const { get, skip, query, orderBy } = useRecoilValue(albumsParams)
     return useQuery<AlbumsResponse, AxiosError<Error>>(
-        ['albums', get, skip, query],
+        ['albums', get, skip, query, orderBy],
         async () => {
-            const response = await axios.get(basePath, { params: { get, skip, query } })
+            const response = await axios.get(basePath, { params: { get, skip, orderBy, query: query !== '' ? query : null } })
             return response.data
         },
         {

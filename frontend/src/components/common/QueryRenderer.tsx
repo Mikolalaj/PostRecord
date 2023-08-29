@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Alert, Flex, Loader } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
 import { UseQueryResult } from '@tanstack/react-query'

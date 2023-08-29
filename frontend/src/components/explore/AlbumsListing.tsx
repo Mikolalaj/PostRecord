@@ -15,7 +15,7 @@ function AlbumsListing() {
         { value: '30', label: '30' },
     ]
     const activePage = (skip || 0) / (get || 5) + 1
-    console.log(activePage)
+
     const setPage = (page: number) => {
         setAlbumsParams(a => {
             return { ...a, skip: (page - 1) * (get || 5) }
@@ -29,7 +29,7 @@ function AlbumsListing() {
                 console.log(data)
                 return (
                     <>
-                        <SimpleGrid cols={5} spacing='lg' verticalSpacing='lg' my='lg'>
+                        <SimpleGrid cols={5} spacing='lg' verticalSpacing='lg' my='lg' style={{gap: '20px 31px'}}>
                             {data.albums.map(album => (
                                 <AlbumCard {...album} key={album.id} />
                             ))}

@@ -1,10 +1,10 @@
 import { Request, Response, Router } from 'express'
-import { getAlbum, getAlbums } from '../controllers/albums'
+import { AlbumsParams, getAlbum, getAlbums } from '../controllers/albums'
 import { getUserId } from '../common/utils'
 
 const router = Router()
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', async (req: Request<{}, {}, {}, AlbumsParams>, res: Response) => {
     return getAlbums(req, res)
 })
 
