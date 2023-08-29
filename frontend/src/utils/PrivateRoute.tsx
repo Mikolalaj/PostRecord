@@ -5,16 +5,22 @@ import { Flex, Loader } from '@mantine/core'
 
 type PrivateRouteProps = {
     children: JSX.Element
+    isAdminRequired?: boolean
 }
 
-const PrivateRoute = ({ children }: PrivateRouteProps): JSX.Element => {
+const PrivateRoute = ({ children, isAdminRequired }: PrivateRouteProps): JSX.Element => {
     const { data: user, isLoading } = useUser()
-    if (isLoading)
+    if (isLoading) {
         return (
             <Flex justify='center' align='center' h='100%'>
                 <Loader />
             </Flex>
         )
+    }
+
+    if (isAdminRequired && !user?.isAdmin) {
+        return <Navigate to='/' />
+    }
     return user ? <Layout>{children}</Layout> : <Navigate to='/login' />
 }
 

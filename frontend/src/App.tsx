@@ -11,6 +11,7 @@ import Login from './pages/Login'
 import NotFoundPage from './pages/NotFoundPage'
 import ResetPassword from './pages/ResetPassword'
 import PrivateRoute from './utils/PrivateRoute'
+import Admin from './pages/Admin'
 
 const queryClient = new QueryClient()
 
@@ -19,6 +20,8 @@ const AuthProviderOutlet = () => (
         <Outlet />
     </RecoilRoot>
 )
+
+const adminRoutes = [{ path: '/admin', element: <Admin /> }]
 
 const privateRoutes = [
     { path: '/', element: <Home /> },
@@ -33,6 +36,13 @@ const router = createBrowserRouter(
             <Route path='/resetPassword' element={<ResetPassword />} />
             {privateRoutes.map(route => (
                 <Route key={route.path} path={route.path} element={<PrivateRoute>{route.element}</PrivateRoute>} />
+            ))}
+            {adminRoutes.map(route => (
+                <Route
+                    key={route.path}
+                    path={route.path}
+                    element={<PrivateRoute isAdminRequired={true}>{route.element}</PrivateRoute>}
+                />
             ))}
         </Route>
     )
