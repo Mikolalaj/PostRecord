@@ -103,6 +103,30 @@ export function useAlbum(albumId: string) {
     })
 }
 
+export interface SearchAlbum {
+    albumTitle: string
+    artist: string
+    image: string
+    spotifyId: string
+}
+
+export function useSearchAlbums(search: string) {
+    return useQuery<Array<SearchAlbum>, AxiosError<Error>>(
+        ['albums', search],
+        async () => {
+            const response = await axios.get(basePath + 'search', {
+                params: { query: search !== '' ? search : null },
+            })
+            return response.data
+        },
+        {
+            keepPreviousData: true,
+            enabled: search !== '',
+            initialData: [],
+        }
+    )
+}
+
 export function useSetFavouriteAlbum() {
     const queryClient = useQueryClient()
     return useMutation<User, AxiosError<Error>, string | null>({

@@ -1,6 +1,7 @@
 import { Artist, Track } from '@prisma/client'
 import { Request, Response } from 'express'
 import { prisma } from '../app'
+import { getSpotifyData } from '../external/spotify'
 
 interface Album {
     id: string
@@ -91,4 +92,25 @@ export async function getAlbum(albumId: string, userId: string): Promise<AlbumDe
     }
 
     return album
+}
+
+interface SearchResultAlbum {
+    albumTitle: string
+    artist: string
+    image: string
+    spotifyId: string
+}
+
+export async function searchSpotifyAlbums(query: string): Promise<Array<SearchResultAlbum>> {
+    if (!query) {
+        return []
+    }
+    const result = await getSpotifyData(`/search?q=${query}&type=album&limit=10`)
+    const albums: Array<SearchResultAlbum> = result.albums.items.map((album: any) => ({
+        albumTitle: album.name as string,
+        artist: album.artists[0].name as string,
+        image: album.images[2].url as string,
+        spotifyId: album.id as string,
+    }))
+    return albums
 }

@@ -1,9 +1,11 @@
 import { ColorScheme, ColorSchemeProvider, MantineProvider } from '@mantine/core'
 import { NotificationsProvider } from '@mantine/notifications'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { useState } from 'react'
 import { Outlet, Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
+import Admin from './pages/Admin'
 import Album from './pages/Album'
 import Explore from './pages/Explore'
 import Home from './pages/Home'
@@ -11,7 +13,6 @@ import Login from './pages/Login'
 import NotFoundPage from './pages/NotFoundPage'
 import ResetPassword from './pages/ResetPassword'
 import PrivateRoute from './utils/PrivateRoute'
-import Admin from './pages/Admin'
 
 const queryClient = new QueryClient()
 
@@ -61,6 +62,7 @@ function App() {
                     </NotificationsProvider>
                 </MantineProvider>
             </ColorSchemeProvider>
+            <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
     )
 }

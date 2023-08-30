@@ -1,11 +1,17 @@
 import { Request, Response, Router } from 'express'
-import { AlbumsParams, getAlbum, getAlbums } from '../controllers/albums'
+import { AlbumsParams, getAlbum, getAlbums, searchSpotifyAlbums } from '../controllers/albums'
 import { getUserId } from '../common/utils'
 
 const router = Router()
 
 router.get('/', async (req: Request<{}, {}, {}, AlbumsParams>, res: Response) => {
     return getAlbums(req, res)
+})
+
+router.get('/search', async (req: Request<{}, {}, {}, { query: string }>, res: Response) => {
+    const { query } = req.query
+    const result = await searchSpotifyAlbums(query)
+    return res.status(200).send(result)
 })
 
 router.get('/:albumId', async (req: Request, res: Response) => {
