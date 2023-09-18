@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -20,32 +17,32 @@ model User {
   registrationToken String?    @unique
   lastLogin         DateTime?
   spotifyToken      String?
-  collection        Pressing[]
-  favouriteAlbum    Album?     @relation(fields: [albumId], references: [id])
   albumId           String?    @db.Uuid
+  favouriteAlbum    Album?     @relation(fields: [albumId], references: [id])
+  collection        Pressing[] @relation("PressingToUser")
 }
 
 model Album {
   id          String     @id @default(uuid()) @db.Uuid
-  title       String
+  spotifyId   String     @unique
   genre       String
+  artistId    String     @db.Uuid
   image       String
   imageLarge  String
   releaseDate DateTime
-  spotifyId   String     @unique
-  pressings   Pressing[]
-  User        User[]
+  title       String
   artist      Artist     @relation(fields: [artistId], references: [id])
-  artistId    String     @db.Uuid
+  pressings   Pressing[]
   tracklist   Track[]
+  User        User[]
 }
 
 model Artist {
   id        String  @id @default(uuid()) @db.Uuid
-  spotifyId String  @unique
   name      String
   image     String
   bio       String
+  spotifyId String  @unique
   albums    Album[]
 }
 
@@ -53,19 +50,19 @@ model Track {
   id        String  @id @default(uuid()) @db.Uuid
   title     String
   duration  Int
-  album     Album   @relation(fields: [albumId], references: [id])
   albumId   String  @db.Uuid
-  number    Int
-  features  String?
   spotifyId String  @unique
+  features  String?
+  number    Int
+  album     Album   @relation(fields: [albumId], references: [id])
 }
 
 model Pressing {
   id      String @id @default(uuid()) @db.Uuid
   name    String
-  album   Album  @relation(fields: [albumId], references: [id])
   albumId String @db.Uuid
   color   String
   image   String
-  user    User[]
+  album   Album  @relation(fields: [albumId], references: [id])
+  user    User[] @relation("PressingToUser")
 }

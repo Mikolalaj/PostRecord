@@ -1,5 +1,4 @@
 import { User } from '@prisma/client'
-import bcrypt from 'bcrypt'
 import { Request, Response } from 'express'
 import { prisma } from '../app'
 import { sendResetPasswordEmail } from '../emails'
@@ -21,7 +20,7 @@ export async function signIn(email: string, password: string): Promise<User | nu
             email: email,
         },
     })
-    if (user && (await bcrypt.compare(password, user.password))) {
+    if (user && (await Bun.password.verify(password, user.password))) {
         await prisma.user.update({
             where: {
                 id: user.id,
@@ -36,8 +35,8 @@ export async function signIn(email: string, password: string): Promise<User | nu
 }
 
 export async function singUp(email: string, password: string, firstName: string, lastName: string): Promise<User> {
-    const hashedPassword = await bcrypt.hash(password, 10)
-    const registrationToken = await bcrypt.hash(email, 10)
+    const hashedPassword = await Bun.password.hash(password)
+    const registrationToken = await Bun.password.hash(email)
     return prisma.user.create({
         data: {
             email,
@@ -77,7 +76,7 @@ export async function confirmEmail(req: Request, res: Response): Promise<Respons
 
 async function createResetToken(user: User): Promise<string> {
     console.log(user.id + user.lastLogin)
-    return await bcrypt.hash(user.id + user.lastLogin, 10)
+    return await Bun.password.hash(user.id + user.lastLogin)
 }
 
 export async function forgotPassword(req: Request, res: Response): Promise<Response> {
@@ -111,11 +110,11 @@ export async function resetPassword(req: Request, res: Response): Promise<Respon
         return res.status(400).send({ message: 'Unable to find your account 😢' })
     }
 
-    if ((await bcrypt.compare(user.id + user.lastLogin, token)) === false) {
+    if ((await Bun.password.verify(user.id + user.lastLogin, token)) === false) {
         return res.status(400).send({ message: 'Invalid token' })
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10)
+    const hashedPassword = await Bun.password.hash(password)
     await prisma.user.update({
         where: {
             id: user.id,
