@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express'
-import { AlbumsParams, getAlbum, getAlbums, searchSpotifyAlbums } from '../controllers/albums'
+import { AlbumsParams, getAlbum, getSpotifyAlbum, getAlbums, searchSpotifyAlbums } from '../controllers/albums'
 import { getUserId } from '../common/utils'
 
 const router = Router()
@@ -20,5 +20,12 @@ router.get('/:albumId', async (req: Request, res: Response) => {
     const album = await getAlbum(albumId, userId)
     return res.status(200).send(album)
 })
+
+router.get('/spotify/:albumSpotifyId', async (req: Request, res: Response) => {
+    const { albumSpotifyId } = req.params
+    const album = await getSpotifyAlbum(albumSpotifyId)
+    return res.status(200).send(album)
+})
+
 
 export default router

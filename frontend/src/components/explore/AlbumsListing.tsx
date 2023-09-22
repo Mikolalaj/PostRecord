@@ -26,10 +26,9 @@ function AlbumsListing() {
         <QueryRenderer
             queries={[useAlbums()]}
             render={data => {
-                console.log(data)
                 return (
                     <>
-                        <SimpleGrid cols={5} spacing='lg' verticalSpacing='lg' my='lg' style={{gap: '20px 31px'}}>
+                        <SimpleGrid cols={5} spacing='lg' verticalSpacing='lg' my='lg' style={{ gap: '20px 31px' }}>
                             {data.albums.map(album => (
                                 <AlbumCard {...album} key={album.id} />
                             ))}
