@@ -124,7 +124,7 @@ export async function getSpotifyAlbum(albumSpotifyId: string): Promise<SpotifyAl
     return {
         spotifyId: albumSpotifyId,
         title: album.name,
-        image: album.images[2].url,
+        image: album.images[1].url,
         releaseDate: album.release_date,
         artist: {
             name: album.artists[0].name,

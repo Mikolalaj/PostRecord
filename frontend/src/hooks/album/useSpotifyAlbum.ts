@@ -51,10 +51,13 @@ export function useSpotifyAlbum(setFormValues: (values: any) => void) {
             },
             onSuccess: album => {
                 setFormValues({
-                    title: album.title,
-                    // artist: album.artistName,
-                    // releaseDate: album.releaseDate,
-                    // image: album.image,
+                    artist: {
+                        name: album.artist.name,
+                        image: album.artist.image,
+                        bio: album.artist.bio,
+                    },
+                    releaseDate: album.releaseDate,
+                    image: album.image,
                     // tracklist: album.tracklist,
                 })
             },
