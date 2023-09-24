@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import axios, { AxiosError } from 'axios'
 import { Error } from '../../types'
 import { atom, useRecoilValue } from 'recoil'
+import { Track } from './useAlbums'
 
 interface SpotifyAlbum {
     spotifyId: string
@@ -14,13 +15,11 @@ interface SpotifyAlbum {
         image: string
         bio: string
     }
-    tracklist: Array<{
-        spotifyId: string
-        title: string
-        duration: number
-        features: string | null
-        number: number
-    }>
+    tracklist: Array<
+        Track & {
+            spotifyId: string
+        }
+    >
 }
 
 const basePath = '/api/albums/'
@@ -58,7 +57,7 @@ export function useSpotifyAlbum(setFormValues: (values: any) => void) {
                     },
                     releaseDate: album.releaseDate,
                     image: album.image,
-                    // tracklist: album.tracklist,
+                    tracklist: album.tracklist,
                 })
             },
         }

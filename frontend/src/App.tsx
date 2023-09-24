@@ -5,13 +5,14 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { useState } from 'react'
 import { Outlet, Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
-import Admin from './pages/Admin'
 import Album from './pages/Album'
 import Explore from './pages/Explore'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import NotFoundPage from './pages/NotFoundPage'
 import ResetPassword from './pages/ResetPassword'
+import AddNewAlbum from './pages/admin/AddNewAlbum'
+import Admin from './pages/admin/Admin'
 import PrivateRoute from './utils/PrivateRoute'
 
 const queryClient = new QueryClient()
@@ -22,7 +23,10 @@ const AuthProviderOutlet = () => (
     </RecoilRoot>
 )
 
-const adminRoutes = [{ path: '/admin', element: <Admin /> }]
+const adminRoutes = [
+    { path: '/admin', element: <Admin /> },
+    { path: '/admin/add-new-album', element: <AddNewAlbum /> },
+]
 
 const privateRoutes = [
     { path: '/', element: <Home /> },

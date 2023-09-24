@@ -9,7 +9,7 @@ function TrackList({ tracklist }: TrackListProps) {
     const rows = tracklist.map(track => {
         {
             const durationMinutes = Math.floor(track.duration / 60)
-            const durationSeconds = track.duration - durationMinutes * 60
+            const durationSeconds = Math.floor(track.duration - durationMinutes * 60)
             let durationSecondsString = durationSeconds.toString()
             if (durationSeconds < 10) {
                 durationSecondsString = durationSecondsString.padStart(2, '0')
