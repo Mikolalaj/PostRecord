@@ -5,9 +5,7 @@ import PhotoInput from '../../components/common/PhotoInput'
 import { useSpotifyAlbum } from '../../hooks/album/useSpotifyAlbum'
 import EditableTracklist, { EditableTrack } from './EditableTracklist'
 
-type Props = {}
-
-export default function AlbumForm({}: Props) {
+export default function AlbumForm() {
     interface Form {
         image: string
         artist: {
@@ -62,6 +60,7 @@ export default function AlbumForm({}: Props) {
                 label='Album cover'
                 placeholder='Upload alternative album cover'
                 defaultValue={form.values.image}
+                onChange={image => form.setValues({ ...form.values, image })}
                 firstInput={<TextInput withAsterisk label='Artist' {...form.getInputProps('artist.name')} />}
                 secondInput={<DatePicker withAsterisk label='Release date' {...form.getInputProps('releaseDate')} />}
             />

@@ -1,25 +1,27 @@
-import { ActionIcon, Button, FileInput, Flex, Image } from '@mantine/core'
+import { ActionIcon, FileInput, Flex, Image } from '@mantine/core'
 import { IconArrowBack, IconPhoto } from '@tabler/icons-react'
 import { useState } from 'react'
 
 interface Props {
     label: string
     placeholder: string
+    defaultValue?: string
+    onChange: (image: string) => void
     firstInput?: React.ReactNode
     secondInput?: React.ReactNode
-    defaultValue?: string
 }
 
-export default function PhotoInput({ label, placeholder, firstInput, secondInput, defaultValue }: Props) {
+export default function PhotoInput({ label, placeholder, onChange, firstInput, secondInput, defaultValue }: Props) {
     const [value, setValue] = useState<File | null>(null)
     const [imagePreview, setImagePreview] = useState<string | null>(null)
 
     function getBase64(file: File) {
-        var reader = new FileReader()
+        const reader = new FileReader()
         reader.readAsDataURL(file)
         reader.onload = function () {
             if (typeof reader.result === 'string') {
                 setImagePreview(reader.result)
+                onChange(reader.result)
             }
         }
         reader.onerror = function (error) {
