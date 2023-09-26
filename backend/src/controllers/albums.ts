@@ -135,7 +135,7 @@ export async function getSpotifyAlbum(albumSpotifyId: string): Promise<SpotifyAl
         tracklist: album.tracks.items.map((track: any) => ({
             spotifyId: track.id,
             title: track.name,
-            duration: track.duration_ms / 1000,
+            duration: Math.floor(track.duration_ms / 1000),
             features:
                 track.artists.length > 1
                     ? track.artists

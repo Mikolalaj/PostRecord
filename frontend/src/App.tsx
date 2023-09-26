@@ -60,7 +60,7 @@ function App() {
     return (
         <QueryClientProvider client={queryClient}>
             <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-                <MantineProvider withGlobalStyles withNormalizeCSS theme={{ colorScheme, primaryColor: 'violet' }}>
+                <MantineProvider withCSSVariables withGlobalStyles withNormalizeCSS theme={{ colorScheme, primaryColor: 'violet' }}>
                     <NotificationsProvider>
                         <RouterProvider router={router} />
                     </NotificationsProvider>
