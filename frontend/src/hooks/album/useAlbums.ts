@@ -80,7 +80,6 @@ export function useAlbums() {
                     ...data,
                     albums: data.albums.map((album: Album) => ({
                         ...album,
-
                         isNew: isAlbumNew(new Date(album.releaseDate)),
                     })),
                 }

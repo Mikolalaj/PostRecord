@@ -19,8 +19,8 @@
     "plugins": ["@typescript-eslint", "react"],
     "rules": {
         "@typescript-eslint/array-type": ["error", { "default": "generic" }],
-        "indent": ["error", 4],
-        "linebreak-style": ["error", "windows"],
+        "indent": ["error", 4, { "ignoredNodes": ["JSXElement *"] }],
+        "linebreak-style": ["error", "unix"],
         "quotes": ["error", "single"],
         "semi": ["error", "never"],
         "react/boolean-prop-naming": [

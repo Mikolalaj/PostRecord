@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { Track } from '../../hooks/album/useAlbums'
-import { Table, ScrollArea, ActionIcon, Group, Modal } from '@mantine/core'
-import classes from './EditableTracklist.module.scss'
+import { Table, ScrollArea, ActionIcon, Group, Modal, createStyles } from '@mantine/core'
+import classes from './EditableTable.module.scss'
 import clsx from 'clsx'
 import { IconEdit, IconTrash } from '@tabler/icons-react'
 import { useDisclosure } from '@mantine/hooks'
 import TrackForm from './TrackForm'
+
+const useStyles = createStyles({})
 
 export interface EditableTrack extends Track {
     spotifyId: string
@@ -18,6 +20,7 @@ type Props = {
 }
 
 export default function EditableTracklist({ tracks, deleteTrack, editTrack }: Props) {
+    const { theme } = useStyles()
     const [selectedTrack, setSelectedTrack] = useState<EditableTrack | null>(null)
     const [opened, { open, close }] = useDisclosure(false)
     const [scrolled, setScrolled] = useState(false)
@@ -88,7 +91,7 @@ export default function EditableTracklist({ tracks, deleteTrack, editTrack }: Pr
                 <Table miw={700}>
                     <thead
                         className={clsx(classes.header, { [classes.scrolled]: scrolled })}
-                        style={{ backgroundColor: true ? '#141517' : '' }}
+                        style={{ backgroundColor: theme.colorScheme == 'dark' ? '#141517' : '#f8f9fa', zIndex: 2 }}
                     >
                         <tr>
                             <th>Track number</th>
