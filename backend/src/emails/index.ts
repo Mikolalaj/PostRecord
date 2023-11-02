@@ -1,52 +1,45 @@
 import { render } from '@react-email/render'
 import * as dotenv from 'dotenv'
-import nodemailer from 'nodemailer'
+import { EmailClient } from '@azure/communication-email'
 import Registration from './templates/Registration'
 import ResetPassword from './templates/ResetPassword'
 
 dotenv.config()
 
+const emailConnectionString = process.env.EMAIL_CONNECTION_STRING
 const emailUser = process.env.EMAIL_USER
-const emailPassword = process.env.EMAIL_PASSWORD
 
-if (!emailUser || !emailPassword) {
-    throw new Error('Email user and password must be set')
+if (!emailConnectionString) {
+    throw new Error('Email connection string must be set')
 }
 
-const transporter = nodemailer.createTransport({
-    pool: true,
-    host: 'smtp.porkbun.com',
-    port: 465,
-    secure: true,
-    auth: {
-        user: emailUser,
-        pass: emailPassword,
-    },
-})
+if (!emailUser) {
+    throw new Error('Email user must be set')
+}
 
-export function sendRegistrationEmail(firstName: string, registrationToken: string, recipentEmail: string) {
-    if (!emailUser || !emailPassword) {
-        throw new Error('Email user and password must be set')
+const emailClient = new EmailClient(emailConnectionString)
+
+export async function sendRegistrationEmail(firstName: string, registrationToken: string, recipentEmail: string) {
+    if (!emailConnectionString) {
+        throw new Error('Email connection string must be set')
     }
+
+    if (!emailUser) {
+        throw new Error('Email user must be set')
+    }
+
     const emailHtml = render(
         Registration({
             firstName,
             registrationToken,
         })
     )
-    transporter.sendMail({
-        from: {
-            name: 'PostRecord',
-            address: emailUser,
-        },
-        to: recipentEmail,
-        subject: 'Welcome to PostRecord',
-        html: emailHtml,
-    })
+
+    sendEmail(emailHtml, recipentEmail, 'Welcome to PostRecord')
 }
 
 export function sendResetPasswordEmail(firstName: string, resetToken: string, recipentEmail: string) {
-    if (!emailUser || !emailPassword) {
+    if (!emailConnectionString) {
         throw new Error('Email user and password must be set')
     }
     const emailHtml = render(
@@ -56,13 +49,33 @@ export function sendResetPasswordEmail(firstName: string, resetToken: string, re
             email: recipentEmail,
         })
     )
-    transporter.sendMail({
-        from: {
-            name: 'PostRecord',
-            address: emailUser,
+
+    sendEmail(emailHtml, recipentEmail, 'Welcome to PostRecord')
+}
+
+async function sendEmail(emailHtml: string, recipentEmail: string, subject: string) {
+    if (!emailConnectionString) {
+        throw new Error('Email connection string must be set')
+    }
+
+    if (!emailUser) {
+        throw new Error('Email user must be set')
+    }
+
+    const message = {
+        senderAddress: emailUser,
+        content: {
+            subject: subject,
+            html: emailHtml,
         },
-        to: recipentEmail,
-        subject: 'Reset your password at PostRecord',
-        html: emailHtml,
-    })
+        recipients: {
+            to: [
+                {
+                    address: recipentEmail,
+                },
+            ],
+        },
+    }
+
+    emailClient.beginSend(message)
 }

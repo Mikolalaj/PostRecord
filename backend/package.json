@@ -3,7 +3,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "fuser -k 3001/tcp && bun --hot src/app.ts",
+    "dev": "bun --hot src/app.ts",
+    "clearPort": "fuser -k 3001/tcp",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "prisma": {
@@ -12,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@azure/communication-email": "^1.0.0",
     "@prisma/client": "^4.9.0",
     "@react-email/button": "0.0.6",
     "@react-email/container": "^0.0.7-canary.1",
@@ -31,7 +33,6 @@
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "morgan": "^1.10.0",
-    "nodemailer": "^6.9.1",
     "redis": "^4.6.7",
     "string-strip-html": "^13.4.2",
     "winston": "^3.10.0"
