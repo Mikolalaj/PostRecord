@@ -1,6 +1,7 @@
 import { ActionIcon, FileInput, FileInputProps, Flex, Image } from '@mantine/core'
 import { IconArrowBack, IconPhoto } from '@tabler/icons-react'
 import { useEffect, useState } from 'react'
+import { getBase64FromFile } from '../../utils'
 
 interface Props extends FileInputProps<false> {
     firstInput?: React.ReactNode
@@ -17,23 +18,9 @@ export default function ImageInput({ firstInput, secondInput, ...rest }: Props) 
         }
     }, [rest.value])
 
-    function getBase64(file: File) {
-        console.log(file)
-        const reader = new FileReader()
-        reader.readAsDataURL(file)
-        reader.onload = () => {
-            if (typeof reader.result === 'string') {
-                setImagePreview(reader.result)
-            }
-        }
-        reader.onerror = error => {
-            console.log('Error: ', error)
-        }
-    }
-
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { onChange: onChangeForm, value: valueForm, ...props } = rest
-    
+
     return (
         <Flex mt='lg' mb='xs' direction='row'>
             <Image src={imagePreview} width={200} height={200} />
@@ -57,7 +44,7 @@ export default function ImageInput({ firstInput, secondInput, ...rest }: Props) 
                         }
                         if (value) {
                             setValue(value)
-                            getBase64(value)
+                            getBase64FromFile(value, result => setImagePreview(result))
                         }
                     }}
                     icon={<IconPhoto size={14} />}

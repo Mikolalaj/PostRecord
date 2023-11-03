@@ -4,58 +4,75 @@ import classes from './EditableTable.module.scss'
 import clsx from 'clsx'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useDisclosure } from '@mantine/hooks'
-import PressingForm, { Pressing } from './PressingForm'
+import PressingForm, { NewPressing } from './PressingForm'
+import { getBase64 } from '../../utils'
+
 
 type Props = {
-    pressings: Array<Pressing>
-    editPressing: (pressing: Pressing) => void
+    pressings: Array<NewPressing>
+    editPressing: (pressing: NewPressing) => void
     deletePressing: (id: string) => void
-    addPressing: (pressing: Pressing) => void
+    addPressing: (pressing: NewPressing) => void
+}
+
+function Rows({
+    pressings,
+    setSelectedPressing,
+    deletePressing,
+}: {
+    pressings: Array<NewPressing>
+    setSelectedPressing: (pressing: NewPressing) => void
+    deletePressing: (id: string) => void
+}) {
+    return pressings.map(pressing => {
+        const [image, setImage] = useState<string | null>(null)
+        getBase64(pressing.image).then(result => setImage(result))
+
+        return (
+            <tr key={pressing.name}>
+                <td>
+                    <Image src={image} width={70} height={70} />
+                </td>
+                <td>{pressing.name}</td>
+                <td>
+                    <ColorSwatch color={pressing.color} size={20} />
+                </td>
+                <td>
+                    <Group position='center'>
+                        <ActionIcon
+                            color='blue.5'
+                            variant='subtle'
+                            radius='xl'
+                            aria-label='Edit'
+                            onClick={() => {
+                                open()
+                                setSelectedPressing(pressing)
+                            }}
+                        >
+                            <IconEdit size={20} stroke={1.5} />
+                        </ActionIcon>
+                        <ActionIcon
+                            color='red.5'
+                            variant='subtle'
+                            radius='xl'
+                            aria-label='Delete'
+                            onClick={() => deletePressing(pressing.name)}
+                        >
+                            <IconTrash size={20} stroke={1.5} />
+                        </ActionIcon>
+                    </Group>
+                </td>
+            </tr>
+        )
+    })
 }
 
 export default function Pressings({ pressings, editPressing, addPressing, deletePressing }: Props) {
     const { colorScheme } = useMantineColorScheme()
 
-    const [selectedPressing, setSelectedPressing] = useState<Pressing | null>(null)
+    const [selectedPressing, setSelectedPressing] = useState<NewPressing | null>(null)
     const [opened, { open, close }] = useDisclosure(false)
     const [scrolled, setScrolled] = useState(false)
-
-    const rows = pressings.map(pressing => (
-        <tr key={pressing.name}>
-            <td>
-                <Image src={pressing.image} width={70} height={70} />
-            </td>
-            <td>{pressing.name}</td>
-            <td>
-                <ColorSwatch color={pressing.color} size={20} />
-            </td>
-            <td>
-                <Group position='center'>
-                    <ActionIcon
-                        color='blue.5'
-                        variant='subtle'
-                        radius='xl'
-                        aria-label='Edit'
-                        onClick={() => {
-                            open()
-                            setSelectedPressing(pressing)
-                        }}
-                    >
-                        <IconEdit size={20} stroke={1.5} />
-                    </ActionIcon>
-                    <ActionIcon
-                        color='red.5'
-                        variant='subtle'
-                        radius='xl'
-                        aria-label='Delete'
-                        onClick={() => deletePressing(pressing.name)}
-                    >
-                        <IconTrash size={20} stroke={1.5} />
-                    </ActionIcon>
-                </Group>
-            </td>
-        </tr>
-    ))
 
     return (
         <>
@@ -86,7 +103,9 @@ export default function Pressings({ pressings, editPressing, addPressing, delete
                             <th style={{ textAlign: 'center' }}>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>{rows}</tbody>
+                    <tbody>
+                        <Rows pressings={pressings} deletePressing={deletePressing} setSelectedPressing={setSelectedPressing} />
+                    </tbody>
                 </Table>
             </ScrollArea>
         </>

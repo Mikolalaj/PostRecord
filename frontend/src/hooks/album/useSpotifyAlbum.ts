@@ -3,23 +3,26 @@ import axios, { AxiosError } from 'axios'
 import { Error } from '../../types'
 import { atom, useRecoilValue } from 'recoil'
 import { Track } from './useAlbums'
+import { EditableTrack } from '../../components/addAlbum/EditableTracklist'
+import { NewPressing } from '../../components/addAlbum/PressingForm'
 
 interface SpotifyAlbum {
     spotifyId: string
     title: string
     image: string
-    releaseDate: Date
-    artist: {
-        spotifyId: string
-        name: string
-        image: string
-        bio: string
-    }
+    releaseDate: string
     tracklist: Array<
         Track & {
             spotifyId: string
         }
     >
+}
+
+export interface AlbumFormPost {
+    image: string
+    releaseDate: string
+    tracklist: Array<EditableTrack>
+    pressings: Array<NewPressing>
 }
 
 const basePath = '/api/albums/'
@@ -29,10 +32,7 @@ export const spotifyAlbumIdState = atom<string | null>({
     default: null,
 })
 
-// album is new if it's release date was in the last month
-const isAlbumNew = (releaseData: Date) => new Date(releaseData) > new Date(Date.now() - 1000 * 60 * 60 * 24 * 30)
-
-export function useSpotifyAlbum(setFormValues: (values: any) => void) {
+export function useSpotifyAlbum(setFormValues: (values: AlbumFormPost) => void) {
     const spotifyAlbumId = useRecoilValue(spotifyAlbumIdState)
     return useQuery<SpotifyAlbum, AxiosError<Error>>(
         ['spotifyAlbum', spotifyAlbumId],
@@ -40,24 +40,19 @@ export function useSpotifyAlbum(setFormValues: (values: any) => void) {
         {
             staleTime: 1000 * 60 * 2,
             enabled: spotifyAlbumId !== null,
-            select: (album: SpotifyAlbum) => {
+            select: (album: SpotifyAlbum): SpotifyAlbum => {
                 return {
                     ...album,
-                    releaseDate: new Date(album.releaseDate),
-                    tracklist: album.tracklist.sort((a, b) => a.number - b.number),
-                    isNew: isAlbumNew(new Date(album.releaseDate)),
+                    releaseDate: album.releaseDate,
+                    tracklist: album.tracklist.sort((a, b) => a.number - b.number)
                 }
             },
             onSuccess: album => {
                 setFormValues({
-                    artist: {
-                        name: album.artist.name,
-                        image: album.artist.image,
-                        bio: album.artist.bio,
-                    },
                     releaseDate: album.releaseDate,
                     image: album.image,
                     tracklist: album.tracklist,
+                    pressings: [],
                 })
             },
         }

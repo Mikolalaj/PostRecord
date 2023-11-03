@@ -2,6 +2,8 @@ import { Autocomplete, Avatar, Group, Text } from '@mantine/core'
 import { useDebouncedValue } from '@mantine/hooks'
 import { forwardRef, useState } from 'react'
 import { SearchAlbum, useSearchAlbums } from '../../hooks/album/useAlbums'
+import { useSetRecoilState } from 'recoil'
+import { spotifyAlbumIdState } from '../../hooks/album/useSpotifyAlbum'
 
 interface ItemProps extends React.ComponentPropsWithoutRef<'div'>, SearchAlbum {}
 
@@ -25,11 +27,8 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(function SelectItem(
     )
 })
 
-interface AlbumSearchProps {
-    onSelect: (selectedAlbum: string) => void
-}
-
-export default function AlbumSearch({ onSelect }: AlbumSearchProps) {
+export default function AlbumSearch() {
+    const setAlbumId = useSetRecoilState(spotifyAlbumIdState)
     const [selectedAlbum, setSelectedAlbum] = useState<string>('')
 
     const [search, setSearch] = useState('')
@@ -61,7 +60,7 @@ export default function AlbumSearch({ onSelect }: AlbumSearchProps) {
             }}
             onItemSubmit={value => {
                 setSelectedAlbum(value.value)
-                onSelect(getSpotifyId(value.value))
+                setAlbumId(getSpotifyId(value.value))
             }}
             filter={() => true}
             value={search}
