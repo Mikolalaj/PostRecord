@@ -1,70 +1,17 @@
 import { useState } from 'react'
-import { Table, ScrollArea, ActionIcon, Group, Modal, Button, useMantineColorScheme, Image, ColorSwatch } from '@mantine/core'
+import { Table, ScrollArea, ActionIcon, Group, Modal, Button, useMantineColorScheme, ColorSwatch } from '@mantine/core'
 import classes from './EditableTable.module.scss'
 import clsx from 'clsx'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useDisclosure } from '@mantine/hooks'
 import PressingForm, { NewPressing } from './PressingForm'
-import { getBase64 } from '../../utils'
-
+import ImageFromFile from '../common/ImageFromFile'
 
 type Props = {
     pressings: Array<NewPressing>
     editPressing: (pressing: NewPressing) => void
     deletePressing: (id: string) => void
     addPressing: (pressing: NewPressing) => void
-}
-
-function Rows({
-    pressings,
-    setSelectedPressing,
-    deletePressing,
-}: {
-    pressings: Array<NewPressing>
-    setSelectedPressing: (pressing: NewPressing) => void
-    deletePressing: (id: string) => void
-}) {
-    return pressings.map(pressing => {
-        const [image, setImage] = useState<string | null>(null)
-        getBase64(pressing.image).then(result => setImage(result))
-
-        return (
-            <tr key={pressing.name}>
-                <td>
-                    <Image src={image} width={70} height={70} />
-                </td>
-                <td>{pressing.name}</td>
-                <td>
-                    <ColorSwatch color={pressing.color} size={20} />
-                </td>
-                <td>
-                    <Group position='center'>
-                        <ActionIcon
-                            color='blue.5'
-                            variant='subtle'
-                            radius='xl'
-                            aria-label='Edit'
-                            onClick={() => {
-                                open()
-                                setSelectedPressing(pressing)
-                            }}
-                        >
-                            <IconEdit size={20} stroke={1.5} />
-                        </ActionIcon>
-                        <ActionIcon
-                            color='red.5'
-                            variant='subtle'
-                            radius='xl'
-                            aria-label='Delete'
-                            onClick={() => deletePressing(pressing.name)}
-                        >
-                            <IconTrash size={20} stroke={1.5} />
-                        </ActionIcon>
-                    </Group>
-                </td>
-            </tr>
-        )
-    })
 }
 
 export default function Pressings({ pressings, editPressing, addPressing, deletePressing }: Props) {
@@ -104,7 +51,44 @@ export default function Pressings({ pressings, editPressing, addPressing, delete
                         </tr>
                     </thead>
                     <tbody>
-                        <Rows pressings={pressings} deletePressing={deletePressing} setSelectedPressing={setSelectedPressing} />
+                        {pressings.map(pressing => {
+                            return (
+                                <tr key={pressing.name}>
+                                    <td>
+                                        <ImageFromFile file={pressing.image} width={70} height={70} />
+                                    </td>
+                                    <td>{pressing.name}</td>
+                                    <td>
+                                        <ColorSwatch color={pressing.color} size={20} />
+                                    </td>
+                                    <td>
+                                        <Group position='center'>
+                                            <ActionIcon
+                                                color='blue.5'
+                                                variant='subtle'
+                                                radius='xl'
+                                                aria-label='Edit'
+                                                onClick={() => {
+                                                    open()
+                                                    setSelectedPressing(pressing)
+                                                }}
+                                            >
+                                                <IconEdit size={20} stroke={1.5} />
+                                            </ActionIcon>
+                                            <ActionIcon
+                                                color='red.5'
+                                                variant='subtle'
+                                                radius='xl'
+                                                aria-label='Delete'
+                                                onClick={() => deletePressing(pressing.name)}
+                                            >
+                                                <IconTrash size={20} stroke={1.5} />
+                                            </ActionIcon>
+                                        </Group>
+                                    </td>
+                                </tr>
+                            )
+                        })}
                     </tbody>
                 </Table>
             </ScrollArea>

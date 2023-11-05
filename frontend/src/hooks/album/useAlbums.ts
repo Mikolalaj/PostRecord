@@ -151,3 +151,53 @@ export function useSetFavouriteAlbum() {
         },
     })
 }
+
+interface NewAlbum {
+    albumId: string
+    artistId: string
+    image: File | string
+    releaseDate: string
+    tracklist: Array<Track>
+    pressings: Array<{
+        color: string
+        name: string
+        image: File
+    }>
+}
+
+export function useAddAlbum() {
+    const queryClient = useQueryClient()
+    return useMutation<Album, AxiosError<Error>, NewAlbum>({
+        mutationFn: async album => {
+            const pressingsWithImageNames = album.pressings.map(({ image, ...pressing }) => {
+                return {
+                    ...pressing,
+                    imageName: image.name,
+                }
+            })
+            const albumWithImageName = {
+                ...album,
+                pressings: pressingsWithImageNames,
+            }
+            const formData = new FormData()
+            formData.append('album', JSON.stringify(albumWithImageName))
+            if (album.image instanceof File) {
+                formData.append('image', album.image)
+            }
+            album.pressings.forEach(pressing => {
+                formData.append(pressing.image.name, pressing.image)
+            })
+            const response = await axios.post(basePath, formData)
+            return response.data
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries(['albums'])
+            showNotification({
+                icon: notificationCheck,
+                color: 'teal',
+                title: 'Album added!',
+                message: 'Album was successfully added to the database!',
+            })
+        },
+    })
+}

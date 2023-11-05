@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express'
-import { AlbumsParams, getAlbum, getSpotifyAlbum, getAlbums, searchSpotifyAlbums } from '../controllers/albums'
+import { AlbumsParams, getAlbum, getSpotifyAlbum, getAlbums, searchSpotifyAlbums, addAlbum } from '../controllers/albums'
 import { getUserId } from '../common/utils'
 
 const router = Router()
@@ -27,5 +27,42 @@ router.get('/spotify/:albumSpotifyId', async (req: Request, res: Response) => {
     return res.status(200).send(album)
 })
 
+router.post('/', async (req: Request, res: Response) => {
+    if (!req.fields) {
+        return res.status(400).send({ message: 'No album data provided' })
+    }
+    const album = req.fields.album
+    if (!album) {
+        return res.status(400).send({ message: 'No album provided' })
+    }
+
+    const files = req.files
+    if (!files) {
+        return res.status(400).send({ message: 'No album nor pressings images provided' })
+    }
+    // console.log(files)
+    const albumObject = JSON.parse(album as unknown as string)
+    const pressings = albumObject.pressings.map((pressing: any) => {
+        // console.log(pressing.imageName)
+        const image = files[pressing.imageName]
+        if (!image) {
+            return res.status(400).send({ message: `No pressing "${pressing.name}" image provides provided` })
+        }
+        return {
+            color: pressing.color,
+            name: pressing.name,
+            image: image,
+        }
+    })
+    addAlbum({
+        image: albumObject.image,
+        albumId: albumObject.albumId,
+        artistId: albumObject.artistId,
+        releaseDate: albumObject.releaseDate,
+        tracklist: albumObject.tracklist,
+        pressings: pressings,
+    })
+    return res.status(200).send({ message: 'POST /albums' })
+})
 
 export default router

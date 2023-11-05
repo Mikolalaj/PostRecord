@@ -95,43 +95,32 @@ export async function getAlbum(albumId: string, userId: string): Promise<AlbumDe
     return album
 }
 
+// interface Track {
+//     spotifyId: string
+//     title: string
+//     duration: number
+//     features: string | null
+//     number: number
+// }
+
 interface SpotifyAlbum {
     spotifyId: string
     title: string
     image: string
     releaseDate: Date
-    artist: {
-        spotifyId: string
-        name: string
-        image: string
-        bio: string
-    }
-    tracklist: Array<{
-        spotifyId: string
-        title: string
-        duration: number
-        features: string | null
-        number: number
-    }>
+    artistName: String
+    tracklist: Array<Track>
 }
 
 export async function getSpotifyAlbum(albumSpotifyId: string): Promise<SpotifyAlbum | null> {
     const album = await getSpotifyData(`/albums/${albumSpotifyId}`)
-    const artist = await getSpotifyData(`/artists/${album.artists[0].id}`)
-
-    const bio = await getArtistBio(album.artists[0].name)
 
     return {
         spotifyId: albumSpotifyId,
         title: album.name,
         image: album.images[1].url,
         releaseDate: album.release_date,
-        artist: {
-            name: album.artists[0].name,
-            image: artist.images[2].url,
-            spotifyId: album.artists[0].id,
-            bio: bio,
-        },
+        artistName: album.artists[0].name,
         tracklist: album.tracks.items.map((track: any) => ({
             spotifyId: track.id,
             title: track.name,
@@ -167,4 +156,21 @@ export async function searchSpotifyAlbums(query: string): Promise<Array<SearchRe
         spotifyId: album.id as string,
     }))
     return albums
+}
+
+interface NewAlbum {
+    albumId: string
+    artistId: string
+    image: File | string
+    releaseDate: string
+    tracklist: Array<Track>
+    pressings: Array<{
+        color: string
+        name: string
+        image: File
+    }>
+}
+
+export async function addAlbum(album: NewAlbum) {
+    console.log(album)
 }

@@ -7,22 +7,29 @@ import EditableTracklist, { EditableTrack } from './EditableTracklist'
 import Pressings from './Pressings'
 import { NewPressing } from './PressingForm'
 import { useRecoilValue } from 'recoil'
+import { useAddAlbum } from '../../hooks/album/useAlbums'
 
 export default function AlbumForm() {
     const form = useForm<AlbumFormPost>({
         initialValues: {
             image: '',
-            releaseDate: '',
+            artistName: '',
+            releaseDate: new Date(),
             tracklist: [],
             pressings: [],
         },
     })
 
+    const { mutate } = useAddAlbum()
+
     const { isLoading, isError } = useSpotifyAlbum(form.setValues)
     const albumId = useRecoilValue(spotifyAlbumIdState)
 
     const onSubmit = (values: AlbumFormPost) => {
-        console.log({ ...values, albumId })
+        if (albumId) {
+            console.log({ ...values, albumId })
+            mutate({ ...values, releaseDate: values.releaseDate.toISOString(), albumId, artistId: '' })
+        }
     }
 
     const deleteTrack = (spotifyId: string) => {
@@ -71,7 +78,7 @@ export default function AlbumForm() {
                     label='Album cover'
                     placeholder='Upload alternative album cover'
                     {...form.getInputProps('image')}
-                    firstInput={<TextInput disabled withAsterisk label='Artist' {...form.getInputProps('artist.name')} />}
+                    firstInput={<TextInput disabled withAsterisk label='Artist' {...form.getInputProps('artistName')} />}
                     secondInput={<DatePicker withAsterisk label='Release date' {...form.getInputProps('releaseDate')} />}
                 />
             </form>

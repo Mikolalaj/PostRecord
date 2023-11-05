@@ -13,7 +13,8 @@ import collectionRouter from './routes/collection'
 import pressingsRouter from './routes/pressings'
 import authRouter from './routes/authentication'
 import usersRouter from './routes/users'
-
+import formidableMiddleware from 'express-formidable'
+ 
 export const logger = winston.createLogger({
     level: 'info',
     format: winston.format.simple(),
@@ -41,6 +42,7 @@ const app: Application = express()
 app.use(morganMiddleware)
 app.use(redisSession)
 app.use(bodyParser.json())
+app.use(formidableMiddleware())
 app.use(cookies())
 
 app.use('/api/auth', authRouter)
