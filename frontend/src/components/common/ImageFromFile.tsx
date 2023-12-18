@@ -20,5 +20,5 @@ export default function ImageFromFile({ file, ...imageProps }: Props) {
             </Center>
         )
     }
-    return <Image src={image} {...imageProps} />
+    return <Image src={image} {...imageProps} fit='contain' />
 }

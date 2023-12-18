@@ -29,6 +29,12 @@ export default function PressingForm({ type, close, onAdd, onEdit, defaultValues
             image: isNotEmpty('Upload an image of the pressing'),
             color: isNotEmpty('Choose a background color'),
         },
+        transformValues(values) {
+            return {
+                ...values,
+                color: hexToName(values.color),
+            }
+        },
     })
 
     const { colorScheme } = useMantineColorScheme()
@@ -42,15 +48,15 @@ export default function PressingForm({ type, close, onAdd, onEdit, defaultValues
         return swatches
     }, [colorScheme])
 
-    // const hexToName = (hex: string) => {
-    //     const shade = colorScheme === 'dark' ? 3 : 9
-    //     for (const key in DEFAULT_THEME.colors) {
-    //         if (DEFAULT_THEME.colors[key][shade] === hex) {
-    //             return key
-    //         }
-    //     }
-    //     return 'gray'
-    // }
+    const hexToName = (hex: string) => {
+        const shade = colorScheme === 'dark' ? 3 : 9
+        for (const key in DEFAULT_THEME.colors) {
+            if (DEFAULT_THEME.colors[key][shade] === hex) {
+                return key
+            }
+        }
+        return 'gray'
+    }
 
     return (
         <form noValidate onSubmit={form.onSubmit(type === 'add' ? onAdd : onEdit)}>
@@ -58,6 +64,7 @@ export default function PressingForm({ type, close, onAdd, onEdit, defaultValues
                 <ImageInput
                     label='Image'
                     placeholder='Image of the pressing'
+                    background={form.values.color}
                     required
                     {...form.getInputProps('image')}
                     firstInput={

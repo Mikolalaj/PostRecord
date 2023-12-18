@@ -1,6 +1,7 @@
 import { Request, Response, Router } from 'express'
 import { AlbumsParams, getAlbum, getSpotifyAlbum, getAlbums, searchSpotifyAlbums, addAlbum } from '../controllers/albums'
 import { getUserId } from '../common/utils'
+import formidableMiddleware from 'express-formidable'
 
 const router = Router()
 
@@ -27,6 +28,8 @@ router.get('/spotify/:albumSpotifyId', async (req: Request, res: Response) => {
     return res.status(200).send(album)
 })
 
+router.use(formidableMiddleware())
+
 router.post('/', async (req: Request, res: Response) => {
     if (!req.fields) {
         return res.status(400).send({ message: 'No album data provided' })
@@ -40,10 +43,8 @@ router.post('/', async (req: Request, res: Response) => {
     if (!files) {
         return res.status(400).send({ message: 'No album nor pressings images provided' })
     }
-    // console.log(files)
     const albumObject = JSON.parse(album as unknown as string)
     const pressings = albumObject.pressings.map((pressing: any) => {
-        // console.log(pressing.imageName)
         const image = files[pressing.imageName]
         if (!image) {
             return res.status(400).send({ message: `No pressing "${pressing.name}" image provides provided` })
@@ -54,15 +55,17 @@ router.post('/', async (req: Request, res: Response) => {
             image: image,
         }
     })
-    addAlbum({
+    const newAlbum = await addAlbum({
         image: albumObject.image,
+        genre: albumObject.genre,
         albumId: albumObject.albumId,
         artistId: albumObject.artistId,
+        artistName: albumObject.artistName,
         releaseDate: albumObject.releaseDate,
         tracklist: albumObject.tracklist,
         pressings: pressings,
     })
-    return res.status(200).send({ message: 'POST /albums' })
+    return res.status(200).send(newAlbum)
 })
 
 export default router

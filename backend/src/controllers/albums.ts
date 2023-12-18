@@ -3,6 +3,8 @@ import { Request, Response } from 'express'
 import { prisma } from '../app'
 import { getSpotifyData } from '../external/spotify'
 import { getArtistBio } from '../external/lastfm'
+import { uploadBlobFromPath } from '../azure/image'
+import { File as FormidableFile } from 'formidable'
 
 interface Album {
     id: string
@@ -107,8 +109,10 @@ interface SpotifyAlbum {
     spotifyId: string
     title: string
     image: string
+    imageLarge: string
     releaseDate: Date
-    artistName: String
+    artistName: string
+    artistId: string
     tracklist: Array<Track>
 }
 
@@ -119,8 +123,10 @@ export async function getSpotifyAlbum(albumSpotifyId: string): Promise<SpotifyAl
         spotifyId: albumSpotifyId,
         title: album.name,
         image: album.images[1].url,
+        imageLarge: album.images[0].url,
         releaseDate: album.release_date,
         artistName: album.artists[0].name,
+        artistId: album.artists[0].id,
         tracklist: album.tracks.items.map((track: any) => ({
             spotifyId: track.id,
             title: track.name,
@@ -161,16 +167,71 @@ export async function searchSpotifyAlbums(query: string): Promise<Array<SearchRe
 interface NewAlbum {
     albumId: string
     artistId: string
-    image: File | string
+    artistName: string
+    image: FormidableFile | string
     releaseDate: string
+    genre: string
     tracklist: Array<Track>
     pressings: Array<{
         color: string
         name: string
-        image: File
+        image: {
+            name: string
+            path: string
+        }
     }>
 }
 
+function getFileName(artistName: string, albumTitle: string, pressingName: string) {
+    return `${artistName}-${albumTitle}-${pressingName}.png`.replace(/\s+/g, '-').toLowerCase()
+}
+
 export async function addAlbum(album: NewAlbum) {
-    console.log(album)
+    const spotifyAlbum = await getSpotifyAlbum(album.albumId)
+    if (!spotifyAlbum) {
+        throw new Error('Spotify album not found')
+    }
+    const bio = await getArtistBio(album.artistName)
+
+    const pressingsFileNames = Object.fromEntries(
+        album.pressings.map(pressing => [pressing.name, getFileName(album.artistName, spotifyAlbum.title, pressing.name)])
+    )
+    const artistImageFileName = album.artistName.replace(/\s+/g, '-').toLowerCase() + '.png'
+    for (const pressing of album.pressings) {
+        uploadBlobFromPath(pressingsFileNames[pressing.name], pressing.image.path)
+    }
+    const newAlbum = await prisma.album.create({
+        data: {
+            title: spotifyAlbum.title,
+            image: spotifyAlbum.image,
+            imageLarge: spotifyAlbum.imageLarge,
+            genre: album.genre,
+            releaseDate: new Date(spotifyAlbum.releaseDate),
+            spotifyId: spotifyAlbum.spotifyId,
+            artist: {
+                connectOrCreate: {
+                    where: {
+                        spotifyId: spotifyAlbum.artistId,
+                    },
+                    create: {
+                        name: spotifyAlbum.artistName,
+                        bio: bio,
+                        image: typeof album.image === 'string' ? album.image : artistImageFileName,
+                        spotifyId: spotifyAlbum.artistId,
+                    },
+                },
+            },
+            tracklist: {
+                create: spotifyAlbum.tracklist,
+            },
+            pressings: {
+                create: album.pressings.map(pressing => ({
+                    color: pressing.color,
+                    name: pressing.name,
+                    image: pressingsFileNames[pressing.name],
+                })),
+            },
+        },
+    })
+    return newAlbum
 }

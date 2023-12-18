@@ -1,4 +1,4 @@
-import { Button, TextInput } from '@mantine/core'
+import { Button, Group, TextInput, Text } from '@mantine/core'
 import { DatePicker } from '@mantine/dates'
 import { useForm } from '@mantine/form'
 import ImageInput from '../../components/common/ImageInput'
@@ -15,8 +15,14 @@ export default function AlbumForm() {
             image: '',
             artistName: '',
             releaseDate: new Date(),
+            genre: '',
             tracklist: [],
             pressings: [],
+        },
+        validate: {
+            releaseDate: value => (value ? null : 'Enter the release date'),
+            genre: value => (value ? null : 'Enter the genre'),
+            pressings: value => (value.length > 0 ? null : 'Add at least one pressing'),
         },
     })
 
@@ -79,7 +85,12 @@ export default function AlbumForm() {
                     placeholder='Upload alternative album cover'
                     {...form.getInputProps('image')}
                     firstInput={<TextInput disabled withAsterisk label='Artist' {...form.getInputProps('artistName')} />}
-                    secondInput={<DatePicker withAsterisk label='Release date' {...form.getInputProps('releaseDate')} />}
+                    secondInput={
+                        <Group grow>
+                            <DatePicker withAsterisk label='Release date' {...form.getInputProps('releaseDate')} />
+                            <TextInput withAsterisk label='Genre' {...form.getInputProps('genre')} />
+                        </Group>
+                    }
                 />
             </form>
             <EditableTracklist tracks={form.values.tracklist} deleteTrack={deleteTrack} editTrack={editTrack} />
@@ -89,6 +100,7 @@ export default function AlbumForm() {
                 editPressing={editPressing}
                 addPressing={addPressing}
             />
+            {form.errors.pressings && <Text c="red">{form.errors.pressings}</Text>}
             <Button form='album' mt='lg' type='submit'>
                 Submit
             </Button>

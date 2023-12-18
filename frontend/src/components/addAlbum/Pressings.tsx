@@ -55,7 +55,7 @@ export default function Pressings({ pressings, editPressing, addPressing, delete
                             return (
                                 <tr key={pressing.name}>
                                     <td>
-                                        <ImageFromFile file={pressing.image} width={70} height={70} />
+                                        <ImageFromFile file={pressing.image} height={90} width={150} />
                                     </td>
                                     <td>{pressing.name}</td>
                                     <td>

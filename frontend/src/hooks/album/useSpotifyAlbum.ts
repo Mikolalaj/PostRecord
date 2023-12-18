@@ -21,6 +21,7 @@ interface SpotifyAlbum {
 
 export interface AlbumFormPost {
     image: string
+    genre: string
     artistName: string
     releaseDate: Date
     tracklist: Array<EditableTrack>
@@ -52,6 +53,7 @@ export function useSpotifyAlbum(setFormValues: (values: AlbumFormPost) => void) 
             onSuccess: album => {
                 setFormValues({
                     artistName: album.artistName,
+                    genre: '',
                     releaseDate: new Date(album.releaseDate),
                     image: album.image,
                     tracklist: album.tracklist,

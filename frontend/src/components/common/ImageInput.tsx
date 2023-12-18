@@ -6,9 +6,10 @@ import { getBase64FromFile } from '../../utils'
 interface Props extends FileInputProps<false> {
     firstInput?: React.ReactNode
     secondInput?: React.ReactNode
+    background?: string
 }
 
-export default function ImageInput({ firstInput, secondInput, ...rest }: Props) {
+export default function ImageInput({ firstInput, secondInput, background, ...rest }: Props) {
     const [value, setValue] = useState<File | undefined>(undefined)
     const [imagePreview, setImagePreview] = useState<string | null>(null)
 
@@ -23,7 +24,17 @@ export default function ImageInput({ firstInput, secondInput, ...rest }: Props) 
 
     return (
         <Flex mt='lg' mb='xs' direction='row'>
-            <Image src={imagePreview} width={200} height={200} />
+            <Image
+                src={imagePreview}
+                width={200}
+                height={200}
+                fit='contain'
+                imageProps={
+                    background
+                        ? { style: { objectFit: 'contain', padding: '5px', height: '200px', width: '200px', backgroundColor: background } }
+                        : {}
+                }
+            />
             <div
                 style={{
                     display: 'flex',

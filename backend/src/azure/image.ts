@@ -13,9 +13,7 @@ const containerName = `records`
 const blobServiceClient = new BlobServiceClient(`${baseUrl}`, sharedKeyCredential)
 const containerClient = blobServiceClient.getContainerClient(containerName)
 
-export async function uploadBlobFromBuffer(blobName: string, buffer: Buffer): Promise<void> {
+export async function uploadBlobFromPath(blobName: string, filePath: string): Promise<void> {
     const blockBlobClient: BlockBlobClient = containerClient.getBlockBlobClient(blobName)
-
-    // Upload buffer
-    await blockBlobClient.uploadData(buffer)
+    await blockBlobClient.uploadFile(filePath)
 }

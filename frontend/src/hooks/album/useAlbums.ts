@@ -5,6 +5,7 @@ import { atom, useRecoilValue } from 'recoil'
 import { notificationCheck } from '../../components/common'
 import { Error } from '../../types'
 import { User } from '../auth/useUser'
+import { useNavigate } from 'react-router-dom'
 
 export interface Album {
     id: string
@@ -157,6 +158,7 @@ interface NewAlbum {
     artistId: string
     image: File | string
     releaseDate: string
+    genre: string
     tracklist: Array<Track>
     pressings: Array<{
         color: string
@@ -167,6 +169,7 @@ interface NewAlbum {
 
 export function useAddAlbum() {
     const queryClient = useQueryClient()
+    const navigate = useNavigate()
     return useMutation<Album, AxiosError<Error>, NewAlbum>({
         mutationFn: async album => {
             const pressingsWithImageNames = album.pressings.map(({ image, ...pressing }) => {
@@ -190,8 +193,9 @@ export function useAddAlbum() {
             const response = await axios.post(basePath, formData)
             return response.data
         },
-        onSuccess: () => {
+        onSuccess: album => {
             queryClient.invalidateQueries(['albums'])
+            navigate('/album/' + album.id)
             showNotification({
                 icon: notificationCheck,
                 color: 'teal',
