@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { prisma } from '../app'
 import { getUserId } from '../common/utils'
 import { Pressing } from '@prisma/client'
+import { FilterParams } from '../types'
 
 type Pressings = Array<Pressing & { isInCollection: boolean }>
 
@@ -22,4 +23,30 @@ export async function getPressings(albumId: string, request: Request, response: 
     }))
 
     return response.status(200).send(pressings)
+}
+
+export async function getAllPressings(request: Request<{}, {}, {}, FilterParams>, response: Response) {
+    const { skip, query, get, orderBy } = request.query
+
+    const pressings: Array<Pressing> = await prisma.pressing.findMany({
+        skip: parseInt(skip),
+        take: parseInt(get),
+        where: query
+            ? {
+                  name: {
+                      contains: query as string,
+                  },
+              }
+            : undefined,
+        orderBy: {
+            name: orderBy === 'newest' ? 'asc' : 'desc',
+        },
+    })
+
+    const pressingsCount = await prisma.pressing.count()
+
+    return response.status(200).send({
+        data: pressings,
+        total: pressingsCount,
+    })
 }

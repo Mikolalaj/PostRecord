@@ -1,11 +1,12 @@
 import { Request, Response, Router } from 'express'
-import { AlbumsParams, getAlbum, getSpotifyAlbum, getAlbums, searchSpotifyAlbums, addAlbum } from '../controllers/albums'
+import { getAlbum, getSpotifyAlbum, getAlbums, searchSpotifyAlbums, addAlbum } from '../controllers/albums'
 import { getUserId } from '../common/utils'
 import formidableMiddleware from 'express-formidable'
+import { FilterParams } from '../types'
 
 const router = Router()
 
-router.get('/', async (req: Request<{}, {}, {}, AlbumsParams>, res: Response) => {
+router.get('/', async (req: Request<{}, {}, {}, FilterParams>, res: Response) => {
     return getAlbums(req, res)
 })
 

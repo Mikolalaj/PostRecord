@@ -3,12 +3,9 @@ import { Alert, Flex, Loader } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
 import { UseQueryResult } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
+import { MyError } from 'types'
 
-type Error = {
-    message: string
-}
-
-export type QueryData<T> = UseQueryResult<T, AxiosError<Error>>
+export type QueryData<T> = UseQueryResult<T, AxiosError<MyError>>
 
 type QueryRenderData<T> = {
     [K in keyof T]: T[K] extends QueryData<infer DataType> ? DataType : never
@@ -16,7 +13,7 @@ type QueryRenderData<T> = {
 
 interface QueryRendererProps<T extends ReadonlyArray<QueryData<any>>> {
     queries: T
-    render: (...data: QueryRenderData<T>) => JSX.Element
+    render: (...data: QueryRenderData<T>) => JSX.Element | null
 }
 
 function QueryRenderer<T extends ReadonlyArray<QueryData<any>>>({ queries, render }: QueryRendererProps<T>) {

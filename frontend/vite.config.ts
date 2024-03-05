@@ -14,4 +14,13 @@ export default defineConfig({
             },
         },
     },
+    resolve: {
+        alias: {
+            hooks: '/src/hooks',
+            components: '/src/components',
+            types: '/src/types',
+            atoms: '/src/atoms',
+            utils: '/src/utils',
+        },
+    },
 })

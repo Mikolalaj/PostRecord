@@ -11,7 +11,6 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import NotFoundPage from './pages/NotFoundPage'
 import ResetPassword from './pages/ResetPassword'
-import AddNewAlbum from './pages/admin/AddNewAlbum'
 import Admin from './pages/admin/Admin'
 import PrivateRoute from './utils/PrivateRoute'
 
@@ -23,10 +22,7 @@ const AuthProviderOutlet = () => (
     </RecoilRoot>
 )
 
-const adminRoutes = [
-    { path: '/admin', element: <Admin /> },
-    { path: '/admin/add-new-album', element: <AddNewAlbum /> },
-]
+const adminRoutes = [{ path: '/admin/:subPage', element: <Admin /> }]
 
 const privateRoutes = [
     { path: '/', element: <Home /> },

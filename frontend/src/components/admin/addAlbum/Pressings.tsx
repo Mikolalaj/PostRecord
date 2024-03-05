@@ -1,11 +1,12 @@
-import { useState } from 'react'
-import { Table, ScrollArea, ActionIcon, Group, Modal, Button, useMantineColorScheme, ColorSwatch } from '@mantine/core'
-import classes from './EditableTable.module.scss'
-import clsx from 'clsx'
-import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
+import { ActionIcon, Button, ColorSwatch, Group, Modal, ScrollArea, Table, useMantineColorScheme } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import PressingForm, { NewPressing } from './PressingForm'
-import ImageFromFile from '../common/ImageFromFile'
+import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
+import clsx from 'clsx'
+import { NewPressing } from 'hooks/album/useSpotifyAlbum'
+import { useState } from 'react'
+import ImageFromFile from '../../common/ImageFromFile'
+import classes from './EditableTable.module.scss'
+import PressingForm from './PressingForm'
 
 type Props = {
     pressings: Array<NewPressing>
@@ -47,7 +48,7 @@ export default function Pressings({ pressings, editPressing, addPressing, delete
                             <th>Image</th>
                             <th>Name</th>
                             <th>Color</th>
-                            <th style={{ textAlign: 'center' }}>Actions</th>
+                            <th style={{ textAlign: 'center' }} />
                         </tr>
                     </thead>
                     <tbody>

@@ -1,14 +1,14 @@
 import { showNotification } from '@mantine/notifications'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios, { AxiosError } from 'axios'
-import { notificationCheck } from '../../components/common'
-import { Error, MessageResponse } from '../../types'
+import { notificationCheck } from 'components/common'
+import { MyError, MessageResponse } from 'types'
 import { Pressing } from './usePressings'
 
 const basePath = '/api/collection/'
 
 export function useCollection() {
-    return useQuery<Array<Pressing>, AxiosError<Error>>(['collection'], async () => (await axios.get(basePath)).data, {
+    return useQuery<Array<Pressing>, AxiosError<MyError>>(['collection'], async () => (await axios.get(basePath)).data, {
         staleTime: 1000 * 60 * 2,
     })
 }
@@ -17,7 +17,7 @@ type CollectionOperation = { pressingId: string; albumId: string }
 
 export function useAddToCollection() {
     const queryClient = useQueryClient()
-    return useMutation<MessageResponse, Error, CollectionOperation>({
+    return useMutation<MessageResponse, MyError, CollectionOperation>({
         mutationFn: async ({ pressingId }) => (await axios.post(basePath, { pressingId })).data,
         onSuccess: (data, { albumId }) => {
             queryClient.invalidateQueries(['pressings', albumId])
@@ -33,7 +33,7 @@ export function useAddToCollection() {
 
 export function useRemoveFromCollection() {
     const queryClient = useQueryClient()
-    return useMutation<MessageResponse, Error, CollectionOperation>({
+    return useMutation<MessageResponse, MyError, CollectionOperation>({
         mutationFn: async ({ pressingId }) => (await axios.delete(basePath + pressingId)).data,
         onSuccess: (data, { albumId }) => {
             queryClient.invalidateQueries(['pressings', albumId])

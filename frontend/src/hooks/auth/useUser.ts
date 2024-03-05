@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import axios, { AxiosError } from 'axios'
-import { Error } from '../../types'
+import { MyError } from 'types'
 
 export interface User {
     id: string
@@ -12,7 +12,7 @@ export interface User {
 }
 
 export function useUser() {
-    return useQuery<User, AxiosError<Error>>(['user'], async () => (await axios.get('/api/users')).data, {
+    return useQuery<User, AxiosError<MyError>>(['user'], async () => (await axios.get('/api/users')).data, {
         staleTime: 1000 * 60 * 5,
         retry: 1,
     })

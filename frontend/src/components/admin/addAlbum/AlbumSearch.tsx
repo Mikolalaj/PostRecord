@@ -1,9 +1,9 @@
 import { Autocomplete, Avatar, Group, Text } from '@mantine/core'
 import { useDebouncedValue } from '@mantine/hooks'
+import { SearchAlbum, useSearchAlbums } from 'hooks/album/useAlbums'
+import { spotifyAlbumIdState } from 'hooks/album/useSpotifyAlbum'
 import { forwardRef, useState } from 'react'
-import { SearchAlbum, useSearchAlbums } from '../../hooks/album/useAlbums'
 import { useSetRecoilState } from 'recoil'
-import { spotifyAlbumIdState } from '../../hooks/album/useSpotifyAlbum'
 
 interface ItemProps extends React.ComponentPropsWithoutRef<'div'>, SearchAlbum {}
 

@@ -1,11 +1,12 @@
 import { showNotification } from '@mantine/notifications'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios, { AxiosError } from 'axios'
-import { atom, useRecoilValue } from 'recoil'
-import { notificationCheck } from '../../components/common'
-import { Error } from '../../types'
+import { useRecoilValue } from 'recoil'
+import { notificationCheck } from 'components/common'
+import { MyError, TableDataResponse } from 'types'
 import { User } from '../auth/useUser'
 import { useNavigate } from 'react-router-dom'
+import { tableDataParams } from 'atoms'
 
 export interface Album {
     id: string
@@ -25,6 +26,10 @@ export interface Track {
     features: string | null
 }
 
+export interface EditableTrack extends Track {
+    spotifyId: string
+}
+
 export interface Artist {
     name: string
     image: string
@@ -39,39 +44,22 @@ export interface AlbumDetails extends Omit<Album, 'artistName'> {
 
 const basePath = '/api/albums/'
 
-export type OrderBy = 'newest' | 'oldest' | 'mostPopular' | 'leastPopular'
-
-interface AlbumsParams {
-    get: number
-    skip: number
-    query: string
-    orderBy: OrderBy
-}
-
-export const albumsParams = atom<AlbumsParams>({
-    key: 'albumsParams',
-    default: {
-        get: 5,
-        skip: 0,
-        query: '',
-        orderBy: 'newest',
-    },
-})
-
-interface AlbumsResponse {
-    albums: Array<Album>
-    total: number
-}
-
 // album is new if it's release date was in the last month
 const isAlbumNew = (releaseData: Date) => new Date(releaseData) > new Date(Date.now() - 1000 * 60 * 60 * 24 * 30)
 
 export function useAlbums() {
-    const { get, skip, query, orderBy } = useRecoilValue(albumsParams)
-    return useQuery<AlbumsResponse, AxiosError<Error>>(
-        ['albums', get, skip, query, orderBy],
+    const params = useRecoilValue(tableDataParams)
+    return useQuery<TableDataResponse<Album>, AxiosError<MyError>>(
+        ['albums', params?.get, params?.skip, params?.query, params?.orderBy],
         async () => {
-            const response = await axios.get(basePath, { params: { get, skip, orderBy, query: query !== '' ? query : null } })
+            const response = await axios.get(basePath, {
+                params: {
+                    get: params?.get,
+                    skip: params?.skip,
+                    orderBy: params?.orderBy,
+                    query: params?.query !== '' ? params?.query : null,
+                },
+            })
             return response.data
         },
         {
@@ -79,18 +67,19 @@ export function useAlbums() {
             select: data => {
                 return {
                     ...data,
-                    albums: data.albums.map((album: Album) => ({
+                    albums: data.data.map((album: Album) => ({
                         ...album,
                         isNew: isAlbumNew(new Date(album.releaseDate)),
                     })),
                 }
             },
+            enabled: !!params,
         }
     )
 }
 
 export function useAlbum(albumId: string) {
-    return useQuery<AlbumDetails, AxiosError<Error>>(['albums', albumId], async () => (await axios.get(basePath + albumId)).data, {
+    return useQuery<AlbumDetails, AxiosError<MyError>>(['albums', albumId], async () => (await axios.get(basePath + albumId)).data, {
         staleTime: 1000 * 60 * 2,
         select: (album: AlbumDetails) => {
             return {
@@ -111,7 +100,7 @@ export interface SearchAlbum {
 }
 
 export function useSearchAlbums(search: string) {
-    return useQuery<Array<SearchAlbum>, AxiosError<Error>>(
+    return useQuery<Array<SearchAlbum>, AxiosError<MyError>>(
         ['albums', search],
         async () => {
             const response = await axios.get(basePath + 'search', {
@@ -129,7 +118,7 @@ export function useSearchAlbums(search: string) {
 
 export function useSetFavouriteAlbum() {
     const queryClient = useQueryClient()
-    return useMutation<User, AxiosError<Error>, string | null>({
+    return useMutation<User, AxiosError<MyError>, string | null>({
         mutationFn: async albumId => {
             const response = await axios.put('/api/users', { favouriteAlbumId: albumId })
             return response.data
@@ -170,7 +159,7 @@ interface NewAlbum {
 export function useAddAlbum() {
     const queryClient = useQueryClient()
     const navigate = useNavigate()
-    return useMutation<Album, AxiosError<Error>, NewAlbum>({
+    return useMutation<Album, AxiosError<MyError>, NewAlbum>({
         mutationFn: async album => {
             const pressingsWithImageNames = album.pressings.map(({ image, ...pressing }) => {
                 return {

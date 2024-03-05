@@ -1,13 +1,8 @@
 import { Button, ColorInput, DEFAULT_THEME, Group, Stack, TextInput, useMantineColorScheme } from '@mantine/core'
 import { isNotEmpty, useForm } from '@mantine/form'
 import { useMemo } from 'react'
-import ImageInput from '../common/ImageInput'
-
-export interface NewPressing {
-    name: string
-    image: File
-    color: string
-}
+import ImageInput from '../../common/ImageInput'
+import { NewPressing } from '../../../hooks/album/useSpotifyAlbum'
 
 type Props = {
     type: 'add' | 'edit'

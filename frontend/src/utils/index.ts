@@ -1,3 +1,5 @@
+import { TableDataParams } from 'atoms'
+
 export function getBase64FromFile(file: File, onSuccess: (base64: string) => void) {
     const reader = new FileReader()
     reader.readAsDataURL(file)
@@ -25,4 +27,19 @@ export function getBase64(file: File): Promise<string> {
             reject(error)
         }
     })
+}
+
+export function getFilterParams(params: TableDataParams | null) {
+    if (!params) return {}
+    return {
+        get: params.get,
+        skip: params.skip,
+        orderBy: params.orderBy,
+        query: params.query !== '' ? params.query : null,
+    }
+}
+
+export function getFilterParamsKeys(name: string, params: TableDataParams | null) {
+    if (!params) return [name]
+    return [name, params.get, params.skip, params.query, params.orderBy]
 }

@@ -1,12 +1,12 @@
 import { Pagination, SimpleGrid, Select, Flex } from '@mantine/core'
-import { useRecoilValue, useSetRecoilState } from 'recoil'
-import { albumsParams, useAlbums } from '../../hooks/album/useAlbums'
+import { useRecoilState } from 'recoil'
+import { useAlbums } from '../../hooks/album/useAlbums'
 import QueryRenderer from '../common/QueryRenderer'
 import AlbumCard from './AlbumCard'
+import { tableDataParams } from 'atoms'
 
 function AlbumsListing() {
-    const { get, skip } = useRecoilValue(albumsParams)
-    const setAlbumsParams = useSetRecoilState(albumsParams)
+    const [{ get, skip }, setAlbumsParams] = useRecoilState(tableDataParams)
 
     const pagination = [
         { value: '5', label: '5' },
@@ -25,16 +25,16 @@ function AlbumsListing() {
     return (
         <QueryRenderer
             queries={[useAlbums()]}
-            render={data => {
+            render={({ data, total }) => {
                 return (
                     <>
                         <SimpleGrid cols={5} spacing='lg' verticalSpacing='lg' my='lg' style={{ gap: '20px 31px' }}>
-                            {data.albums.map(album => (
+                            {data.map(album => (
                                 <AlbumCard {...album} key={album.id} />
                             ))}
                         </SimpleGrid>
                         <Flex align='center' direction='column'>
-                            <Pagination page={activePage} onChange={setPage} total={Math.ceil(data.total / get)} />
+                            <Pagination page={activePage} onChange={setPage} total={Math.ceil(total / get)} />
                             <Select
                                 style={{ position: 'relative', top: '-45px', alignSelf: 'end' }}
                                 label='Show'

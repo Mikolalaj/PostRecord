@@ -5,6 +5,7 @@ import { getSpotifyData } from '../external/spotify'
 import { getArtistBio } from '../external/lastfm'
 import { uploadBlobFromPath } from '../azure/image'
 import { File as FormidableFile } from 'formidable'
+import { FilterParams } from '../types'
 
 interface Album {
     id: string
@@ -22,16 +23,7 @@ interface AlbumDetails extends Omit<Album, 'artistName'> {
     imageLarge: string
 }
 
-type OrderBy = 'newest' | 'oldest' | 'mostPopular' | 'leastPopular'
-
-export interface AlbumsParams {
-    skip: number
-    get: number
-    query: string
-    orderBy: OrderBy
-}
-
-export async function getAlbums(req: Request<{}, {}, {}, AlbumsParams>, res: Response): Promise<Response> {
+export async function getAlbums(req: Request<{}, {}, {}, FilterParams>, res: Response): Promise<Response> {
     const { skip, query, get, orderBy } = req.query
 
     let orderValue: 'asc' | 'desc' = 'asc'
@@ -79,7 +71,7 @@ export async function getAlbums(req: Request<{}, {}, {}, AlbumsParams>, res: Res
     const albumsCount = await prisma.album.count()
 
     return res.status(200).send({
-        albums: albumsResult,
+        data: albumsResult,
         total: albumsCount,
     })
 }

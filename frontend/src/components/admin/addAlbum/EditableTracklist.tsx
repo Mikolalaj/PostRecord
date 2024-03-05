@@ -1,17 +1,13 @@
 import { useState } from 'react'
-import { Track } from '../../hooks/album/useAlbums'
 import { Table, ScrollArea, ActionIcon, Group, Modal, createStyles } from '@mantine/core'
 import classes from './EditableTable.module.scss'
 import clsx from 'clsx'
 import { IconEdit, IconTrash } from '@tabler/icons-react'
 import { useDisclosure } from '@mantine/hooks'
 import TrackForm from './TrackForm'
+import { EditableTrack } from '../../../hooks/album/useAlbums'
 
 const useStyles = createStyles({})
-
-export interface EditableTrack extends Track {
-    spotifyId: string
-}
 
 type Props = {
     tracks: Array<EditableTrack>
@@ -98,7 +94,7 @@ export default function EditableTracklist({ tracks, deleteTrack, editTrack }: Pr
                             <th>Title</th>
                             <th>Features</th>
                             <th>Duration (seconds)</th>
-                            <th style={{ textAlign: 'center' }}>Actions</th>
+                            <th style={{ textAlign: 'center' }} />
                         </tr>
                     </thead>
                     <tbody>{rows}</tbody>

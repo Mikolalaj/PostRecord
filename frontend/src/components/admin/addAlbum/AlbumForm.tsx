@@ -1,13 +1,12 @@
-import { Button, Group, TextInput, Text } from '@mantine/core'
+import { Button, Group, Text, TextInput } from '@mantine/core'
 import { DatePicker } from '@mantine/dates'
 import { useForm } from '@mantine/form'
-import ImageInput from '../../components/common/ImageInput'
-import { AlbumFormPost, spotifyAlbumIdState, useSpotifyAlbum } from '../../hooks/album/useSpotifyAlbum'
-import EditableTracklist, { EditableTrack } from './EditableTracklist'
-import Pressings from './Pressings'
-import { NewPressing } from './PressingForm'
+import ImageInput from 'components/common/ImageInput'
+import { EditableTrack, useAddAlbum } from 'hooks/album/useAlbums'
+import { AlbumFormPost, NewPressing, spotifyAlbumIdState, useSpotifyAlbum } from 'hooks/album/useSpotifyAlbum'
 import { useRecoilValue } from 'recoil'
-import { useAddAlbum } from '../../hooks/album/useAlbums'
+import EditableTracklist from './EditableTracklist'
+import Pressings from './Pressings'
 
 export default function AlbumForm() {
     const form = useForm<AlbumFormPost>({
@@ -100,7 +99,7 @@ export default function AlbumForm() {
                 editPressing={editPressing}
                 addPressing={addPressing}
             />
-            {form.errors.pressings && <Text c="red">{form.errors.pressings}</Text>}
+            {form.errors.pressings && <Text c='red'>{form.errors.pressings}</Text>}
             <Button form='album' mt='lg' type='submit'>
                 Submit
             </Button>

@@ -3,10 +3,10 @@ import { useForm } from '@mantine/form'
 import { useRecoilState } from 'recoil'
 import AlbumsListing from '../components/explore/AlbumsListing'
 import Search from '../components/explore/Search'
-import { OrderBy, albumsParams as albumsParamsState } from '../hooks/album/useAlbums'
+import { OrderBy, tableDataParams } from 'atoms'
 
 function Explore() {
-    const [albumsParams, setAlbumsParams] = useRecoilState(albumsParamsState)
+    const [albumsParams, setAlbumsParams] = useRecoilState(tableDataParams)
 
     const form = useForm({
         initialValues: {

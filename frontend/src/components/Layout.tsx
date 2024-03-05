@@ -55,7 +55,7 @@ const MenuLinks = [
     { label: 'Home', link: '/', adminRequired: false },
     { label: 'Find music', link: '/explore', adminRequired: false },
     { label: 'Marketplace', link: '/marketplace', adminRequired: false },
-    { label: 'Admin', link: '/admin', adminRequired: true },
+    { label: 'Admin', link: '/admin/albums', adminRequired: true },
 ]
 
 export default function Layout({ children }: Props) {

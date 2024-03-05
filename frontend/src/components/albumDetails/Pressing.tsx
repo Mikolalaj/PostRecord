@@ -3,7 +3,7 @@ import { useHover } from '@mantine/hooks'
 import { IconChecks, IconPlus, IconX } from '@tabler/icons-react'
 import { useState } from 'react'
 import { useAddToCollection, useRemoveFromCollection } from '../../hooks/album/useCollection'
-import { Pressing as PressingType } from '../../hooks/album/usePressings'
+import { UserPressing } from '../../hooks/album/usePressings'
 import { useLocation } from 'react-router-dom'
 
 function hexToHSL(H: string): string {
@@ -77,7 +77,7 @@ const useStyles = createStyles((theme, { color }: { color: string }) => ({
     },
 }))
 
-function Pressing({ id, name, image, color, isInCollection }: PressingType) {
+function Pressing({ id, name, image, color, isInCollection }: UserPressing) {
     const location = useLocation()
     const albumId = location.pathname.split('/')[2]
 
