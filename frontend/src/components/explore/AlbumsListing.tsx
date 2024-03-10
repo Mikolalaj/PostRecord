@@ -1,12 +1,16 @@
 import { Pagination, SimpleGrid, Select, Flex } from '@mantine/core'
-import { useRecoilState } from 'recoil'
 import { useAlbums } from '../../hooks/album/useAlbums'
 import QueryRenderer from '../common/QueryRenderer'
 import AlbumCard from './AlbumCard'
-import { tableDataParams } from 'atoms'
+import { TableDataParams } from 'types'
 
-function AlbumsListing() {
-    const [{ get, skip }, setAlbumsParams] = useRecoilState(tableDataParams)
+type Props = {
+    params: TableDataParams
+    setParams: (params: TableDataParams | ((oldParams: TableDataParams) => TableDataParams)) => void
+}
+
+function AlbumsListing({ params, setParams }: Props) {
+    const { get, skip } = params
 
     const pagination = [
         { value: '5', label: '5' },
@@ -17,14 +21,14 @@ function AlbumsListing() {
     const activePage = (skip || 0) / (get || 5) + 1
 
     const setPage = (page: number) => {
-        setAlbumsParams(a => {
+        setParams(a => {
             return { ...a, skip: (page - 1) * (get || 5) }
         })
     }
 
     return (
         <QueryRenderer
-            queries={[useAlbums()]}
+            queries={[useAlbums(params)]}
             render={({ data, total }) => {
                 return (
                     <>
@@ -40,7 +44,7 @@ function AlbumsListing() {
                                 label='Show'
                                 value={get.toString()}
                                 onChange={value => {
-                                    setAlbumsParams(a => {
+                                    setParams(a => {
                                         return { ...a, get: value ? parseInt(value) : 5 }
                                     })
                                 }}

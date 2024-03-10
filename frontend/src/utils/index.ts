@@ -1,4 +1,4 @@
-import { TableDataParams } from 'atoms'
+import { TableDataParams } from 'types'
 
 export function getBase64FromFile(file: File, onSuccess: (base64: string) => void) {
     const reader = new FileReader()
@@ -29,8 +29,7 @@ export function getBase64(file: File): Promise<string> {
     })
 }
 
-export function getFilterParams(params: TableDataParams | null) {
-    if (!params) return {}
+export function getFilterParams(params: TableDataParams) {
     return {
         get: params.get,
         skip: params.skip,
@@ -39,7 +38,6 @@ export function getFilterParams(params: TableDataParams | null) {
     }
 }
 
-export function getFilterParamsKeys(name: string, params: TableDataParams | null) {
-    if (!params) return [name]
+export function getFilterParamsKeys(name: string, params: TableDataParams) {
     return [name, params.get, params.skip, params.query, params.orderBy]
 }

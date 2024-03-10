@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
 import { prisma } from '../app'
-import { getUserId } from '../common/utils'
+import { getUserId, getFilterOptions } from '../common/utils'
 import { Pressing } from '@prisma/client'
-import { FilterParams } from '../types'
+import { RequestWithFilterParams } from '../types'
 
 type Pressings = Array<Pressing & { isInCollection: boolean }>
 
@@ -25,28 +25,31 @@ export async function getPressings(albumId: string, request: Request, response: 
     return response.status(200).send(pressings)
 }
 
-export async function getAllPressings(request: Request<{}, {}, {}, FilterParams>, response: Response) {
-    const { skip, query, get, orderBy } = request.query
+interface PressingDetails extends Pressing {
+    albumTitle: string
+}
 
-    const pressings: Array<Pressing> = await prisma.pressing.findMany({
-        skip: parseInt(skip),
-        take: parseInt(get),
-        where: query
-            ? {
-                  name: {
-                      contains: query as string,
-                  },
-              }
-            : undefined,
-        orderBy: {
-            name: orderBy === 'newest' ? 'asc' : 'desc',
+export async function getAllPressings(request: RequestWithFilterParams, response: Response) {
+    const pressings = await prisma.pressing.findMany({
+        ...getFilterOptions(request.query),
+        include: {
+            album: {
+                select: {
+                    title: true,
+                },
+            },
         },
     })
+
+    const pressingsDetails: Array<PressingDetails> = pressings.map(pressing => ({
+        ...pressing,
+        albumTitle: pressing.album.title,
+    }))
 
     const pressingsCount = await prisma.pressing.count()
 
     return response.status(200).send({
-        data: pressings,
+        data: pressingsDetails,
         total: pressingsCount,
     })
 }

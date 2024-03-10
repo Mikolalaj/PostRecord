@@ -18,7 +18,7 @@ export default function Albums() {
     return (
         <>
             <DataTable
-                dataQuery={() => useAlbums()}
+                dataQuery={useAlbums}
                 headers={['Cover Photo', 'Title', 'Artist']}
                 renderRow={album => (
                     <>

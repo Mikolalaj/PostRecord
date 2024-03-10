@@ -1,9 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import axios, { AxiosError } from 'axios'
-import { MyError, TableDataResponse } from 'types'
+import { MyError, TableDataResponse, TableDataParams } from 'types'
 import { getFilterParams, getFilterParamsKeys } from 'utils'
-import { useRecoilValue } from 'recoil'
-import { tableDataParams } from 'atoms'
 
 const basePath = '/api/artists/'
 
@@ -14,9 +12,7 @@ export type Artist = {
     bio: string
 }
 
-export function useArtists() {
-    const params = useRecoilValue(tableDataParams)
-
+export function useArtists(params: TableDataParams) {
     return useQuery<TableDataResponse<Artist>, AxiosError<MyError>>({
         queryKey: getFilterParamsKeys('artists', params),
         queryFn: async () =>
@@ -26,6 +22,5 @@ export function useArtists() {
                 })
             ).data,
         staleTime: 1000 * 60 * 2,
-        enabled: !!params,
     })
 }

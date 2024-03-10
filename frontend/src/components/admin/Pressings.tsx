@@ -18,7 +18,7 @@ export default function Pressings() {
     return (
         <>
             <DataTable
-                dataQuery={() => useAllPressings()}
+                dataQuery={useAllPressings}
                 headers={['Photo', 'Name', 'Album Title']}
                 renderRow={album => (
                     <>
@@ -26,7 +26,7 @@ export default function Pressings() {
                             <Image width={70} src={import.meta.env.VITE_IMAGE_PATH + album.image} alt={album.name} />
                         </td>
                         <td>{album.name}</td>
-                        <td>{album.color}</td>
+                        <td>{album.albumTitle}</td>
                     </>
                 )}
                 itemName='pressing'

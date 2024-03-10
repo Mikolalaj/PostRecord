@@ -18,7 +18,7 @@ export default function Artists() {
     return (
         <>
             <DataTable
-                dataQuery={() => useArtists()}
+                dataQuery={useArtists}
                 headers={['Photo', 'Name', 'Bio']}
                 renderRow={artist => (
                     <>

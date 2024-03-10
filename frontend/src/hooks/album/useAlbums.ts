@@ -1,12 +1,11 @@
 import { showNotification } from '@mantine/notifications'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios, { AxiosError } from 'axios'
-import { useRecoilValue } from 'recoil'
 import { notificationCheck } from 'components/common'
-import { MyError, TableDataResponse } from 'types'
+import { MyError, TableDataResponse, TableDataParams } from 'types'
 import { User } from '../auth/useUser'
 import { useNavigate } from 'react-router-dom'
-import { tableDataParams } from 'atoms'
+import { getFilterParamsKeys } from 'utils/index'
 
 export interface Album {
     id: string
@@ -47,11 +46,10 @@ const basePath = '/api/albums/'
 // album is new if it's release date was in the last month
 const isAlbumNew = (releaseData: Date) => new Date(releaseData) > new Date(Date.now() - 1000 * 60 * 60 * 24 * 30)
 
-export function useAlbums() {
-    const params = useRecoilValue(tableDataParams)
-    return useQuery<TableDataResponse<Album>, AxiosError<MyError>>(
-        ['albums', params?.get, params?.skip, params?.query, params?.orderBy],
-        async () => {
+export function useAlbums(params: TableDataParams) {
+    return useQuery<TableDataResponse<Album>, AxiosError<MyError>>({
+        queryKey: getFilterParamsKeys('albums', params),
+        queryFn: async () => {
             const response = await axios.get(basePath, {
                 params: {
                     get: params?.get,
@@ -62,20 +60,17 @@ export function useAlbums() {
             })
             return response.data
         },
-        {
-            staleTime: 1000 * 60 * 2,
-            select: data => {
-                return {
-                    ...data,
-                    albums: data.data.map((album: Album) => ({
-                        ...album,
-                        isNew: isAlbumNew(new Date(album.releaseDate)),
-                    })),
-                }
-            },
-            enabled: !!params,
-        }
-    )
+        staleTime: 1000 * 60 * 2,
+        select: data => {
+            return {
+                ...data,
+                albums: data.data.map((album: Album) => ({
+                    ...album,
+                    isNew: isAlbumNew(new Date(album.releaseDate)),
+                })),
+            }
+        },
+    })
 }
 
 export function useAlbum(albumId: string) {

@@ -2,10 +2,8 @@ import { ActionIcon, Button, Center, Group, Pagination, Table } from '@mantine/c
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { UseQueryResult } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
-import { tableDataParams } from 'atoms'
-import { useEffect } from 'react'
-import { useRecoilState } from 'recoil'
-import { MyError } from 'types'
+import { useState } from 'react'
+import { MyError, TableDataParams } from 'types'
 import QueryRenderer from './QueryRenderer'
 import { useHover } from '@mantine/hooks'
 
@@ -15,7 +13,7 @@ interface TableData<T> {
 }
 
 type Props<T> = {
-    dataQuery: () => UseQueryResult<TableData<T>, AxiosError<MyError>>
+    dataQuery: (params: TableDataParams) => UseQueryResult<TableData<T>, AxiosError<MyError>>
     headers: Array<string>
     renderRow: (record: T) => JSX.Element
     itemName: string
@@ -25,11 +23,7 @@ type Props<T> = {
 }
 
 export default function DataTable<T>({ dataQuery, headers, renderRow, itemName, onAdd, onDelete, onEdit }: Props<T>) {
-    const [params, setParams] = useRecoilState(tableDataParams)
-
-    useEffect(() => {
-        setParams({ get: 10, skip: 0, query: '', orderBy: 'newest' })
-    }, [])
+    const [params, setParams] = useState<TableDataParams>({ get: 10, skip: 0, query: '', orderBy: 'newest' })
 
     return (
         <>
@@ -39,7 +33,7 @@ export default function DataTable<T>({ dataQuery, headers, renderRow, itemName, 
                 </Button>
             </Group>
             <QueryRenderer
-                queries={[dataQuery()]}
+                queries={[dataQuery(params)]}
                 render={({ data, total }) => {
                     if (!params) return null
                     const { get, skip } = params

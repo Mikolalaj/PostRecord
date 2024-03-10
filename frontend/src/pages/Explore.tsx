@@ -1,12 +1,17 @@
 import { Stack, Title, Select, Flex } from '@mantine/core'
 import { useForm } from '@mantine/form'
-import { useRecoilState } from 'recoil'
 import AlbumsListing from '../components/explore/AlbumsListing'
 import Search from '../components/explore/Search'
-import { OrderBy, tableDataParams } from 'atoms'
+import { OrderBy, TableDataParams } from 'types'
+import { useState } from 'react'
 
 function Explore() {
-    const [albumsParams, setAlbumsParams] = useRecoilState(tableDataParams)
+    const [params, setParams] = useState<TableDataParams>({
+        get: 15,
+        skip: 0,
+        orderBy: 'newest',
+        query: '',
+    })
 
     const form = useForm({
         initialValues: {
@@ -17,8 +22,8 @@ function Explore() {
     const sortByOptions: Array<{ value: OrderBy; label: string }> = [
         { value: 'newest', label: 'Newest' },
         { value: 'oldest', label: 'Oldest' },
-        //{ value: 'mostPopular', label: 'Most popular' },
-        //{ value: 'leastPopular', label: 'Least popular' },
+        { value: 'mostPopular', label: 'Most popular' },
+        { value: 'leastPopular', label: 'Least popular' },
     ]
 
     return (
@@ -29,7 +34,7 @@ function Explore() {
                     <form
                         style={{ width: '100%' }}
                         onSubmit={form.onSubmit(values =>
-                            setAlbumsParams(a => {
+                            setParams(a => {
                                 return { ...a, query: values.query }
                             })
                         )}
@@ -38,16 +43,16 @@ function Explore() {
                             placeholder='Search albums'
                             {...form.getInputProps('query')}
                             onSubmit={form.onSubmit(values =>
-                                setAlbumsParams(a => {
+                                setParams(a => {
                                     return { ...a, query: values.query }
                                 })
                             )}
                         />
                     </form>
                     <Select
-                        value={albumsParams.orderBy}
+                        value={params.orderBy}
                         onChange={(value: OrderBy | null) => {
-                            setAlbumsParams(a => {
+                            setParams(a => {
                                 return { ...a, orderBy: value === null ? 'newest' : value }
                             })
                         }}
@@ -56,7 +61,7 @@ function Explore() {
                     />
                 </Flex>
             </Stack>
-            <AlbumsListing />
+            <AlbumsListing params={params} setParams={setParams} />
         </>
     )
 }
