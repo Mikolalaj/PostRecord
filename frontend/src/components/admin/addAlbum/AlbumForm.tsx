@@ -3,12 +3,15 @@ import { DatePicker } from '@mantine/dates'
 import { useForm } from '@mantine/form'
 import ImageInput from 'components/common/ImageInput'
 import { EditableTrack, useAddAlbum } from 'hooks/album/useAlbums'
-import { AlbumFormPost, NewPressing, spotifyAlbumIdState, useSpotifyAlbum } from 'hooks/album/useSpotifyAlbum'
-import { useRecoilValue } from 'recoil'
+import { AlbumFormPost, NewPressing, useSpotifyAlbum } from 'hooks/album/useSpotifyAlbum'
 import EditableTracklist from './EditableTracklist'
 import Pressings from './Pressings'
 
-export default function AlbumForm() {
+type Props = {
+    albumId: string
+}
+
+export default function AlbumForm({ albumId }: Props) {
     const form = useForm<AlbumFormPost>({
         initialValues: {
             image: '',
@@ -27,8 +30,7 @@ export default function AlbumForm() {
 
     const { mutate } = useAddAlbum()
 
-    const { isLoading, isError } = useSpotifyAlbum(form.setValues)
-    const albumId = useRecoilValue(spotifyAlbumIdState)
+    const { isLoading, isError } = useSpotifyAlbum(albumId, form.setValues)
 
     const onSubmit = (values: AlbumFormPost) => {
         if (albumId) {

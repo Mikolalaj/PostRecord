@@ -1,18 +1,24 @@
 import { Request, Response, Router } from 'express'
-import { getAlbum, getSpotifyAlbum, getAlbums, searchSpotifyAlbums, addAlbum } from '../controllers/albums'
+import { getAlbum, getSpotifyAlbum, getAlbums, searchSpotifyAlbums, addAlbum, searchLocalAlbums } from '../controllers/albums'
 import { getUserId } from '../common/utils'
 import formidableMiddleware from 'express-formidable'
-import { FilterParams } from '../types'
+import { RequestWithFilterParams } from '../types'
 
 const router = Router()
 
-router.get('/', async (req: Request<{}, {}, {}, FilterParams>, res: Response) => {
+router.get('/', async (req: RequestWithFilterParams, res: Response) => {
     return getAlbums(req, res)
 })
 
-router.get('/search', async (req: Request<{}, {}, {}, { query: string }>, res: Response) => {
+router.get('/searchSpotify', async (req: Request<{}, {}, {}, { query: string }>, res: Response) => {
     const { query } = req.query
     const result = await searchSpotifyAlbums(query)
+    return res.status(200).send(result)
+})
+
+router.get('/searchLocal', async (req: Request<{}, {}, {}, { query: string }>, res: Response) => {
+    const { query } = req.query
+    const result = await searchLocalAlbums(query)
     return res.status(200).send(result)
 })
 

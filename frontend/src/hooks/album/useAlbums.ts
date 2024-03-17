@@ -88,17 +88,34 @@ export function useAlbum(albumId: string) {
 }
 
 export interface SearchAlbum {
+    albumId: string // spotifyId or local albumId
     albumTitle: string
     artist: string
     image: string
-    spotifyId: string
 }
 
-export function useSearchAlbums(search: string) {
+export function useSearchSpotifyAlbums(search: string) {
     return useQuery<Array<SearchAlbum>, AxiosError<MyError>>(
-        ['albums', search],
+        ['spotifyAlbums', search],
         async () => {
-            const response = await axios.get(basePath + 'search', {
+            const response = await axios.get(basePath + 'searchSpotify', {
+                params: { query: search !== '' ? search : null },
+            })
+            return response.data
+        },
+        {
+            keepPreviousData: true,
+            enabled: search !== '',
+            initialData: [],
+        }
+    )
+}
+
+export function useSearchLocalAlbums(search: string) {
+    return useQuery<Array<SearchAlbum>, AxiosError<MyError>>(
+        ['localAlbums', search],
+        async () => {
+            const response = await axios.get(basePath + 'searchLocal', {
                 params: { query: search !== '' ? search : null },
             })
             return response.data

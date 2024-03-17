@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import axios, { AxiosError } from 'axios'
 import { MyError } from 'types'
-import { atom, useRecoilValue } from 'recoil'
 import { EditableTrack, Track } from './useAlbums'
 
 interface SpotifyAlbum {
@@ -34,13 +33,7 @@ export interface AlbumFormPost {
 
 const basePath = '/api/albums/'
 
-export const spotifyAlbumIdState = atom<string | null>({
-    key: 'spotifyAlbumIdState',
-    default: null,
-})
-
-export function useSpotifyAlbum(setFormValues: (values: AlbumFormPost) => void) {
-    const spotifyAlbumId = useRecoilValue(spotifyAlbumIdState)
+export function useSpotifyAlbum(spotifyAlbumId: string, setFormValues: (values: AlbumFormPost) => void) {
     return useQuery<SpotifyAlbum, AxiosError<MyError>>(
         ['spotifyAlbum', spotifyAlbumId],
         async () => (await axios.get(`${basePath}spotify/${spotifyAlbumId}`)).data,

@@ -13,6 +13,7 @@ import NotFoundPage from './pages/NotFoundPage'
 import ResetPassword from './pages/ResetPassword'
 import Admin from './pages/admin/Admin'
 import PrivateRoute from './utils/PrivateRoute'
+import { ModalsProvider } from '@mantine/modals'
 
 const queryClient = new QueryClient()
 
@@ -57,9 +58,11 @@ function App() {
         <QueryClientProvider client={queryClient}>
             <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
                 <MantineProvider withCSSVariables withGlobalStyles withNormalizeCSS theme={{ colorScheme, primaryColor: 'violet' }}>
-                    <NotificationsProvider>
-                        <RouterProvider router={router} />
-                    </NotificationsProvider>
+                    <ModalsProvider>
+                        <NotificationsProvider>
+                            <RouterProvider router={router} />
+                        </NotificationsProvider>
+                    </ModalsProvider>
                 </MantineProvider>
             </ColorSchemeProvider>
             <ReactQueryDevtools initialIsOpen={false} />

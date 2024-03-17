@@ -7,10 +7,6 @@ import AddNewAlbum from './AddNewAlbum'
 export default function Albums() {
     const [openedNew, setOpenedNew] = useState(false)
 
-    const deleteAlbum = (album: Album) => {
-        console.log('Deleting album', album.id)
-    }
-
     const editAlbum = (album: Album) => {
         console.log('Editing album', album.id)
     }
@@ -30,8 +26,8 @@ export default function Albums() {
                     </>
                 )}
                 itemName='album'
+                nameKey='title'
                 onAdd={() => setOpenedNew(true)}
-                onDelete={deleteAlbum}
                 onEdit={editAlbum}
             />
             <Modal size={1100} opened={openedNew} onClose={() => setOpenedNew(false)} title='Add new album'>

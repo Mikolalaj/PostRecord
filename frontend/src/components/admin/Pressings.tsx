@@ -1,15 +1,11 @@
 import { Image, Modal } from '@mantine/core'
 import DataTable from 'components/common/DataTable'
 import { useState } from 'react'
-import AddNewAlbum from './AddNewAlbum'
-import { Pressing, useAllPressings } from 'hooks/album/usePressings'
+import { Pressing, useAllPressings, useDeletePressing } from 'hooks/album/usePressings'
+import PressingForm from './addAlbum/PressingForm'
 
 export default function Pressings() {
     const [openedNew, setOpenedNew] = useState(false)
-
-    const deleteAlbum = (pressing: Pressing) => {
-        console.log('Deleting pressing', pressing.id)
-    }
 
     const editAlbum = (pressing: Pressing) => {
         console.log('Editing pressing', pressing.id)
@@ -30,12 +26,19 @@ export default function Pressings() {
                     </>
                 )}
                 itemName='pressing'
+                nameKey='name'
                 onAdd={() => setOpenedNew(true)}
-                onDelete={deleteAlbum}
+                deleteMutation={useDeletePressing}
                 onEdit={editAlbum}
             />
-            <Modal size={1100} opened={openedNew} onClose={() => setOpenedNew(false)} title='Add new pressing'>
-                <AddNewAlbum />
+            <Modal centered size={650} opened={openedNew} onClose={() => setOpenedNew(false)} title='Add new pressing'>
+                <PressingForm
+                    close={close}
+                    onAdd={pressing => {
+                        console.log('Adding pressing', pressing)
+                        close()
+                    }}
+                />
             </Modal>
         </>
     )

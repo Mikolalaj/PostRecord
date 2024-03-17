@@ -139,7 +139,7 @@ interface SearchResultAlbum {
     albumTitle: string
     artist: string
     image: string
-    spotifyId: string
+    albumId: string
 }
 
 export async function searchSpotifyAlbums(query: string): Promise<Array<SearchResultAlbum>> {
@@ -151,9 +151,33 @@ export async function searchSpotifyAlbums(query: string): Promise<Array<SearchRe
         albumTitle: album.name as string,
         artist: album.artists[0].name as string,
         image: album.images[2].url as string,
-        spotifyId: album.id as string,
+        albumId: album.id as string,
     }))
     return albums
+}
+
+export async function searchLocalAlbums(query: string): Promise<Array<SearchResultAlbum>> {
+    const result = await prisma.album.findMany({
+        where: {
+            OR: [{ title: { contains: query, mode: 'insensitive' } }, { artist: { name: { contains: query, mode: 'insensitive' } } }],
+        },
+        select: {
+            title: true,
+            artist: {
+                select: {
+                    name: true,
+                },
+            },
+            image: true,
+            id: true,
+        },
+    })
+    return result.map(album => ({
+        albumTitle: album.title,
+        artist: album.artist.name,
+        image: album.image,
+        albumId: album.id,
+    }))
 }
 
 interface NewAlbum {

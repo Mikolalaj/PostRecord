@@ -1,15 +1,13 @@
-import { Autocomplete, Avatar, Group, Text } from '@mantine/core'
+import { Avatar, Group, Select, Text } from '@mantine/core'
 import { useDebouncedValue } from '@mantine/hooks'
-import { SearchAlbum, useSearchAlbums } from 'hooks/album/useAlbums'
-import { spotifyAlbumIdState } from 'hooks/album/useSpotifyAlbum'
+import { SearchAlbum, useSearchLocalAlbums, useSearchSpotifyAlbums } from 'hooks/album/useAlbums'
 import { forwardRef, useState } from 'react'
-import { useSetRecoilState } from 'recoil'
 
 interface ItemProps extends React.ComponentPropsWithoutRef<'div'>, SearchAlbum {}
 
 const SelectItem = forwardRef<HTMLDivElement, ItemProps>(function SelectItem(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    { image, albumTitle, artist, spotifyId, ...others }: ItemProps,
+    { image, albumTitle, artist, albumId, ...others }: ItemProps,
     ref
 ) {
     return (
@@ -27,44 +25,57 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(function SelectItem(
     )
 })
 
-export default function AlbumSearch() {
-    const setAlbumId = useSetRecoilState(spotifyAlbumIdState)
-    const [selectedAlbum, setSelectedAlbum] = useState<string>('')
+interface Props {
+    albumsType: 'spotify' | 'local'
+    setAlbumId?: (albumId: string) => void
+    value?: string
+    onChange?: (value: string) => void
+    onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void
+    onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void
+    error?: string
+}
+
+export default function AlbumSearch({ albumsType, setAlbumId, onChange, value, ...props }: Props) {
+    const [selectedAlbum, setSelectedAlbum] = useState<boolean>(false)
 
     const [search, setSearch] = useState('')
     const [debounced] = useDebouncedValue(search, 250)
-    const { data } = useSearchAlbums(debounced)
+    const useAlbums = albumsType === 'spotify' ? useSearchSpotifyAlbums : useSearchLocalAlbums
+    const { data } = useAlbums(debounced)
 
     const getSelectData = (album: SearchAlbum) => {
-        return { value: album.albumTitle, ...album }
+        return { label: album.albumTitle, value: album.albumId, ...album }
     }
 
     const albumsRaw = data.map(album => getSelectData(album))
     const albumsRawUnique = albumsRaw.filter((album, index, self) => self.findIndex(a => a.albumTitle === album.albumTitle) === index)
     const albums = selectedAlbum ? [] : albumsRawUnique
 
-    const getSpotifyId = (albumTitle: string) => {
-        const album = albums.find(album => album.albumTitle === albumTitle)
-        return album ? album.spotifyId : ''
-    }
     return (
-        <Autocomplete
-            label='Album title'
+        <Select
+            searchable
+            label='Album'
             placeholder='Start typing to find your album...'
             nothingFound={!selectedAlbum && 'No albums found'}
             itemComponent={SelectItem}
             data={albums}
-            onChange={value => {
-                setSelectedAlbum('')
-                setSearch(value || '')
+            onSearchChange={value => {
+                setSelectedAlbum(false)
+                setSearch(value)
             }}
-            onItemSubmit={value => {
-                setSelectedAlbum(value.value)
-                setAlbumId(getSpotifyId(value.value))
+            onChange={albumId => {
+                if (albumId) {
+                    onChange?.(albumId)
+                    setSelectedAlbum(true)
+                    setAlbumId?.(albumId)
+                }
             }}
             filter={() => true}
-            value={search}
+            searchValue={search}
+            value={value}
             limit={8}
+            required={albumsType === 'local'}
+            {...props}
         />
     )
 }

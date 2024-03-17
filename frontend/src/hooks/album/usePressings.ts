@@ -1,8 +1,9 @@
+import { MantineColor } from '@mantine/core'
 import { useQuery } from '@tanstack/react-query'
 import axios, { AxiosError } from 'axios'
-import { MyError, TableDataResponse, TableDataParams } from 'types'
-import { MantineColor } from '@mantine/core'
-import { getFilterParams, getFilterParamsKeys } from '../../utils'
+import { useDeleteItem } from 'hooks/common'
+import { MyError, TableDataParams, TableDataResponse } from 'types'
+import { getFilterParams, getFilterParamsKeys } from 'utils'
 
 const basePath = '/api/pressings/'
 
@@ -41,5 +42,18 @@ export function useAllPressings(params: TableDataParams) {
                 })
             ).data,
         staleTime: 1000 * 60 * 2,
+    })
+}
+
+export function useDeletePressing() {
+    return useDeleteItem({
+        mutationKey: ['deletePressing'],
+        mutationFn: async (id: string) => {
+            console.log('Deleting pressing', id)
+            await new Promise(res => setTimeout(res, 1000))
+            // axios.delete(basePath + id)
+        },
+        itemName: 'pressing',
+        queryKeyToInvalidate: ['pressings'],
     })
 }

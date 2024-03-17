@@ -2,17 +2,27 @@ import { Button, ColorInput, DEFAULT_THEME, Group, Stack, TextInput, useMantineC
 import { isNotEmpty, useForm } from '@mantine/form'
 import { useMemo } from 'react'
 import ImageInput from '../../common/ImageInput'
-import { NewPressing } from '../../../hooks/album/useSpotifyAlbum'
+import { NewPressing } from 'hooks/album/useSpotifyAlbum'
+import AlbumSearch from './AlbumSearch'
 
 type Props = {
-    type: 'add' | 'edit'
     close: () => void
-    onAdd: (values: NewPressing) => void
-    onEdit: (values: NewPressing) => void
+    onAdd?: (values: NewPressing) => void
+    onEdit?: (values: NewPressing) => void
     defaultValues?: NewPressing
 }
 
-export default function PressingForm({ type, close, onAdd, onEdit, defaultValues }: Props) {
+export default function PressingForm({ close, onAdd, onEdit, defaultValues }: Props) {
+    if (onEdit && !defaultValues) {
+        throw new Error('defaultValues is required when type is "edit"')
+    }
+    if (onAdd && onEdit) {
+        throw new Error('onAdd and onEdit are mutually exclusive')
+    }
+    if (!onAdd && !onEdit) {
+        throw new Error('onAdd or onEdit is required')
+    }
+    const onSubmit = onAdd || onEdit
     const form = useForm<NewPressing>({
         initialValues: defaultValues && {
             name: defaultValues.name || '',
@@ -54,8 +64,9 @@ export default function PressingForm({ type, close, onAdd, onEdit, defaultValues
     }
 
     return (
-        <form noValidate onSubmit={form.onSubmit(type === 'add' ? onAdd : onEdit)}>
+        <form noValidate onSubmit={form.onSubmit(onSubmit!)}>
             <Stack spacing='xs'>
+                <AlbumSearch albumsType='local' {...form.getInputProps('album')} />
                 <ImageInput
                     label='Image'
                     placeholder='Image of the pressing'
@@ -88,7 +99,7 @@ export default function PressingForm({ type, close, onAdd, onEdit, defaultValues
                         Cancel
                     </Button>
                     <Button mt='sm' type='submit'>
-                        {type === 'add' ? 'Add' : 'Edit'} pressing
+                        {onAdd ? 'Add' : 'Edit'} pressing
                     </Button>
                 </Group>
             </Stack>
