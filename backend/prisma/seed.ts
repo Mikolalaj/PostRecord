@@ -1,6 +1,7 @@
 import { prisma } from '../src/app'
 
 async function main() {
+    const hashedPassword = await Bun.password.hash("uet!WFR8hvg0wef!xnd")
     await prisma.user.upsert({
         where: { email: 'olejnikmikolaj@gmail.com' },
         update: {},
@@ -8,7 +9,7 @@ async function main() {
             email: 'olejnikmikolaj@gmail.com',
             firstName: 'Mikolaj',
             lastName: 'Olejnik',
-            password: '$2b$10$YmVwbaZhyTVzIS3n3Mi4Ce83zog9KamTImN0qsrTWUs0GOud8Jyem',
+            password: hashedPassword,
             isAdmin: true,
             registrationToken: null,
         },

@@ -1,5 +1,6 @@
 import { Response } from 'express'
 import { prisma } from '../app'
+import { Prisma } from '@prisma/client'
 
 export async function getCollection(userId: string, response: Response) {
     const collection = await prisma.user.findUnique({ where: { id: userId } }).collection()
@@ -15,12 +16,10 @@ export async function addToCollection(userId: string, pressingId: string, respon
         return response.status(404).send({ message: 'Pressing not found' })
     }
 
-    await prisma.user.update({
-        where: { id: userId },
+    await prisma.pressingsForUser.create({
         data: {
-            collection: {
-                connect: { id: pressingId },
-            },
+            userId,
+            pressingId,
         },
     })
 
@@ -35,19 +34,12 @@ export async function removeFromCollection(userId: string, pressingId: string, r
     if (!pressing) {
         return response.status(404).send({ message: 'Pressing not found' })
     }
-    const pressingInCollection = await prisma.user.findUnique({ where: { id: userId } }).collection({ where: { id: pressingId } })
+    const pressingInCollection = await prisma.user.findUnique({ where: { id: userId } }).collection({ where: { pressingId } })
     if (!pressingInCollection) {
         return response.status(404).send({ message: 'Pressing not found in collection' })
     }
 
-    await prisma.user.update({
-        where: { id: userId },
-        data: {
-            collection: {
-                disconnect: { id: pressingId },
-            },
-        },
-    })
+    await prisma.$queryRaw`DELETE FROM "PressingsForUser" WHERE "userId" = ${Prisma.sql`${userId}::uuid`} AND "pressingId" = ${Prisma.sql`${pressingId}::uuid`}`
 
     return response.status(200).send({ message: `You have removed "${pressing.name}" pressing from your collection.` })
 }

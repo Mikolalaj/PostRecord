@@ -17,9 +17,14 @@ export async function getPressings(albumId: string, request: Request, response: 
         return response.status(404).send({ message: 'Album not found' })
     }
 
+    const userPressings = await prisma.pressingsForUser.findMany({
+        where: { userId },
+        select: { pressingId: true },
+    })
+
     const pressings: Pressings = album.pressings.map(pressing => ({
         ...pressing,
-        isInCollection: user.collection.some(collectionPressing => collectionPressing.id === pressing.id) ?? false,
+        isInCollection: userPressings.some(p => p.pressingId === pressing.id),
     }))
 
     return response.status(200).send(pressings)
