@@ -1128,4 +1128,172 @@ export async function createTracks() {
             },
         },
     })
+    await prisma.track.upsert({
+        where: { id: '255ab56c-ebe5-4c02-95da-35f6ef5876b8' },
+        update: {},
+        create: {
+            id: '255ab56c-ebe5-4c02-95da-35f6ef5876b8',
+            title: 'Strangers By Nature',
+            number: 1,
+            spotifyId: '13CVSGLSFl4UxpDVR6u3dq',
+            duration: 182,
+            album: {
+                connect: { id: '8b709fa2-5ae3-4beb-83b5-054878bc03b4' },
+            },
+        },
+    })
+    await prisma.track.upsert({
+        where: { id: '5ba21154-40ba-4175-9344-c60cfeab183d' },
+        update: {},
+        create: {
+            id: '5ba21154-40ba-4175-9344-c60cfeab183d',
+            title: 'Easy On Me',
+            number: 2,
+            spotifyId: '46IZ0fSY2mpAiktS3KOqds',
+            duration: 224,
+            album: {
+                connect: { id: '8b709fa2-5ae3-4beb-83b5-054878bc03b4' },
+            },
+        },
+    })
+    await prisma.track.upsert({
+        where: { id: '1bb8fb47-d230-4d4c-91c2-231a2c85a3ea' },
+        update: {},
+        create: {
+            id: '1bb8fb47-d230-4d4c-91c2-231a2c85a3ea',
+            title: 'My Little Love',
+            number: 3,
+            spotifyId: '2DuPBbS5mIldXnh7Wum8Cy',
+            duration: 389,
+            album: {
+                connect: { id: '8b709fa2-5ae3-4beb-83b5-054878bc03b4' },
+            },
+        },
+    })
+    await prisma.track.upsert({
+        where: { id: '06810669-de1c-4078-b8ff-6ed2e42197ff' },
+        update: {},
+        create: {
+            id: '06810669-de1c-4078-b8ff-6ed2e42197ff',
+            title: 'Cry Your Heart Out',
+            number: 4,
+            spotifyId: '09u787BYeYIGd2mFIJ505t',
+            duration: 255,
+            album: {
+                connect: { id: '8b709fa2-5ae3-4beb-83b5-054878bc03b4' },
+            },
+        },
+    })
+    await prisma.track.upsert({
+        where: { id: '120c1a20-b0fc-41d0-a9b2-2ddfdee24311' },
+        update: {},
+        create: {
+            id: '120c1a20-b0fc-41d0-a9b2-2ddfdee24311',
+            title: 'Oh My God',
+            number: 5,
+            spotifyId: '3Kkjo3cT83cw09VJyrLNwX',
+            duration: 225,
+            album: {
+                connect: { id: '8b709fa2-5ae3-4beb-83b5-054878bc03b4' },
+            },
+        },
+    })
+    await prisma.track.upsert({
+        where: { id: 'be621b25-dd64-44c3-8a52-6048f6e87dee' },
+        update: {},
+        create: {
+            id: 'be621b25-dd64-44c3-8a52-6048f6e87dee',
+            title: 'Can I Get It',
+            number: 6,
+            spotifyId: '6w8ZPYdnGajyfPddTWdthN',
+            duration: 210,
+            album: {
+                connect: { id: '8b709fa2-5ae3-4beb-83b5-054878bc03b4' },
+            },
+        },
+    })
+    await prisma.track.upsert({
+        where: { id: 'f1a24f12-d75e-43bd-af59-56d2c0ac220d' },
+        update: {},
+        create: {
+            id: 'f1a24f12-d75e-43bd-af59-56d2c0ac220d',
+            title: 'I Drink Wine',
+            number: 7,
+            spotifyId: '6v0UJD4a2FtleHeSYVX02A',
+            duration: 376,
+            album: {
+                connect: { id: '8b709fa2-5ae3-4beb-83b5-054878bc03b4' },
+            },
+        },
+    })
+    await prisma.track.upsert({
+        where: { id: 'f53b8157-eec1-4050-b547-ff6654f3cbef' },
+        update: {},
+        create: {
+            id: 'f53b8157-eec1-4050-b547-ff6654f3cbef',
+            title: 'All Night Parking (with Erroll Garner) Interlude',
+            number: 8,
+            spotifyId: '496vIKS2INz840xZaKncvR',
+            duration: 161,
+            album: {
+                connect: { id: '8b709fa2-5ae3-4beb-83b5-054878bc03b4' },
+            },
+        },
+    })
+    await prisma.track.upsert({
+        where: { id: '70b39375-7fed-4560-adbc-73a8ec05c707' },
+        update: {},
+        create: {
+            id: '70b39375-7fed-4560-adbc-73a8ec05c707',
+            title: 'Woman Like Me',
+            number: 9,
+            spotifyId: '2c6xRsQBv7pynuhYhWoHxo',
+            duration: 300,
+            album: {
+                connect: { id: '8b709fa2-5ae3-4beb-83b5-054878bc03b4' },
+            },
+        },
+    })
+    await prisma.track.upsert({
+        where: { id: '2fa99570-952e-43a3-b993-7147e634a96d' },
+        update: {},
+        create: {
+            id: '2fa99570-952e-43a3-b993-7147e634a96d',
+            title: 'Hold On',
+            number: 10,
+            spotifyId: '6bGMSP3H9YqkmaLnaJTIoF',
+            duration: 366,
+            album: {
+                connect: { id: '8b709fa2-5ae3-4beb-83b5-054878bc03b4' },
+            },
+        },
+    })
+    await prisma.track.upsert({
+        where: { id: '50923f48-2586-45a8-8029-277d7da873b7' },
+        update: {},
+        create: {
+            id: '50923f48-2586-45a8-8029-277d7da873b7',
+            title: 'To Be Loved',
+            number: 11,
+            spotifyId: '10ImcQk9tihY1EKMDIbvXJ',
+            duration: 403,
+            album: {
+                connect: { id: '8b709fa2-5ae3-4beb-83b5-054878bc03b4' },
+            },
+        },
+    })
+    await prisma.track.upsert({
+        where: { id: 'b6f0250a-6e65-4e31-8008-116851683f02' },
+        update: {},
+        create: {
+            id: 'b6f0250a-6e65-4e31-8008-116851683f02',
+            title: 'Love Is A Game',
+            number: 12,
+            spotifyId: '2j3GxEsbNYNeEzz86wDY4J',
+            duration: 403,
+            album: {
+                connect: { id: '8b709fa2-5ae3-4beb-83b5-054878bc03b4' },
+            },
+        },
+    })
 }

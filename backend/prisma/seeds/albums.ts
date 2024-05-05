@@ -109,4 +109,58 @@ export async function createAlbums() {
             releaseDate: new Date('2023-08-18'),
         },
     })
+    await prisma.album.upsert({
+        where: { id: '8b709fa2-5ae3-4beb-83b5-054878bc03b4' },
+        update: {},
+        create: {
+            id: '8b709fa2-5ae3-4beb-83b5-054878bc03b4',
+            artist: {
+                connect: {
+                    id: '8659a49d-d085-4455-9785-527bd5a667b3'
+                }
+            },
+            title: '30',
+            spotifyId: '21jF5jlMtzo94wbxmJ18aa',
+            genre: 'Pop',
+            image: 'https://i.scdn.co/image/ab67616d00001e02c6b577e4c4a6d326354a89f7',
+            imageLarge: 'https://i.scdn.co/image/ab67616d0000b273c6b577e4c4a6d326354a89f7',
+            releaseDate: new Date('2021-11-19'),
+        },
+    })
+    await prisma.album.upsert({
+        where: { id: '184d5ef5-9f39-48d2-a82a-17d89f6acdfe' },
+        update: {},
+        create: {
+            id: '184d5ef5-9f39-48d2-a82a-17d89f6acdfe',
+            artist: {
+                connect: {
+                    id: 'a834ef43-09ad-4e7e-8c48-f15b1c552cd1'
+                }
+            },
+            title: 'COWBOY CARTER',
+            spotifyId: '6BzxX6zkDsYKFJ04ziU5xQ',
+            genre: 'Country, Pop',
+            image: 'https://i.scdn.co/image/ab67616d00001e021572698fff8a1db257a53599',
+            imageLarge: 'https://i.scdn.co/image/ab67616d0000b2731572698fff8a1db257a53599',
+            releaseDate: new Date('2024-03-29'),
+        },
+    })
+    await prisma.album.upsert({
+        where: { id: '20578b87-b044-4d43-9a26-b7bcd46f3f7f' },
+        update: {},
+        create: {
+            id: '20578b87-b044-4d43-9a26-b7bcd46f3f7f',
+            artist: {
+                connect: {
+                    id: 'd7f9ade2-cf95-4f71-b7c9-9cdbb9a9b8f2'
+                }
+            },
+            title: 'Lungs',
+            spotifyId: '1rLLyY5p6HXNl2lKzINWp5',
+            genre: 'Pop',
+            image: 'https://i.scdn.co/image/ab67616d00001e02003f81b1f4246362638e682d',
+            imageLarge: 'https://i.scdn.co/image/ab67616d0000b273003f81b1f4246362638e682d',
+            releaseDate: new Date('2009-07-03'),
+        },
+    })
 }

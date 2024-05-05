@@ -67,4 +67,37 @@ export async function createArtists() {
             bio: 'Andrew Hozier-Byrne (born 17 March 1990), known mononymously as Hozier, is an Irish musician and singer-songwriter from Bray, County Wicklow, Ireland. In 2013 he released his debut EP, featuring the hit single "Take Me to Church", and his second EP "From Eden" in 2014. His debut studio album, "Hozier", was released in Ireland in September 2014 and globally in October 2014. Hozier was born in Bray, County Wicklow, Ireland.  His mother is the visual artist Raine Hozier-Byrne (who also designed his latest album cover). He began a degree in music at Trinity College, Dublin, but dropped out midway through his first year in order to record demos for Universal Music. While at Trinity, he became involved with the Trinity Orchestra. He was a member of Anúna from 2008 to 2012, and appears as a soloist on their 2012 release "Illumination" singing "La Chanson de Mardi Gras". He toured and sang with the group internationally including performances in Norway and the Netherlands.\nIn 2013, Hozier released the EP "Take Me to Church EP" (also containing "Like Real People Do", "Angel of Small Death and The Codeine Scene" and a live version of "Cherry Wine"), with the title track becoming his breakthrough single after it went viral on YouTube. It reached number one on the Irish iTunes singles chart and number two in the official chart on 25 October 2013. \nHozier followed up Take Me to Church with the new EP "From Eden EP" (also containing "Work Song", "Arsonist\'s Lullabye" and a live version of "To Be Alone"), and a number of festival tour dates and television appearances in the United States. Hozier released his self-titled album, "Hozier" on 19 September 2014. It had five singles including "Take Me to Church", "Work Song", and "From Eden", which were hits on his earlier EPs. On December 2014, it was announced that "Take Me to Church" was nominated at the 57th Annual Grammy Awards for Song of the Year in 2015.\nIn September 2018, he released an EP titled Nina Cried Power and featured the title track as a single, reaching number one on the Billboard Adult Alternative Songs chart. He released his second album, Wasteland, Baby! in March 2019, which debuted atop the Irish Albums Chart and the Billboard 200, and has since been certified gold in the U.S.',
         },
     })
+    await prisma.artist.upsert({
+        where: { id: '8659a49d-d085-4455-9785-527bd5a667b3' },
+        update: {},
+        create: {
+            id: '8659a49d-d085-4455-9785-527bd5a667b3',
+            spotifyId: '4dpARuHxo51G3z768sgnrY',
+            name: 'Adele',
+            image: 'https://i.scdn.co/image/ab6761610000517468f6e5892075d7f22615bd17',
+            bio: 'Since the release of her debut album "19", in 2008, Adele has become one of the most successful British artists of her generation. Her critically acclaimed debut album garnered over 6.5 million sales worldwide whilst the album has gone 8x Platinum in the UK. At the age of 19, Adele became the first-ever recipient of the BRITS Critics\' Choice Award. The accolades received by Adele only multiplied as the following year saw her claim Best New Artist and Best Female Pop Vocal Performance at the GRAMMYs. As Adele embarks on her next chapter, she holds 15 GRAMMYs, 9 BRITS, 18 Billboard Awards, 2 IVORs, 1 Golden Globe, 1 Academy Award and 5 American Music Awards under her belt. The British singer-songwriter has received 11.5 million Album sales in the UK alone and 48 million Worldwide Album sales.',
+        },
+    })
+    await prisma.artist.upsert({
+        where: { id: 'a834ef43-09ad-4e7e-8c48-f15b1c552cd1' },
+        update: {},
+        create: {
+            id: 'a834ef43-09ad-4e7e-8c48-f15b1c552cd1',
+            spotifyId: '6vWDO969PvNqNYHIOW5v0m',
+            name: 'Beyoncé',
+            image: 'https://i.scdn.co/image/8ce3e8ae21481b60e3fb2604384b82175a949603',
+            bio: 'A powerhouse singer, songwriter, producer, and dancer, Beyoncé is a multifaceted global superstar by any measure. The Houstonian rose to fame in the late \'90s as the central member of pop-R&B group . The following decade, she started her ongoing streak of number one solo studio albums with Dangerously in Love (2003), the source of her first number one pop single, the ecstatic "Crazy in Love." Nearly omnipresent hits such as the elegantly dismissive "Irreplaceable" (2006) and boisterous "Single Ladies (Put a Ring on It)" (2008), combined with sold-out world tours and Grammy Awards, all heightened Beyoncé\'s profile in the 2000s. Billboard named her female artist of the decade, while the RIAA acknowledged that, with 64 gold and platinum certifications, she was its top-selling artist. Beyoncé continued to diversify in the 2010s with the visual albums Beyoncé (2013) and Lemonade (2016), followed by the  collaboration Everything Is Love (2018) and her work on the remake of The Lion King (2019). The latter project was expanded with the soundtrack The Lion King: The Gift, executive-produced by Beyoncé, who also wrote and directed the related musical film Black Is King (2020). Beyoncé has since become the most awarded artist in Grammy history with Renaissance (2022), a cosmopolitan dancefloor celebration tying together gospel, disco, house, bounce, and Afrobeats with nods to ballroom culture. The second act in that series, 2024\'s Cowboy Carter, carried Beyoncé into the country music realm.',
+        },
+    })
+    await prisma.artist.upsert({
+        where: { id: 'd7f9ade2-cf95-4f71-b7c9-9cdbb9a9b8f2' },
+        update: {},
+        create: {
+            id: 'd7f9ade2-cf95-4f71-b7c9-9cdbb9a9b8f2',
+            spotifyId: '1moxjboGR7GNWYIMWsRjgG',
+            name: 'Florence + The Machine',
+            image: 'https://i.scdn.co/image/ab6761670000ecd43b65e10ce66e8a0ab21a8756',
+            bio: 'Florence + the Machine is a London, UK, art pop band led by singer-songwriter Florence Welch and formed in 2007. The band consists of: Florence Welch (vocals), Robert Ackroyd (guitar), Isabella Summers (aka Isa Machine - keyboards), Tom Monger (harp), Mark Saunders (bass, percussion), Christopher Lloyd Hayden (drums, backing vocals), Rusty Bradshaw (keyboard, backing vocals) and Sam White (backing vocals). Lead singer, Florence Welch, was an art-college drop-out, from Camberwell (London), who was discovered singing Motown covers in a nightclub toilet, drunk. ”The Machine” name originated with an in-joke between Welch and Summers. Musically, Florence + The Machine\'s sound is sometimes referred to as soul-inspired indie rock. Welch grew up listening to The White Stripes and Kate Bush and says she writes metaphorical songs that are "stories with consequences and weird morality issues."',
+        },
+    })
 }

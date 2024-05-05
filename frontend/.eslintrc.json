@@ -20,7 +20,7 @@
     "rules": {
         "@typescript-eslint/array-type": ["error", { "default": "generic" }],
         "indent": ["error", 4, { "ignoredNodes": ["JSXElement *"] }],
-        "linebreak-style": ["error", "unix"],
+        "linebreak-style": ["error", "windows"],
         "quotes": ["error", "single"],
         "semi": ["error", "never"],
         "react/boolean-prop-naming": [

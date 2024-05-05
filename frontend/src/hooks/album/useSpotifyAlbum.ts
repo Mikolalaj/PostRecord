@@ -39,7 +39,7 @@ export function useSpotifyAlbum(spotifyAlbumId: string, setFormValues: (values: 
         async () => (await axios.get(`${basePath}spotify/${spotifyAlbumId}`)).data,
         {
             staleTime: Infinity,
-            enabled: spotifyAlbumId !== null,
+            enabled: !!spotifyAlbumId,
             select: (album: SpotifyAlbum): SpotifyAlbum => {
                 return {
                     ...album,

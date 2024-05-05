@@ -10,9 +10,10 @@ type Props = {
     onAdd?: (values: NewPressing) => void
     onEdit?: (values: NewPressing) => void
     defaultValues?: NewPressing
+    isWithAlbum?: boolean
 }
 
-export default function PressingForm({ close, onAdd, onEdit, defaultValues }: Props) {
+export default function PressingForm({ close, onAdd, onEdit, defaultValues, isWithAlbum = false }: Props) {
     if (onEdit && !defaultValues) {
         throw new Error('defaultValues is required when type is "edit"')
     }
@@ -66,7 +67,7 @@ export default function PressingForm({ close, onAdd, onEdit, defaultValues }: Pr
     return (
         <form noValidate onSubmit={form.onSubmit(onSubmit!)}>
             <Stack spacing='xs'>
-                <AlbumSearch albumsType='local' {...form.getInputProps('album')} />
+                {isWithAlbum && <AlbumSearch albumsType='local' {...form.getInputProps('album')} />}
                 <ImageInput
                     label='Image'
                     placeholder='Image of the pressing'

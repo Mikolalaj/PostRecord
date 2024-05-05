@@ -26,13 +26,13 @@ export default function Pressings({ pressings, editPressing, addPressing, delete
         <>
             <Modal size='550px' centered opened={opened} onClose={close} title={selectedPressing ? 'Edit pressing' : 'Add pressing'}>
                 <PressingForm
-                    type='add'
                     close={close}
-                    onEdit={pressing => editPressing(pressing)}
+                    onEdit={selectedPressing ? pressing => editPressing(pressing) : undefined}
                     onAdd={pressing => {
                         addPressing(pressing)
                         close()
                     }}
+                    defaultValues={selectedPressing || undefined}
                 />
             </Modal>
             <Button compact variant='outline' mt='lg' onClick={open} leftIcon={<IconPlus size={20} />}>
