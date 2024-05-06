@@ -1,4 +1,5 @@
 import { ColorScheme, ColorSchemeProvider, MantineProvider } from '@mantine/core'
+import { ModalsProvider } from '@mantine/modals'
 import { NotificationsProvider } from '@mantine/notifications'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
@@ -10,10 +11,10 @@ import Explore from './pages/Explore'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import NotFoundPage from './pages/NotFoundPage'
+import Profile from './pages/Profile'
 import ResetPassword from './pages/ResetPassword'
 import Admin from './pages/admin/Admin'
 import PrivateRoute from './utils/PrivateRoute'
-import { ModalsProvider } from '@mantine/modals'
 
 const queryClient = new QueryClient()
 
@@ -29,6 +30,7 @@ const privateRoutes = [
     { path: '/', element: <Home /> },
     { path: '/explore', element: <Explore /> },
     { path: '/album/:id', element: <Album /> },
+    { path: '/profile', element: <Profile /> },
 ]
 
 const router = createBrowserRouter(

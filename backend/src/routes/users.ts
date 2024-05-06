@@ -17,6 +17,8 @@ router.get('/', async (req: Request, res: Response) => {
             lastName: true,
             isAdmin: true,
             albumId: true,
+            joinedAt: true,
+            bio: true,
         },
     })
 

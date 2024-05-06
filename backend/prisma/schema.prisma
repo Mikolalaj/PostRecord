@@ -55,6 +55,8 @@ model User {
   albumId           String?            @db.Uuid
   favouriteAlbum    Album?             @relation(fields: [albumId], references: [id])
   collection        PressingsForUser[]
+  joinedAt          DateTime           @default(now())
+  bio               String?
 }
 
 model Pressing {
@@ -73,6 +75,7 @@ model PressingsForUser {
   pressing   Pressing @relation(fields: [pressingId], references: [id])
   pressingId String   @db.Uuid
   addedAt    DateTime @default(now())
+  salePrice  Float?
 
   @@id([userId, pressingId])
 }

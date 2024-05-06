@@ -9,6 +9,7 @@ export interface User {
     lastName: string
     isAdmin: boolean
     albumId: string | null // favourite album
+    joinedAt: string
 }
 
 export function useUser() {
