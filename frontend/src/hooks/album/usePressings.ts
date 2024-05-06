@@ -16,6 +16,7 @@ export interface Pressing {
 
 export interface UserPressing extends Pressing {
     isInCollection: boolean
+    isInWantlist: boolean
 }
 
 export interface PressingDetails extends Pressing {

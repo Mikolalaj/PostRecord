@@ -1,10 +1,11 @@
 import { ActionIcon, Card, Center, createStyles, Group, Image, MantineTheme, Modal, Text } from '@mantine/core'
 import { useHover } from '@mantine/hooks'
-import { IconChecks, IconPlus, IconX } from '@tabler/icons-react'
+import { IconChecks, IconEyeCheck, IconEyeOff, IconEyePlus, IconPlus, IconX } from '@tabler/icons-react'
 import { useState } from 'react'
 import { useAddToCollection, useRemoveFromCollection } from '../../hooks/album/useCollection'
 import { UserPressing } from '../../hooks/album/usePressings'
 import { useLocation } from 'react-router-dom'
+import { useAddToWantlist, useRemoveFromWantlist } from 'hooks/album/useWantlist'
 
 function hexToHSL(H: string): string {
     // Konwersja hex na RGB
@@ -77,7 +78,7 @@ const useStyles = createStyles((theme, { color }: { color: string }) => ({
     },
 }))
 
-function Pressing({ id, name, image, color, isInCollection }: UserPressing) {
+function Pressing({ id, name, image, color, isInCollection, isInWantlist }: UserPressing) {
     const location = useLocation()
     const albumId = location.pathname.split('/')[2]
 
@@ -87,6 +88,9 @@ function Pressing({ id, name, image, color, isInCollection }: UserPressing) {
 
     const addToCollection = useAddToCollection()
     const removeFromCollection = useRemoveFromCollection()
+
+    const addToWantlist = useAddToWantlist()
+    const removeFromWantlist = useRemoveFromWantlist()
 
     const getNameColor = () => {
         if (color === 'dark') {
@@ -109,6 +113,28 @@ function Pressing({ id, name, image, color, isInCollection }: UserPressing) {
                 </Card.Section>
                 <Card.Section py='sm'>
                     <Group position='center'>
+                        <div ref={ref} style={{ position: 'absolute', left: 10 }}>
+                            <ActionIcon
+                                color={isInWantlist ? (hovered ? 'red' : 'teal') : 'blue.4'}
+                                radius='xl'
+                                variant='subtle'
+                                onClick={() =>
+                                    isInWantlist
+                                        ? removeFromWantlist.mutateAsync({ pressingId: id, albumId })
+                                        : addToWantlist.mutateAsync({ pressingId: id, albumId })
+                                }
+                            >
+                                {isInWantlist ? (
+                                    hovered ? (
+                                        <IconEyeOff size={18} />
+                                    ) : (
+                                        <IconEyeCheck size={18} />
+                                    )
+                                ) : (
+                                    <IconEyePlus size={18} />
+                                )}
+                            </ActionIcon>
+                        </div>
                         <Text color={getNameColor()} ta='center' weight={700}>
                             {name}
                         </Text>

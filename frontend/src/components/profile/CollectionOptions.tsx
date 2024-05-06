@@ -17,7 +17,7 @@ type Props = {
     }
 }
 
-export default function PressingOptions({ isHidden, price, pressing, album }: Props) {
+export default function CollectionOptions({ isHidden, price, pressing, album }: Props) {
     const theme = useMantineTheme()
     const ref = useRef<HTMLInputElement>(null)
     const removeFromCollection = useRemoveFromCollection()

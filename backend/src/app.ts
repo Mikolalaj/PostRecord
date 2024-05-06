@@ -12,6 +12,7 @@ import albumsRouter from './routes/albums'
 import artistsRouter from './routes/artists'
 import authRouter from './routes/authentication'
 import collectionRouter from './routes/collection'
+import wantlistRouter from './routes/wantlist'
 import pressingsRouter from './routes/pressings'
 import usersRouter from './routes/users'
 
@@ -53,6 +54,7 @@ app.use('/api/albums', albumsRouter)
 app.use('/api/pressings', pressingsRouter)
 app.use('/api/artists', artistsRouter)
 app.use('/api/collection', collectionRouter)
+app.use('/api/wantlist', wantlistRouter)
 
 app.get('/api', (req, res) => {
     res.send({ message: 'Hello from the PostRecord API!' })

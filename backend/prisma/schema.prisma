@@ -43,30 +43,32 @@ model Track {
 }
 
 model User {
-  id                String             @id @default(uuid()) @db.Uuid
-  email             String             @unique
+  id                String              @id @default(uuid()) @db.Uuid
+  email             String              @unique
   firstName         String
   lastName          String
   password          String
-  isAdmin           Boolean            @default(false)
-  registrationToken String?            @unique
+  isAdmin           Boolean             @default(false)
+  registrationToken String?             @unique
   lastLogin         DateTime?
   spotifyToken      String?
-  albumId           String?            @db.Uuid
-  favouriteAlbum    Album?             @relation(fields: [albumId], references: [id])
+  albumId           String?             @db.Uuid
+  favouriteAlbum    Album?              @relation(fields: [albumId], references: [id])
   collection        PressingsForUser[]
-  joinedAt          DateTime           @default(now())
+  wantlist          PressingsWantlist[]
+  joinedAt          DateTime            @default(now())
   bio               String?
 }
 
 model Pressing {
-  id      String             @id @default(uuid()) @db.Uuid
-  name    String
-  albumId String             @db.Uuid
-  color   String
-  image   String
-  album   Album              @relation(fields: [albumId], references: [id])
-  user    PressingsForUser[]
+  id              String              @id @default(uuid()) @db.Uuid
+  name            String
+  albumId         String              @db.Uuid
+  color           String
+  image           String
+  album           Album               @relation(fields: [albumId], references: [id])
+  usersCollection PressingsForUser[]
+  usersWantlist   PressingsWantlist[]
 }
 
 model PressingsForUser {
@@ -76,6 +78,16 @@ model PressingsForUser {
   pressingId String   @db.Uuid
   addedAt    DateTime @default(now())
   salePrice  Float?
+
+  @@id([userId, pressingId])
+}
+
+model PressingsWantlist {
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String   @db.Uuid
+  pressing   Pressing @relation(fields: [pressingId], references: [id])
+  pressingId String   @db.Uuid
+  addedAt    DateTime @default(now())
 
   @@id([userId, pressingId])
 }

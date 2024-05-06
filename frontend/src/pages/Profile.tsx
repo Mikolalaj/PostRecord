@@ -2,6 +2,7 @@ import { Text, Button, Paper, Group, Stack, Center } from '@mantine/core'
 import QueryRenderer from 'components/common/QueryRenderer'
 import UserAvatar from 'components/common/UserAvatar'
 import Collection from 'components/profile/Collection'
+import Wantlist from 'components/profile/Wantlist'
 import { useUser } from 'hooks/auth/useUser'
 
 const stats = [
@@ -58,6 +59,7 @@ export default function Profile() {
                 )}
             />
             <Collection />
+            <Wantlist />
         </>
     )
 }

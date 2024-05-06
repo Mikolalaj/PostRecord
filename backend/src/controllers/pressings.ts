@@ -4,7 +4,7 @@ import { getUserId, getFilterOptions } from '../common/utils'
 import { Pressing } from '@prisma/client'
 import { RequestWithFilterParams } from '../types'
 
-type Pressings = Array<Pressing & { isInCollection: boolean }>
+type Pressings = Array<Pressing & { isInCollection: boolean; isInWantlist: boolean }>
 
 export async function getPressings(albumId: string, request: Request, response: Response) {
     const userId = getUserId(request)
@@ -17,14 +17,19 @@ export async function getPressings(albumId: string, request: Request, response: 
         return response.status(404).send({ message: 'Album not found' })
     }
 
-    const userPressings = await prisma.pressingsForUser.findMany({
+    const userCollection = await prisma.pressingsForUser.findMany({
+        where: { userId },
+        select: { pressingId: true },
+    })
+    const userWantlist = await prisma.pressingsWantlist.findMany({
         where: { userId },
         select: { pressingId: true },
     })
 
     const pressings: Pressings = album.pressings.map(pressing => ({
         ...pressing,
-        isInCollection: userPressings.some(p => p.pressingId === pressing.id),
+        isInCollection: userCollection.some(p => p.pressingId === pressing.id),
+        isInWantlist: userWantlist.some(p => p.pressingId === pressing.id),
     }))
 
     return response.status(200).send(pressings)
