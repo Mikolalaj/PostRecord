@@ -85,6 +85,7 @@ function Pressing({ id, name, image, color, isInCollection, isInWantlist }: User
     const { classes, theme } = useStyles({ color })
     const [openedModal, setOpenedModal] = useState(false)
     const { hovered, ref } = useHover()
+    const { hovered: eyeRovered, ref: eyeRef } = useHover()
 
     const addToCollection = useAddToCollection()
     const removeFromCollection = useRemoveFromCollection()
@@ -113,9 +114,9 @@ function Pressing({ id, name, image, color, isInCollection, isInWantlist }: User
                 </Card.Section>
                 <Card.Section py='sm'>
                     <Group position='center'>
-                        <div ref={ref} style={{ position: 'absolute', left: 10 }}>
+                        <div ref={eyeRef} style={{ position: 'absolute', left: 10 }}>
                             <ActionIcon
-                                color={isInWantlist ? (hovered ? 'red' : 'teal') : 'blue.4'}
+                                color={isInWantlist ? (eyeRovered ? 'red' : 'teal') : 'blue.4'}
                                 radius='xl'
                                 variant='subtle'
                                 onClick={() =>
@@ -125,7 +126,7 @@ function Pressing({ id, name, image, color, isInCollection, isInWantlist }: User
                                 }
                             >
                                 {isInWantlist ? (
-                                    hovered ? (
+                                    eyeRovered ? (
                                         <IconEyeOff size={18} />
                                     ) : (
                                         <IconEyeCheck size={18} />
