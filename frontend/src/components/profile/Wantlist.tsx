@@ -7,7 +7,11 @@ import AlbumImage from './AlbumImage'
 import { IconTrash } from '@tabler/icons-react'
 import { openConfirmModal } from '@mantine/modals'
 
-export default function Wantlist() {
+type Props = {
+    isProfileOwner: boolean
+}
+
+export default function Wantlist({ isProfileOwner }: Props) {
     return (
         <QueryRenderer
             queries={[useWantlist()]}
@@ -30,12 +34,12 @@ export default function Wantlist() {
                                     <th>Album Title</th>
                                     <th style={{ textAlign: 'center' }}>Year</th>
                                     <th style={{ textAlign: 'center' }}>Added date</th>
-                                    <th />
+                                    {isProfileOwner && <th />}
                                 </tr>
                             </thead>
                             <tbody>
                                 {wantlist.map(pressing => (
-                                    <TableRow pressing={pressing} key={pressing.id} />
+                                    <TableRow pressing={pressing} isProfileOwner={isProfileOwner} key={pressing.id} />
                                 ))}
                             </tbody>
                         </Table>
@@ -46,7 +50,7 @@ export default function Wantlist() {
     )
 }
 
-function TableRow({ pressing }: { pressing: WantlistPressing }) {
+function TableRow({ pressing, isProfileOwner }: { pressing: WantlistPressing; isProfileOwner: boolean }) {
     const { ref, hovered } = useHover<HTMLTableRowElement>()
 
     const removeFromWantlist = useRemoveFromWantlist()
@@ -72,18 +76,20 @@ function TableRow({ pressing }: { pressing: WantlistPressing }) {
             <td>
                 <Center>{new Date(pressing.addedAt).toDateString()}</Center>
             </td>
-            <td>
-                <ActionIcon
-                    aria-label='Remove from collection'
-                    style={{ visibility: hovered ? 'visible' : 'hidden' }}
-                    variant='light'
-                    color='red'
-                    radius='xl'
-                    onClick={openRemoveFromCollectionModal}
-                >
-                    <IconTrash stroke={1.5} size={18} />
-                </ActionIcon>
-            </td>
+            {isProfileOwner && (
+                <td>
+                    <ActionIcon
+                        aria-label='Remove from collection'
+                        style={{ visibility: hovered ? 'visible' : 'hidden' }}
+                        variant='light'
+                        color='red'
+                        radius='xl'
+                        onClick={openRemoveFromCollectionModal}
+                    >
+                        <IconTrash stroke={1.5} size={18} />
+                    </ActionIcon>
+                </td>
+            )}
         </tr>
     )
 }

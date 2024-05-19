@@ -6,7 +6,11 @@ import CollectionOptions from './CollectionOptions'
 import AlbumTitle from './AlbumTitle'
 import AlbumImage from './AlbumImage'
 
-export default function Collection() {
+type Props = {
+    isProfileOwner: boolean
+}
+
+export default function Collection({ isProfileOwner }: Props) {
     return (
         <QueryRenderer
             queries={[useCollection()]}
@@ -26,12 +30,12 @@ export default function Collection() {
                                 <th style={{ textAlign: 'center' }}>Year</th>
                                 <th style={{ textAlign: 'center' }}>Added date</th>
                                 <th style={{ textAlign: 'center' }}>Sale price</th>
-                                <th />
+                                {isProfileOwner && <th />}
                             </tr>
                         </thead>
                         <tbody>
                             {collection.map(pressing => (
-                                <TableRow pressing={pressing} key={pressing.id} />
+                                <TableRow pressing={pressing} isProfileOwner={isProfileOwner} key={pressing.id} />
                             ))}
                         </tbody>
                     </Table>
@@ -41,7 +45,7 @@ export default function Collection() {
     )
 }
 
-function TableRow({ pressing }: { pressing: CollectionPressing }) {
+function TableRow({ pressing, isProfileOwner }: { pressing: CollectionPressing; isProfileOwner: boolean }) {
     const { ref: rowRef, hovered: isRowHovered } = useHover<HTMLTableRowElement>()
 
     return (
@@ -64,20 +68,22 @@ function TableRow({ pressing }: { pressing: CollectionPressing }) {
                     ''
                 )}
             </td>
-            <td>
-                <CollectionOptions
-                    isHidden={!isRowHovered}
-                    price={pressing.salePrice}
-                    pressing={{
-                        id: pressing.id,
-                        name: pressing.name,
-                    }}
-                    album={{
-                        id: pressing.album.id,
-                        title: pressing.album.title,
-                    }}
-                />
-            </td>
+            {isProfileOwner && (
+                <td>
+                    <CollectionOptions
+                        isHidden={!isRowHovered}
+                        price={pressing.salePrice}
+                        pressing={{
+                            id: pressing.id,
+                            name: pressing.name,
+                        }}
+                        album={{
+                            id: pressing.album.id,
+                            title: pressing.album.title,
+                        }}
+                    />
+                </td>
+            )}
         </tr>
     )
 }
