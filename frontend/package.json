@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "bunx --bun vite",
     "build": "bunx --bun vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
@@ -21,6 +22,7 @@
     "@tanstack/react-query": "^4.32.6",
     "@tanstack/react-query-devtools": "^4.33.0",
     "axios": "^1.3.2",
+    "bun-types": "^1.1.8",
     "clsx": "^2.0.0",
     "dayjs": "^1.11.10",
     "embla-carousel-react": "^7.0.9",
@@ -31,17 +33,22 @@
   },
   "devDependencies": {
     "@happy-dom/global-registrator": "^14.11.0",
+    "@testing-library/jest-dom": "^6.4.5",
+    "@testing-library/react": "^15.0.7",
+    "@types/bun": "^1.1.2",
     "@types/node": "^18.11.18",
     "@types/react": "^18.3.2",
     "@typescript-eslint/eslint-plugin": "^6.5.0",
     "@typescript-eslint/parser": "^6.5.0",
-    "@vitejs/plugin-react": "^3.0.0",
+    "@vitejs/plugin-react": "4.2.1",
     "eslint": "^8.48.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-react": "^7.33.2",
     "happy-dom": "^14.11.0",
+    "jsdom": "^24.0.0",
     "sass": "^1.68.0",
     "typescript": "^4.9.3",
-    "vite": "^4.0.0"
+    "vite": "5.2.11",
+    "vitest": "^1.6.0"
   }
 }
