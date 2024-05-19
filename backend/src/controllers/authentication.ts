@@ -37,6 +37,18 @@ export async function signIn(email: string, password: string): Promise<User | nu
 export async function singUp(email: string, password: string, firstName: string, lastName: string): Promise<User> {
     const hashedPassword = await Bun.password.hash(password)
     const registrationToken = await createToken(email)
+    // create username using first name and first letter of last name.
+    // If the username created is already taken, add a random number to the end of the username
+    let username = firstName + lastName.charAt(0)
+    const usernameExists = await prisma.user.findUnique({
+        where: {
+            username: username,
+        },
+    })
+    if (usernameExists) {
+        const random = Math.floor(Math.random() * 1000)
+        username = username + random
+    }
 
     return prisma.user.create({
         data: {
@@ -45,6 +57,7 @@ export async function singUp(email: string, password: string, firstName: string,
             firstName,
             lastName,
             registrationToken,
+            username,
         },
     })
 }
@@ -84,7 +97,7 @@ export async function forgotPassword(req: Request, res: Response): Promise<Respo
         },
     })
     if (user) {
-        const resetToken = await Bun.password.hash(user.id + user.lastLogin, "bcrypt")
+        const resetToken = await Bun.password.hash(user.id + user.lastLogin, 'bcrypt')
         sendResetPasswordEmail(user.firstName, resetToken, user.email)
     }
 
@@ -106,7 +119,7 @@ export async function resetPassword(req: Request, res: Response): Promise<Respon
         return res.status(400).send({ message: 'Unable to find your account 😢' })
     }
 
-    if ((await Bun.password.verify(user.id + user.lastLogin, token, "bcrypt")) === false) {
+    if ((await Bun.password.verify(user.id + user.lastLogin, token, 'bcrypt')) === false) {
         return res.status(400).send({ message: 'Invalid token' })
     }
 
