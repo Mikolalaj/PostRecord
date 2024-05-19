@@ -36,7 +36,8 @@ export async function signIn(email: string, password: string): Promise<User | nu
 
 export async function singUp(email: string, password: string, firstName: string, lastName: string): Promise<User> {
     const hashedPassword = await Bun.password.hash(password)
-    const registrationToken = await Bun.password.hash(email)
+    const registrationToken = await createToken(email)
+
     return prisma.user.create({
         data: {
             email,
@@ -54,7 +55,7 @@ export async function confirmEmail(req: Request, res: Response): Promise<Respons
     if (!token) {
         return res.status(400).send({ message: 'Token is required' })
     }
-
+    console.log(token)
     const user = await prisma.user.findUnique({
         where: {
             registrationToken: token,
@@ -74,11 +75,6 @@ export async function confirmEmail(req: Request, res: Response): Promise<Respons
     return res.status(200).send({ message: 'Email confirmed. You can now sign in.' })
 }
 
-async function createResetToken(user: User): Promise<string> {
-    console.log(user.id + user.lastLogin)
-    return await Bun.password.hash(user.id + user.lastLogin)
-}
-
 export async function forgotPassword(req: Request, res: Response): Promise<Response> {
     const { email } = req.body
 
@@ -88,7 +84,7 @@ export async function forgotPassword(req: Request, res: Response): Promise<Respo
         },
     })
     if (user) {
-        const resetToken = await createResetToken(user)
+        const resetToken = await Bun.password.hash(user.id + user.lastLogin, "bcrypt")
         sendResetPasswordEmail(user.firstName, resetToken, user.email)
     }
 
@@ -110,7 +106,7 @@ export async function resetPassword(req: Request, res: Response): Promise<Respon
         return res.status(400).send({ message: 'Unable to find your account 😢' })
     }
 
-    if ((await Bun.password.verify(user.id + user.lastLogin, token)) === false) {
+    if ((await Bun.password.verify(user.id + user.lastLogin, token, "bcrypt")) === false) {
         return res.status(400).send({ message: 'Invalid token' })
     }
 
@@ -125,4 +121,8 @@ export async function resetPassword(req: Request, res: Response): Promise<Respon
     })
 
     return res.status(200).send({ message: 'Password reset successfully' })
+}
+
+async function createToken(from: string): Promise<string> {
+    return (await Bun.password.hash(from)).slice(31).replace(/\//g, 'a').replace(/\+/g, 'b')
 }
