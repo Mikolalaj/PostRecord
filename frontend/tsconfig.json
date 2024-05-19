@@ -24,7 +24,8 @@
             "atoms": ["./src/atoms"],
             "utils/*": ["./src/utils/*"],
             "utils": ["./src/utils"],
-        }
+        },
+        "types": ["@testing-library/jest-dom"]
     },
     "include": ["src"],
     "references": [{ "path": "./tsconfig.node.json" }]
