@@ -3,8 +3,57 @@ import { Request, Response, Router } from 'express'
 import { getUserId } from '../common/utils'
 const router = Router()
 
+interface User {
+    id: string
+    email: string
+    firstName: string
+    lastName: string
+    isAdmin: boolean
+    albumId: string | null
+}
+
 router.get('/', async (req: Request, res: Response) => {
     const userId = getUserId(req)
+
+    const user: User | null = await prisma.user.findUnique({
+        where: {
+            id: userId,
+        },
+        select: {
+            id: true,
+            email: true,
+            firstName: true,
+            lastName: true,
+            isAdmin: true,
+            albumId: true,
+        },
+    })
+
+    if (!user) {
+        return res.status(404).send({ message: 'User not found' })
+    }
+
+    return res.json(user)
+})
+
+interface Profile extends User {
+    favouriteAlbum: {
+        id: string
+        title: string
+        image: string
+        artist: string
+    } | null
+    bio: string | null
+    joinedAt: Date
+    stats: {
+        collection: number
+        wantlist: number
+        forSale: number
+    }
+}
+
+router.get('/profile/:userId?', async (req: Request, res: Response) => {
+    const userId = req.params.userId || getUserId(req)
 
     const user = await prisma.user.findUnique({
         where: {
@@ -26,7 +75,63 @@ router.get('/', async (req: Request, res: Response) => {
         return res.status(404).send({ message: 'User not found' })
     }
 
-    return res.json(user)
+    const collection = await prisma.pressingsForUser.count({
+        where: {
+            userId: user.id,
+        },
+    })
+    const wantlist = await prisma.pressingsWantlist.count({
+        where: {
+            userId: user.id,
+        },
+    })
+    const forSale = await prisma.pressingsForUser.count({
+        where: {
+            userId: user.id,
+            salePrice: {
+                not: null,
+            },
+        },
+    })
+
+    const favouriteAlbumId = user.albumId
+    let favouriteAlbum = null
+    if (favouriteAlbumId) {
+        favouriteAlbum = await prisma.album.findUnique({
+            where: {
+                id: favouriteAlbumId,
+            },
+            select: {
+                id: true,
+                title: true,
+                image: true,
+                artist: {
+                    select: {
+                        name: true,
+                    },
+                },
+            },
+        })
+    }
+
+    const profile: Profile = {
+        ...user,
+        stats: {
+            collection,
+            wantlist,
+            forSale,
+        },
+        favouriteAlbum: favouriteAlbum
+            ? {
+                  id: favouriteAlbum.id,
+                  title: favouriteAlbum.title,
+                  image: favouriteAlbum.image,
+                  artist: favouriteAlbum.artist.name,
+              }
+            : null,
+    }
+
+    return res.json(profile)
 })
 
 type UpdateUserBody = {
