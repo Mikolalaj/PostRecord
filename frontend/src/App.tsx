@@ -30,7 +30,7 @@ const privateRoutes = [
     { path: '/', element: <Home /> },
     { path: '/explore', element: <Explore /> },
     { path: '/album/:id', element: <Album /> },
-    { path: '/profile', element: <Profile /> },
+    { path: '/profile/:username?', element: <Profile /> },
 ]
 
 const router = createBrowserRouter(

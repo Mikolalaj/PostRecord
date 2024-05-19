@@ -4,6 +4,7 @@ import axios, { AxiosError } from 'axios'
 import { notificationCheck } from 'components/common'
 import { MyError, MessageResponse } from 'types'
 import { Pressing } from './usePressings'
+import { useParams } from 'react-router-dom'
 
 const basePath = '/api/collection/'
 
@@ -20,7 +21,10 @@ export interface CollectionPressing extends Pressing {
 }
 
 export function useCollection() {
-    return useQuery<Array<CollectionPressing>, AxiosError<MyError>>(['collection'], async () => (await axios.get(basePath)).data, {
+    const { username } = useParams()
+    return useQuery<Array<CollectionPressing>, AxiosError<MyError>>({
+        queryKey: username ? ['collection', username] : ['collection'],
+        queryFn: async () => (await axios.get(basePath + (username ? username : ''))).data,
         staleTime: 1000 * 60 * 2,
     })
 }
@@ -33,6 +37,7 @@ export function useAddToCollection() {
         mutationFn: async ({ pressingId }) => (await axios.post(basePath, { pressingId })).data,
         onSuccess: (data, { albumId }) => {
             queryClient.invalidateQueries(['pressings', albumId])
+            queryClient.invalidateQueries(['collection'])
             showNotification({
                 icon: notificationCheck,
                 color: 'teal',

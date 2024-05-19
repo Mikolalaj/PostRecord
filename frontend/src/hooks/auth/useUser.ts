@@ -18,6 +18,7 @@ export interface Stats {
 }
 
 export interface Profile extends User {
+    username: string
     bio: string | null
     joinedAt: Date
     stats: Stats
@@ -36,10 +37,10 @@ export function useUser() {
     })
 }
 
-export function useProfile(userId?: string) {
+export function useProfile(username: string | undefined = undefined) {
     return useQuery<Profile, AxiosError<MyError>>(
-        ['profile', userId],
-        async () => (await axios.get(`/api/users/profile/${userId || ''}`)).data,
+        username ? ['profile', username] : ['profile'],
+        async () => (await axios.get(`/api/users/profile/${username || ''}`)).data,
         {
             staleTime: 1000 * 60 * 5,
             retry: 1,

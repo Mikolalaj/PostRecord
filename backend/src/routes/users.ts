@@ -52,18 +52,21 @@ interface Profile extends User {
     }
 }
 
-router.get('/profile/:userId?', async (req: Request, res: Response) => {
-    const userId = req.params.userId || getUserId(req)
+router.get('/profile/:username?', async (req: Request, res: Response) => {
+    const { username } = req.params
 
     const user = await prisma.user.findUnique({
-        where: {
-            id: userId,
-        },
+        where: username
+            ? { username }
+            : {
+                  id: getUserId(req),
+              },
         select: {
             id: true,
             email: true,
             firstName: true,
             lastName: true,
+            username: true,
             isAdmin: true,
             albumId: true,
             joinedAt: true,

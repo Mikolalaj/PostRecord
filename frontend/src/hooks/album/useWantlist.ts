@@ -4,6 +4,7 @@ import axios, { AxiosError } from 'axios'
 import { notificationCheck } from 'components/common'
 import { MyError, MessageResponse } from 'types'
 import { Pressing } from './usePressings'
+import { useParams } from 'react-router-dom'
 
 const basePath = '/api/wantlist/'
 
@@ -19,7 +20,11 @@ export interface WantlistPressing extends Pressing {
 }
 
 export function useWantlist() {
-    return useQuery<Array<WantlistPressing>, AxiosError<MyError>>(['wantlist'], async () => (await axios.get(basePath)).data, {
+    const { username } = useParams()
+
+    return useQuery<Array<WantlistPressing>, AxiosError<MyError>>({
+        queryKey: username ? ['wantlist', username] : ['wantlist'],
+        queryFn: async () => (await axios.get(basePath + (username ? username : ''))).data,
         staleTime: 1000 * 60 * 2,
     })
 }
