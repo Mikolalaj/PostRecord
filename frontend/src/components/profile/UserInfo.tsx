@@ -1,4 +1,4 @@
-import { Text, Button, Paper, Group, Stack, Center, useMantineTheme, Modal } from '@mantine/core'
+import { Text, Paper, Group, Stack, Center, useMantineTheme, Modal } from '@mantine/core'
 import CopyButton from 'components/common/CopyButton'
 import UserAvatar from 'components/common/UserAvatar'
 import FavouriteAlbum from 'components/profile/FavouriteAlbum'
@@ -6,6 +6,8 @@ import UserStats from 'components/profile/UserStats'
 import { Profile } from 'hooks/auth/useUser'
 import { useState } from 'react'
 import UpdateProfileForm from './UpdateProfileForm'
+import SplitButton from 'components/common/SplitButton'
+import { IconKey, IconTrash } from '@tabler/icons-react'
 
 type Props = {
     user: Profile
@@ -44,9 +46,31 @@ export default function UserInfo({ user, isProfileOwner }: Props) {
                             </Text>
                         </Center>
                         {isProfileOwner && (
-                            <Button variant='default' fullWidth mt='md' onClick={() => setModalOpened(true)}>
+                            <SplitButton
+                                variant='default'
+                                fullWidth
+                                mt='md'
+                                onClick={() => setModalOpened(true)}
+                                menuItems={[
+                                    {
+                                        label: 'Change password',
+                                        icon: IconKey,
+                                        onClick: () => {
+                                            console.log('Update profile')
+                                        },
+                                    },
+                                    {
+                                        label: 'Delete account',
+                                        icon: IconTrash,
+                                        iconColor: theme.colors.red[6],
+                                        onClick: () => {
+                                            console.log('Delete account')
+                                        },
+                                    },
+                                ]}
+                            >
                                 Update profile
-                            </Button>
+                            </SplitButton>
                         )}
                     </Stack>
                     <Stack ml={30} justify='space-between'>
