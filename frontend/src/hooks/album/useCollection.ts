@@ -5,6 +5,7 @@ import { notificationCheck } from 'components/common'
 import { MyError, MessageResponse } from 'types'
 import { Pressing } from './usePressings'
 import { useParams } from 'react-router-dom'
+import { useUser } from 'hooks/auth/useUser'
 
 const basePath = '/api/collection/'
 
@@ -32,12 +33,14 @@ export function useCollection() {
 type CollectionOperation = { pressingId: string; albumId: string }
 
 export function useAddToCollection() {
+    const { data: user } = useUser()
     const queryClient = useQueryClient()
     return useMutation<MessageResponse, MyError, CollectionOperation>({
         mutationFn: async ({ pressingId }) => (await axios.post(basePath, { pressingId })).data,
         onSuccess: (data, { albumId }) => {
             queryClient.invalidateQueries(['pressings', albumId])
             queryClient.invalidateQueries(['collection'])
+            queryClient.invalidateQueries(['collection', user?.username])
             showNotification({
                 icon: notificationCheck,
                 color: 'teal',
@@ -49,12 +52,14 @@ export function useAddToCollection() {
 }
 
 export function useRemoveFromCollection() {
+    const { data: user } = useUser()
     const queryClient = useQueryClient()
     return useMutation<MessageResponse, MyError, CollectionOperation>({
         mutationFn: async ({ pressingId }) => (await axios.delete(basePath + pressingId)).data,
         onSuccess: (data, { albumId }) => {
             queryClient.invalidateQueries(['pressings', albumId])
             queryClient.invalidateQueries(['collection'])
+            queryClient.invalidateQueries(['collection', user?.username])
             showNotification({
                 icon: notificationCheck,
                 color: 'teal',

@@ -7,6 +7,7 @@ export interface User {
     email: string
     firstName: string
     lastName: string
+    username: string
     isAdmin: boolean
     albumId: string | null // favourite album
 }
@@ -18,7 +19,6 @@ export interface Stats {
 }
 
 export interface Profile extends Omit<User, 'albumId'> {
-    username: string
     bio: string | null
     joinedAt: Date
     stats: Stats
