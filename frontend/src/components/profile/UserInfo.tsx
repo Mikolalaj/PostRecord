@@ -1,4 +1,4 @@
-import { Text, Button, Paper, Group, Stack, Center } from '@mantine/core'
+import { Text, Button, Paper, Group, Stack, Center, useMantineTheme } from '@mantine/core'
 import CopyButton from 'components/common/CopyButton'
 import UserAvatar from 'components/common/UserAvatar'
 import FavouriteAlbum from 'components/profile/FavouriteAlbum'
@@ -11,8 +11,9 @@ type Props = {
 }
 
 export default function UserInfo({ user, isProfileOwner }: Props) {
+    const theme = useMantineTheme()
     return (
-        <Paper radius='md' withBorder p='lg' bg='var(--mantine-color-white)'>
+        <Paper radius='md' withBorder p='lg' bg={theme.colorScheme === 'dark' ? theme.colors.dark[7] : 'var(--mantine-color-white)'}>
             <Group align='stretch'>
                 <UserAvatar user={user} size={250} />
                 <Stack ml={40} justify='space-between'>
