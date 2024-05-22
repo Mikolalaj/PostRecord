@@ -17,7 +17,7 @@ export interface Stats {
     forSale: number
 }
 
-export interface Profile extends User {
+export interface Profile extends Omit<User, 'albumId'> {
     username: string
     bio: string | null
     joinedAt: Date

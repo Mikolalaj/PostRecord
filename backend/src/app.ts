@@ -1,4 +1,4 @@
-import { PrismaClient, User } from '@prisma/client'
+import { User } from '@prisma/client'
 import bodyParser from 'body-parser'
 import cookies from 'cookie-parser'
 import * as dotenv from 'dotenv'
@@ -33,8 +33,6 @@ declare module 'express-session' {
         user: User
     }
 }
-
-export const prisma = new PrismaClient()
 
 dotenv.config()
 

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { prisma } from '../app'
+import { prisma } from '../prisma'
 
 async function authentication(req: Request, res: Response, next: NextFunction) {
     const devBearerToken = process.env.DEV_BEARER_TOKEN

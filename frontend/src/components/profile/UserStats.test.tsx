@@ -1,5 +1,5 @@
 import UserStats from './UserStats'
-import { expect, test, describe, it } from 'vitest'
+import { expect, describe, it } from 'vitest'
 import { render, screen } from '@testing-library/react'
 
 const stats = {
@@ -8,16 +8,20 @@ const stats = {
     forSale: 300,
 }
 
-test('2 + 2', () => {
-    expect(2 + 2).toBe(4)
-})
-
 describe('UserStats', () => {
-    it('renders headline', () => {
+    it('renders numbers', () => {
         render(<UserStats stats={stats} />)
 
         expect(screen.getByText('100')).toBeInTheDocument()
         expect(screen.getByText('200')).toBeInTheDocument()
         expect(screen.getByText('300')).toBeInTheDocument()
+    })
+
+    it('renders labels', () => {
+        render(<UserStats stats={stats} />)
+
+        expect(screen.getByText('Collection')).toBeInTheDocument()
+        expect(screen.getByText('Wantlist')).toBeInTheDocument()
+        expect(screen.getByText('For sale')).toBeInTheDocument()
     })
 })

@@ -1,15 +1,17 @@
 import { Avatar } from '@mantine/core'
-import { User } from 'hooks/auth/useUser'
 import { useNavigate } from 'react-router-dom'
 
 interface UserAvatarProps {
-    user: User | null
+    user: {
+        firstName: string
+        lastName: string
+    } | null
     size?: number
 }
 
 const colors = ['red', 'pink', 'grape', 'violet', 'indigo', 'blue', 'cyan', 'teal', 'green', 'lime', 'yellow', 'orange']
 
-function getRandomColor(user: User) {
+function getRandomColor(user: { firstName: string; lastName: string }) {
     const hash = user.firstName.length + user.lastName.length
     return colors[hash % colors.length]
 }
