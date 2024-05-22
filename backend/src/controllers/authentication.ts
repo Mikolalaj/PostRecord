@@ -1,6 +1,6 @@
 import { User } from '@prisma/client'
 import { Request, Response } from 'express'
-import { prisma } from '../app'
+import { prisma } from '../prisma'
 import { sendResetPasswordEmail } from '../emails'
 
 export async function isEmailAvailable(email: string): Promise<boolean> {

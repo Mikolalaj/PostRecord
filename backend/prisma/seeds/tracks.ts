@@ -1,4 +1,4 @@
-import { prisma } from '../../src/app'
+import { prisma } from '../../src/prisma'
 
 export async function createTracks() {
     await prisma.track.upsert({

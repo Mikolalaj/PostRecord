@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express'
 import { getUserId } from '../common/utils'
 import { getWantlist, addToWantlist, removeFromWantlist } from '../controllers/wantlist'
-import { prisma } from '../app'
+import { prisma } from '../prisma'
 
 const router = Router()
 

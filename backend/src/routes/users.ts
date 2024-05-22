@@ -1,4 +1,4 @@
-import { prisma } from '../app'
+import { prisma } from '../prisma'
 import { Request, Response, Router } from 'express'
 import { getUserId } from '../common/utils'
 const router = Router()

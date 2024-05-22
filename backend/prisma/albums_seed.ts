@@ -1,4 +1,4 @@
-import { prisma } from '../src/app'
+import { prisma } from '../src/prisma'
 import { createAlbums } from './seeds/albums'
 import { createArtists } from './seeds/artists'
 import { createPressings } from './seeds/pressings'

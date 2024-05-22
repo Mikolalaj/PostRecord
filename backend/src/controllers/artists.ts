@@ -1,5 +1,5 @@
 import { Response } from 'express'
-import { prisma } from '../app'
+import { prisma } from '../prisma'
 import { getFilterOptions } from '../common/utils'
 import { Artist } from '@prisma/client'
 import { RequestWithFilterParams } from '../types'

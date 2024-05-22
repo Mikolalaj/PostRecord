@@ -1,6 +1,6 @@
 import { Artist, Track } from '@prisma/client'
 import { Request, Response } from 'express'
-import { prisma } from '../app'
+import { prisma } from '../prisma'
 import { getSpotifyData } from '../external/spotify'
 import { getArtistBio } from '../external/lastfm'
 import { uploadBlobFromPath } from '../azure/image'

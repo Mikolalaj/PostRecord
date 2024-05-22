@@ -1,5 +1,5 @@
 import { Response } from 'express'
-import { prisma } from '../app'
+import { prisma } from '../prisma'
 import { Pressing, Prisma } from '@prisma/client'
 
 interface WantlistPressing extends Pressing {

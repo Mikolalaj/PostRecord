@@ -1,4 +1,4 @@
-import { prisma } from '../src/app'
+import { prisma } from '../src/prisma'
 
 async function main() {
     const hashedPassword = await Bun.password.hash("uet!WFR8hvg0wef!xnd")
