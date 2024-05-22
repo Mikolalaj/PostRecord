@@ -1,6 +1,10 @@
 import { prisma } from '../prisma'
 import { Request, Response, Router } from 'express'
 import { getUserId } from '../common/utils'
+import formidableMiddleware from 'express-formidable'
+import sharp from 'sharp'
+import { uploadBlobFromBuffer, uploadBlobFromPath } from '../azure/image'
+
 const router = Router()
 
 interface User {
@@ -10,12 +14,16 @@ interface User {
     lastName: string
     isAdmin: boolean
     albumId: string | null
+    pictures: {
+        bigUrl: string
+        smallUrl: string
+    } | null
 }
 
 router.get('/', async (req: Request, res: Response) => {
     const userId = getUserId(req)
 
-    const user: User | null = await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
         where: {
             id: userId,
         },
@@ -27,6 +35,8 @@ router.get('/', async (req: Request, res: Response) => {
             username: true,
             isAdmin: true,
             albumId: true,
+            imageSmallUrl: true,
+            imageBigUrl: true,
         },
     })
 
@@ -34,7 +44,18 @@ router.get('/', async (req: Request, res: Response) => {
         return res.status(404).send({ message: 'User not found' })
     }
 
-    return res.json(user)
+    const userViewModel: User = {
+        ...user,
+        pictures:
+            user.imageBigUrl == null || user.imageSmallUrl == null
+                ? null
+                : {
+                      bigUrl: user.imageBigUrl,
+                      smallUrl: user.imageSmallUrl,
+                  },
+    }
+
+    return res.json(userViewModel)
 })
 
 interface Profile extends User {
@@ -72,6 +93,8 @@ router.get('/profile/:username?', async (req: Request, res: Response) => {
             albumId: true,
             joinedAt: true,
             bio: true,
+            imageSmallUrl: true,
+            imageBigUrl: true,
         },
     })
 
@@ -120,6 +143,13 @@ router.get('/profile/:username?', async (req: Request, res: Response) => {
 
     const profile: Profile = {
         ...user,
+        pictures:
+            user.imageBigUrl == null || user.imageSmallUrl == null
+                ? null
+                : {
+                      bigUrl: user.imageBigUrl,
+                      smallUrl: user.imageSmallUrl,
+                  },
         stats: {
             collection,
             wantlist,
@@ -142,26 +172,38 @@ type UpdateUserBody = {
     firstName?: string
     lastName?: string
     email?: string
+    bio?: string
     favouriteAlbumId?: string
 }
 
-router.put('/', async (req: Request, res: Response) => {
-    const userId = getUserId(req)
-    const { firstName, lastName, email, favouriteAlbumId }: UpdateUserBody = req.body
+router.use(formidableMiddleware())
 
-    let favouriteAlbum
-    if (favouriteAlbumId == null) {
-        favouriteAlbum = {
-            disconnect: true,
-        }
-    } else if (favouriteAlbumId) {
-        favouriteAlbum = {
-            connect: {
-                id: favouriteAlbumId,
-            },
-        }
-    } else {
-        favouriteAlbum = undefined
+router.put('/profile', async (req: Request, res: Response) => {
+    if (!req.fields) {
+        return res.status(400).send({ message: 'No body data provided' })
+    }
+    const profile = req.fields.profile
+    if (!profile) {
+        return res.status(400).send({ message: 'No profile data provided' })
+    }
+
+    const profileObject: UpdateUserBody = JSON.parse(profile as unknown as string)
+    const userId = getUserId(req)
+
+    let imageName = null
+    let newImageBigUrl
+    let newImageSmallUrl
+    const files = req.files
+    if (files && files['profilePicture']) {
+        const file = files['profilePicture'] as unknown as { path: string; name: string; type: string; size: number }
+
+        const bigImage = await sharp(file.path).resize(400, 400, { fit: 'cover' }).jpeg().toBuffer()
+        const smallImage = await sharp(file.path).resize(80, 80, { fit: 'cover' }).jpeg().toBuffer()
+
+        imageName = Math.random().toString(36).substring(7)
+
+        newImageSmallUrl = await uploadBlobFromBuffer(`${userId}/${imageName}-small.jpeg`, smallImage)
+        newImageBigUrl = await uploadBlobFromBuffer(`${userId}/${imageName}-big.jpeg`, bigImage)
     }
 
     const user = await prisma.user.update({
@@ -169,22 +211,41 @@ router.put('/', async (req: Request, res: Response) => {
             id: userId,
         },
         data: {
-            firstName,
-            lastName,
-            email,
-            favouriteAlbum: favouriteAlbum,
+            firstName: profileObject.firstName,
+            lastName: profileObject.lastName,
+            email: profileObject.email,
+            bio: profileObject.bio,
+            imageBigUrl: newImageBigUrl,
+            imageSmallUrl: newImageSmallUrl,
         },
         select: {
             id: true,
+            isAdmin: true,
             email: true,
             firstName: true,
             lastName: true,
-            isAdmin: true,
             albumId: true,
+            bio: true,
+            imageBigUrl: true,
+            imageSmallUrl: true,
         },
     })
 
-    return res.status(200).send(user)
+    const userViewModel = {
+        id: user.id,
+        isAdmin: user.isAdmin,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        albumId: user.albumId,
+        bio: user.bio,
+        pictures: {
+            bigUrl: user.imageBigUrl,
+            smallUrl: user.imageSmallUrl,
+        },
+    }
+
+    return res.status(200).send(userViewModel)
 })
 
 export default router

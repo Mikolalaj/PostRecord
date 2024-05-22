@@ -59,6 +59,8 @@ model User {
   wantlist          PressingsWantlist[]
   joinedAt          DateTime            @default(now())
   bio               String?
+  imageBigUrl       String?
+  imageSmallUrl     String?
 }
 
 model Pressing {

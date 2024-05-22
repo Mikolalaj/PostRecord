@@ -19,7 +19,7 @@ export default function Pressings() {
                 renderRow={album => (
                     <>
                         <td>
-                            <Image width={70} src={import.meta.env.VITE_IMAGE_PATH + album.image} alt={album.name} />
+                            <Image width={70} src={import.meta.env.VITE_RECORDS_IMAGE_PATH + album.image} alt={album.name} />
                         </td>
                         <td>{album.name}</td>
                         <td>{album.albumTitle}</td>

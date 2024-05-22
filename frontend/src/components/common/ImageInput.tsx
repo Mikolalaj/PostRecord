@@ -7,11 +7,13 @@ interface Props extends FileInputProps<false> {
     firstInput?: React.ReactNode
     secondInput?: React.ReactNode
     background?: string
+    circle?: boolean
+    image: string | null
 }
 
-export default function ImageInput({ firstInput, secondInput, background, ...rest }: Props) {
+export default function ImageInput({ firstInput, secondInput, background, circle, image = null, ...rest }: Props) {
     const [value, setValue] = useState<File | undefined>(undefined)
-    const [imagePreview, setImagePreview] = useState<string | null>(null)
+    const [imagePreview, setImagePreview] = useState<string | null>(image)
 
     useEffect(() => {
         if (typeof rest.value === 'string') {
@@ -26,12 +28,22 @@ export default function ImageInput({ firstInput, secondInput, background, ...res
         <Flex mt='lg' mb='xs' direction='row'>
             <Image
                 src={imagePreview}
+                withPlaceholder
                 width={200}
                 height={200}
-                fit='contain'
+                radius={circle === true ? 200 : undefined}
+                fit={circle !== true ? 'contain' : undefined}
                 imageProps={
                     background
-                        ? { style: { objectFit: 'contain', padding: '5px', height: '200px', width: '200px', backgroundColor: background } }
+                        ? {
+                              style: {
+                                  objectFit: 'contain',
+                                  padding: '5px',
+                                  height: '200px',
+                                  width: '200px',
+                                  backgroundColor: background,
+                              },
+                          }
                         : {}
                 }
             />

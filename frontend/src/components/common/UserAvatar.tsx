@@ -3,8 +3,13 @@ import { useNavigate } from 'react-router-dom'
 
 interface UserAvatarProps {
     user: {
+        id: string
         firstName: string
         lastName: string
+        pictures: {
+            bigUrl: string
+            smallUrl: string
+        } | null
     } | null
     size?: number
 }
@@ -20,6 +25,8 @@ function UserAvatar({ user, size }: UserAvatarProps) {
     if (!user) return null
     const navigate = useNavigate()
 
+    const imagePath = user.pictures ? (size && size > 80 ? user.pictures.bigUrl : user.pictures.smallUrl) : undefined
+
     return (
         <Avatar
             size={size}
@@ -27,8 +34,9 @@ function UserAvatar({ user, size }: UserAvatarProps) {
             radius={size || 'xl'}
             style={{ cursor: 'pointer', border: '1px solid var(--mantine-color-gray-3)' }}
             onClick={() => navigate('/profile')}
+            src={imagePath ? imagePath : undefined}
         >
-            {user.firstName[0].toUpperCase() + user.lastName[0].toUpperCase()}
+            {imagePath ? undefined : user.firstName[0].toUpperCase() + user.lastName[0].toUpperCase()}
         </Avatar>
     )
 }

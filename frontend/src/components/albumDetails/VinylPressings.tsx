@@ -11,7 +11,7 @@ interface VinylPressingsProps {
 function VinylPressings({ vinylPressings }: VinylPressingsProps) {
     const slides = vinylPressings.map(pressing => (
         <Carousel.Slide key={pressing.id}>
-            <Pressing {...pressing} image={import.meta.env.VITE_IMAGE_PATH + pressing.image} />
+            <Pressing {...pressing} image={import.meta.env.VITE_RECORDS_IMAGE_PATH + pressing.image} />
         </Carousel.Slide>
     ))
 
