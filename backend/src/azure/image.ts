@@ -25,3 +25,11 @@ export async function uploadBlobFromBuffer(blobName: string, buffer: Buffer): Pr
     const response = await blockBlobClient.uploadData(buffer)
     return response._response.request.url
 }
+
+//iterate over all blobs with a fiven prefix and delete them
+export async function deleteBlob(prefix: string): Promise<void> {
+    const containerClient = usersContainerClient
+    for await (const blob of containerClient.listBlobsFlat({ prefix })) {
+        await containerClient.deleteBlob(blob.name)
+    }
+}

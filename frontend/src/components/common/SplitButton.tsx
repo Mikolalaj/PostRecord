@@ -48,7 +48,8 @@ export default function SplitButton({ onClick, children, menuItems, ...rest }: P
                         return (
                             <Menu.Item
                                 key={index}
-                                icon={<Icon size='1rem' stroke={1.5} color={item.iconColor || menuIconColor} onClick={item.onClick} />}
+                                icon={<Icon size='1rem' stroke={1.5} color={item.iconColor || menuIconColor} />}
+                                onClick={item.onClick}
                             >
                                 {item.label}
                             </Menu.Item>

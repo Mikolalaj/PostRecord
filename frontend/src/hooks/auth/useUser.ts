@@ -2,6 +2,7 @@ import { showNotification } from '@mantine/notifications'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios, { AxiosError } from 'axios'
 import { notificationCheck } from 'components/common'
+import { useNavigate } from 'react-router-dom'
 import { MyError } from 'types'
 
 export interface User {
@@ -40,6 +41,26 @@ export function useUser() {
     return useQuery<User, AxiosError<MyError>>(['user'], async () => (await axios.get('/api/users')).data, {
         staleTime: 1000 * 60 * 5,
         retry: 1,
+    })
+}
+
+export function useDeleteUser() {
+    const navigate = useNavigate()
+    const queryClient = useQueryClient()
+    return useMutation<void, AxiosError<MyError>>({
+        mutationFn: async () => {
+            await axios.delete('/api/users')
+        },
+        onSuccess: () => {
+            showNotification({
+                icon: notificationCheck,
+                color: 'red',
+                title: 'Account deleted!',
+                message: 'Your account has been deleted successfully',
+            })
+            queryClient.clear()
+            navigate('/login')
+        },
     })
 }
 
@@ -96,27 +117,5 @@ export function useUpdateProfile() {
                 }
             })
         },
-        // mutationFn: async album => {
-        //     const pressingsWithImageNames = album.pressings.map(({ image, ...pressing }) => {
-        //         return {
-        //             ...pressing,
-        //             imageName: image.name,
-        //         }
-        //     })
-        //     const albumWithImageName = {
-        //         ...album,
-        //         pressings: pressingsWithImageNames,
-        //     }
-        //     const formData = new FormData()
-        //     formData.append('album', JSON.stringify(albumWithImageName))
-        //     if (album.image instanceof File) {
-        //         formData.append('image', album.image)
-        //     }
-        //     album.pressings.forEach(pressing => {
-        //         formData.append(pressing.image.name, pressing.image)
-        //     })
-        //     const response = await axios.post(basePath, formData)
-        //     return response.data
-        // },
     })
 }

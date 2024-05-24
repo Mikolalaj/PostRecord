@@ -50,7 +50,7 @@ export function sendResetPasswordEmail(firstName: string, resetToken: string, re
         })
     )
 
-    sendEmail(emailHtml, recipentEmail, 'Welcome to PostRecord')
+    sendEmail(emailHtml, recipentEmail, 'Reset your password | PostRecord')
 }
 
 async function sendEmail(emailHtml: string, recipentEmail: string, subject: string) {

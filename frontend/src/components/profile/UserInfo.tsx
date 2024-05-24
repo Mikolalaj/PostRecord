@@ -3,11 +3,12 @@ import CopyButton from 'components/common/CopyButton'
 import UserAvatar from 'components/common/UserAvatar'
 import FavouriteAlbum from 'components/profile/FavouriteAlbum'
 import UserStats from 'components/profile/UserStats'
-import { Profile } from 'hooks/auth/useUser'
+import { Profile, useDeleteUser } from 'hooks/auth/useUser'
 import { useState } from 'react'
 import UpdateProfileForm from './UpdateProfileForm'
 import SplitButton from 'components/common/SplitButton'
 import { IconKey, IconTrash } from '@tabler/icons-react'
+import { openConfirmModal } from '@mantine/modals'
 
 type Props = {
     user: Profile
@@ -17,6 +18,25 @@ type Props = {
 export default function UserInfo({ user, isProfileOwner }: Props) {
     const theme = useMantineTheme()
     const [modalOpened, setModalOpened] = useState(false)
+
+    const { mutateAsync } = useDeleteUser()
+
+    const openDeleteModal = () =>
+        openConfirmModal({
+            title: 'Delete your profile',
+            centered: true,
+            children: (
+                <Text size='sm'>
+                    Are you sure you want to delete your profile? This action is destructive and you won&apos;t be able to restore your
+                    data.
+                </Text>
+            ),
+            // eslint-disable-next-line quotes
+            labels: { confirm: 'Delete account', cancel: "No don't delete it" },
+            confirmProps: { color: 'red' },
+            onConfirm: () => mutateAsync(),
+        })
+
     return (
         <>
             <Modal size={550} centered opened={modalOpened} onClose={() => setModalOpened(false)} title='Update your profile'>
@@ -63,9 +83,7 @@ export default function UserInfo({ user, isProfileOwner }: Props) {
                                         label: 'Delete account',
                                         icon: IconTrash,
                                         iconColor: theme.colors.red[6],
-                                        onClick: () => {
-                                            console.log('Delete account')
-                                        },
+                                        onClick: openDeleteModal,
                                     },
                                 ]}
                             >

@@ -5,7 +5,7 @@ import { notificationCheck } from 'components/common'
 import { MyError, MessageResponse } from 'types'
 import { Pressing } from './usePressings'
 import { useParams } from 'react-router-dom'
-import { useUser } from 'hooks/auth/useUser'
+import { Profile, useUser } from 'hooks/auth/useUser'
 
 const basePath = '/api/collection/'
 
@@ -56,10 +56,17 @@ export function useRemoveFromCollection() {
     const queryClient = useQueryClient()
     return useMutation<MessageResponse, MyError, CollectionOperation>({
         mutationFn: async ({ pressingId }) => (await axios.delete(basePath + pressingId)).data,
-        onSuccess: (data, { albumId }) => {
+        onSuccess: (data, { albumId, pressingId }) => {
             queryClient.invalidateQueries(['pressings', albumId])
-            queryClient.invalidateQueries(['collection'])
-            queryClient.invalidateQueries(['collection', user?.username])
+            const collectionUpdate = (old: Array<CollectionPressing> | undefined) => old?.filter(p => p.id !== pressingId)
+            queryClient.setQueryData<Array<CollectionPressing>>(['collection'], collectionUpdate)
+            queryClient.setQueryData<Array<CollectionPressing>>(['collection', user?.username], collectionUpdate)
+            const profileUpdate = (old: Profile | undefined) => {
+                if (!old) return old
+                return { ...old, stats: { ...old.stats, collection: old.stats.collection - 1 } }
+            }
+            queryClient.setQueryData<Profile>(['profile'], profileUpdate)
+            queryClient.setQueryData<Profile>(['profile', user?.username], profileUpdate)
             showNotification({
                 icon: notificationCheck,
                 color: 'teal',

@@ -16,9 +16,6 @@ export default function Wantlist({ isProfileOwner }: Props) {
         <QueryRenderer
             queries={[useWantlist()]}
             render={wantlist => {
-                if (wantlist.length === 0) {
-                    return null
-                }
                 return (
                     <>
                         <Title order={2} mt='xl'>
@@ -43,6 +40,14 @@ export default function Wantlist({ isProfileOwner }: Props) {
                                 ))}
                             </tbody>
                         </Table>
+
+                        {wantlist.length === 0 && (
+                            <Center mt='xl'>
+                                <Text size='md' fs='italic'>
+                                    No pressings in your wantlist yet.
+                                </Text>
+                            </Center>
+                        )}
                     </>
                 )
             }}

@@ -39,6 +39,13 @@ export default function Collection({ isProfileOwner }: Props) {
                             ))}
                         </tbody>
                     </Table>
+                    {collection.length === 0 && (
+                        <Center mt='xl'>
+                            <Text size='md' fs='italic'>
+                                No pressings in your collection yet.
+                            </Text>
+                        </Center>
+                    )}
                 </>
             )}
         />

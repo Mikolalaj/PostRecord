@@ -3,7 +3,7 @@ import { Request, Response, Router } from 'express'
 import { getUserId } from '../common/utils'
 import formidableMiddleware from 'express-formidable'
 import sharp from 'sharp'
-import { uploadBlobFromBuffer, uploadBlobFromPath } from '../azure/image'
+import { deleteBlob, uploadBlobFromBuffer, uploadBlobFromPath } from '../azure/image'
 
 const router = Router()
 
@@ -56,6 +56,25 @@ router.get('/', async (req: Request, res: Response) => {
     }
 
     return res.json(userViewModel)
+})
+
+router.delete('/', async (req: Request, res: Response) => {
+    const userId = getUserId(req)
+
+    // remove user from database
+    await prisma.user.delete({
+        where: {
+            id: userId,
+        },
+    })
+
+    // remove user's profile picture from storage
+    await deleteBlob(userId)
+
+    // remove user's session
+    req.session.destroy(() => {
+        return res.status(204).end()
+    })
 })
 
 interface Profile extends User {
